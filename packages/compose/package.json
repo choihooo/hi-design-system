@@ -1,6 +1,6 @@
 {
   "name": "@hi-design/compose",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Composition pattern utilities for HI Design System - Compound Components & Slots",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

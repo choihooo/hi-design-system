@@ -1,6 +1,6 @@
 {
   "name": "@hi-design/presets",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Presets and configurations for HI Design System - TypeScript, ESLint, Vite, etc.",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

@@ -1,6 +1,6 @@
 {
   "name": "@hi-design/hooks",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Custom React hooks for HI Design System",
   "main": "./src/index.ts",
   "types": "./src/index.ts",

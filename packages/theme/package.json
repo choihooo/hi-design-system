@@ -1,6 +1,6 @@
 {
   "name": "@hi-design/theme",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Theme management for HI Design System - ThemeProvider and theme context",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
