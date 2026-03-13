@@ -1,0 +1,166 @@
+/**
+ * HI Design System - Global CSS Variables
+ * @description CSS variables based on design tokens for shadcn/ui-style theming
+ * @usage Import this file in your app's entry point (e.g., main.tsx, _app.tsx)
+ *
+ * ```typescript
+ * import '@hi-design/tokens/global.css'
+ * ```
+ */
+
+:root {
+  /* Brand Colors */
+  --brand-primary: #0ea5e9;
+  --brand-primary-hover: #0284c7;
+  --brand-primary-active: #0369a1;
+  --brand-secondary: #a855f7;
+  --brand-secondary-hover: #9333ea;
+  --brand-secondary-active: #7e22ce;
+
+  /* Text Colors */
+  --text-primary: #111827;
+  --text-secondary: #525252;
+  --text-inverse: #ffffff;
+  --text-disabled: #a3a3a3;
+
+  /* Background Colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #fafafa;
+  --bg-ghost-hover: #f0f9ff;
+  --bg-ghost-active: #e0f2fe;
+  --bg-filled: #fafafa;
+  --bg-filled-hover: #f5f5f5;
+  --bg-disabled: #fafafa;
+
+  /* Border Colors */
+  --border-default: #e5e5e5;
+  --border-hover: #d4d4d4;
+  --border-focus: #0ea5e9;
+
+  /* Semantic Colors */
+  --color-success: #22c55e;
+  --color-success-hover: #16a34a;
+  --color-error: #ef4444;
+  --color-error-hover: #dc2626;
+  --color-warning: #f59e0b;
+  --color-warning-hover: #d97706;
+  --color-info: #0ea5e9;
+
+  /* Focus Rings */
+  --focus-ring: rgba(14, 165, 233, 0.1);
+  --success-focus-ring: rgba(34, 197, 94, 0.1);
+  --error-focus-ring: rgba(239, 68, 68, 0.1);
+
+  /* Spacing */
+  --spacing-tight: 4px;
+  --spacing-compact: 8px;
+  --spacing-normal: 16px;
+  --spacing-relaxed: 24px;
+  --spacing-spacious: 32px;
+
+  /* Component Spacing */
+  --spacing-button-padding-sm-vertical: 6px;
+  --spacing-button-padding-sm-horizontal: 12px;
+  --spacing-button-padding-md-vertical: 8px;
+  --spacing-button-padding-md-horizontal: 16px;
+  --spacing-button-padding-lg-vertical: 12px;
+  --spacing-button-padding-lg-horizontal: 24px;
+
+  --spacing-input-padding-sm-vertical: 6px;
+  --spacing-input-padding-sm-horizontal: 12px;
+  --spacing-input-padding-md-vertical: 8px;
+  --spacing-input-padding-md-horizontal: 12px;
+  --spacing-input-padding-lg-vertical: 12px;
+  --spacing-input-padding-lg-horizontal: 16px;
+
+  --spacing-card-padding-sm: 12px;
+  --spacing-card-padding-md: 16px;
+  --spacing-card-padding-lg: 24px;
+
+  /* Typography */
+  --font-display: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-code: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
+  --font-size-4xl: 36px;
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Z-index */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
+}
+
+.dark {
+  /* Brand Colors (Dark Mode) */
+  --brand-primary: #38bdf8;
+  --brand-primary-hover: #0ea5e9;
+  --brand-primary-active: #0284c7;
+  --brand-secondary: #c084fc;
+  --brand-secondary-hover: #a855f7;
+  --brand-secondary-active: #9333ea;
+
+  /* Text Colors (Dark Mode) */
+  --text-primary: #fafafa;
+  --text-secondary: #a3a3a3;
+  --text-inverse: #171717;
+  --text-disabled: #525252;
+
+  /* Background Colors (Dark Mode) */
+  --bg-primary: #171717;
+  --bg-secondary: #262626;
+  --bg-ghost-hover: #0c4a6e;
+  --bg-ghost-active: #075985;
+  --bg-filled: #262626;
+  --bg-filled-hover: #404040;
+  --bg-disabled: #171717;
+
+  /* Border Colors (Dark Mode) */
+  --border-default: #404040;
+  --border-hover: #525252;
+  --border-focus: #38bdf8;
+
+  /* Focus Rings (Dark Mode) */
+  --focus-ring: rgba(56, 189, 248, 0.2);
+  --success-focus-ring: rgba(34, 197, 94, 0.2);
+  --error-focus-ring: rgba(239, 68, 68, 0.2);
+}

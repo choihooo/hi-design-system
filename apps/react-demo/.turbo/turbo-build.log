@@ -1,0 +1,21 @@
+
+> @hi-design/react-demo@0.0.1 build /home/choiho/hi-design-system/apps/react-demo
+> tsc && vite build
+
+src/App.tsx(1,28): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
+src/App.tsx(2,26): error TS6133: 'useEffect' is declared but its value is never read.
+src/App.tsx(7,33): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
+src/App.tsx(8,33): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
+src/App.tsx(97,10): error TS2322: Type '{ children: Element[]; visible: boolean; title: string; size: "md" | "sm" | "lg"; onClose: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'children' does not exist on type 'IntrinsicAttributes'.
+src/App.tsx(116,11): error TS2322: Type '{ visible: boolean; message: string; variant: "error" | "success" | "warning" | "info"; onClose: () => void; }' is not assignable to type 'IntrinsicAttributes'.
+  Property 'visible' does not exist on type 'IntrinsicAttributes'.
+src/components/AnalyticsProvider.tsx(29,32): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+src/components/ButtonsSection.tsx(1,42): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
+src/components/CardsSection.tsx(1,34): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
+src/components/InputsSection.tsx(1,41): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
+src/components/ModalsSection.tsx(1,42): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
+src/components/ToastsSection.tsx(1,42): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
+src/components/TypographySection.tsx(1,34): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
+src/main.tsx(1,31): error TS2307: Cannot find module '@hi-design/tokens' or its corresponding type declarations.
+ ELIFECYCLE  Command failed with exit code 2.

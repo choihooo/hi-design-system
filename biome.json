@@ -1,0 +1,76 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.json"]
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 100
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "a11y": {
+        "recommended": true,
+        "useButtonType": "error",
+        "useKeyWithClickEvents": "warn"
+      },
+      "complexity": {
+        "recommended": true,
+        "noForEach": "off",
+        "useLiteralKeys": "error"
+      },
+      "correctness": {
+        "recommended": true,
+        "noUnusedVariables": "error",
+        "useExhaustiveDependencies": "warn",
+        "useHookAtTopLevel": "error"
+      },
+      "performance": {
+        "recommended": true,
+        "noAccumulatingSpread": "warn"
+      },
+      "security": {
+        "recommended": true,
+        "noDangerouslySetInnerHtml": "error"
+      },
+      "style": {
+        "recommended": true,
+        "noNonNullAssertion": "warn",
+        "useConst": "error",
+        "useTemplate": "warn",
+        "useImportType": "error",
+        "noParameterAssign": "warn"
+      },
+      "suspicious": {
+        "recommended": true,
+        "noExplicitAny": "warn",
+        "noArrayIndexKey": "error",
+        "noConsole": "warn"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "asNeeded",
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "bracketSameLine": false
+    }
+  }
+}

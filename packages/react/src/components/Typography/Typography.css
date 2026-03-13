@@ -1,0 +1,86 @@
+/**
+ * Typography Component Styles
+ * HI Design System
+ */
+
+.hi-typography {
+  margin: 0;
+}
+
+.hi-typography--h1 {
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.05em;
+}
+
+.hi-typography--h2 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.05em;
+}
+
+.hi-typography--h3 {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+
+.hi-typography--h4 {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.375;
+  letter-spacing: 0;
+}
+
+.hi-typography--h5 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.375;
+  letter-spacing: 0;
+}
+
+.hi-typography--h6 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.hi-typography--body1 {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.hi-typography--body2 {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.hi-typography--button {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.hi-typography--caption {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.hi-typography--overline {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}

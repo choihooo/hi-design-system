@@ -1,0 +1,73 @@
+/**
+ * @component Button
+ * @description Interactive button component with multiple variants and sizes
+ * @platform React (Web)
+ * @usage
+ * ```tsx
+ * <Button variant="primary" size="md" onPress={handleClick}>
+ *   Click me
+ * </Button>
+ * ```
+ */
+
+import type { ButtonProps } from '@hi-design/types'
+import clsx from 'clsx'
+import { forwardRef } from 'react'
+import './Button.css'
+
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+  (
+    {
+      variant = 'primary',
+      size = 'md',
+      color = 'primary',
+      disabled = false,
+      loading = false,
+      fullWidth = false,
+      onPress,
+      className,
+      children,
+      testID,
+      ...rest
+    },
+    ref,
+  ) => {
+    const handleClick = () => {
+      if (!disabled && !loading && onPress) {
+        onPress()
+      }
+    }
+
+    const buttonClassName = clsx(
+      'hi-button',
+      `hi-button--${variant}`,
+      `hi-button--${size}`,
+      `hi-button--${color}`,
+      fullWidth && 'hi-button--full-width',
+      disabled && 'hi-button--disabled',
+      loading && 'hi-button--loading',
+      className, // Allow custom className override (shadcn/ui style)
+    )
+
+    return (
+      <button
+        ref={ref}
+        className={buttonClassName}
+        disabled={disabled || loading}
+        onClick={handleClick}
+        data-testid={testID}
+        aria-busy={loading}
+        {...rest}
+      >
+        {loading && (
+          <span className="hi-button__spinner" role="status" aria-label="Loading">
+            <span className="sr-only">Loading...</span>
+          </span>
+        )}
+        <span className="hi-button__content">{children}</span>
+      </button>
+    )
+  },
+)
+
+Button.displayName = 'Button'

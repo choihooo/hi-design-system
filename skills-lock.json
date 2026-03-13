@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "design-system-patterns": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "computedHash": "5f8c9b187e77fcb31db78da2f7b55f905dcd2357454624cac93f00c766ace346"
+    },
+    "update-docs": {
+      "source": "vercel/next.js",
+      "sourceType": "github",
+      "computedHash": "b5f495ca63a08c70523ed59fbcf5b5665603d77299d8524ccddeacce024cbb33"
+    },
+    "web-design-guidelines": {
+      "source": "vercel-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
+    }
+  }
+}

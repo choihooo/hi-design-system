@@ -1,0 +1,8 @@
+[      94ms] [WARNING] <link rel=preload> has an unsupported `type` value @ http://localhost:3001/:22
+[      95ms] [WARNING] A preload for 'http://localhost:3001/src/main.tsx' is found, but is not used because the request credentials mode does not match. Consider taking a look at crossorigin attribute. @ http://localhost:3001/:0
+[     210ms] The requested module '/@fs/home/choiho/hi-design-system/packages/tokens/src/colors.ts' does not provide an export named 'primary'
+[    3171ms] [WARNING] The resource http://localhost:3001/src/main.tsx was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/:0
+[   21676ms] [WARNING] <link rel=preload> has an unsupported `type` value @ http://localhost:3001/:22
+[   21776ms] ReferenceError: rawColors is not defined
+    at http://localhost:3001/@fs/home/choiho/hi-design-system/packages/tokens/src/index.ts?t=1773374425335:34:13
+[   24765ms] [WARNING] The resource http://localhost:3001/src/main.tsx was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/:0

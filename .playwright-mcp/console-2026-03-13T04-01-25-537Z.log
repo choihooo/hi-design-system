@@ -1,0 +1,4 @@
+[      17ms] [WARNING] <link rel=preload> has an unsupported `type` value @ http://localhost:3001/:22
+[    3065ms] [WARNING] The resource http://localhost:3001/src/main.tsx was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/:0
+[  514331ms] [WARNING] <link rel=preload> has an unsupported `type` value @ http://localhost:3001/:22
+[  517407ms] [WARNING] The resource http://localhost:3001/src/main.tsx was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ http://localhost:3001/:0

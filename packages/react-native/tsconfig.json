@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "jsx": "react-native",
+    "lib": ["ES2020"]
+  },
+  "include": ["src"],
+  "references": [{ "path": "../tokens" }, { "path": "../types" }]
+}

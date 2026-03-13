@@ -1,0 +1,1 @@
+{"version":3,"file":"ToastsSection.d.ts","sourceRoot":"","sources":["../../src/components/ToastsSection.tsx"],"names":[],"mappings":"AAEA,UAAU,kBAAkB;IAC1B,WAAW,EAAE,CAAC,OAAO,EAAE,MAAM,EAAE,OAAO,EAAE,SAAS,GAAG,OAAO,GAAG,SAAS,GAAG,MAAM,KAAK,IAAI,CAAA;CAC1F;AAED,wBAAgB,aAAa,CAAC,EAAE,WAAW,EAAE,EAAE,kBAAkB,2CAyChE"}

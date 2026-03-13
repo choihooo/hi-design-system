@@ -1,0 +1,100 @@
+/**
+ * Card Component Styles
+ * HI Design System
+ */
+
+.hi-card {
+  background-color: var(--bg-primary, #ffffff);
+  transition: all 200ms ease;
+}
+
+/* Elevation variants */
+.hi-card--elevation-none {
+  box-shadow: none;
+  border: 1px solid var(--border-default, #e5e5e5);
+}
+
+.hi-card--elevation-sm {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.hi-card--elevation-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.hi-card--elevation-lg {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.hi-card--elevation-xl {
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Padding variants */
+.hi-card--padding-none {
+  padding: 0;
+}
+
+.hi-card--padding-sm {
+  padding: 16px;
+}
+
+.hi-card--padding-md {
+  padding: 24px;
+}
+
+.hi-card--padding-lg {
+  padding: 32px;
+}
+
+/* Border radius variants */
+.hi-card--radius-none {
+  border-radius: 0;
+}
+
+.hi-card--radius-sm {
+  border-radius: 4px;
+}
+
+.hi-card--radius-md {
+  border-radius: 8px;
+}
+
+.hi-card--radius-lg {
+  border-radius: 12px;
+}
+
+.hi-card--radius-xl {
+  border-radius: 16px;
+}
+
+/* Pressable state */
+.hi-card--pressable {
+  cursor: pointer;
+}
+
+.hi-card--pressable:hover {
+  transform: translateY(-2px);
+}
+
+.hi-card--pressable:active {
+  transform: translateY(0);
+}
+
+/* Focus visible for keyboard navigation */
+.hi-card--pressable:focus-visible {
+  outline: 2px solid var(--brand-primary, #0ea5e9);
+  outline-offset: 2px;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .hi-card--pressable {
+    transition: none !important;
+  }
+
+  .hi-card--pressable:hover,
+  .hi-card--pressable:active {
+    transform: none !important;
+  }
+}
