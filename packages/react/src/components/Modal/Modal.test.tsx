@@ -4,7 +4,7 @@
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { Modal } from './Modal'
+import Modal from './Modal'
 import '@testing-library/jest-dom'
 
 // Mock window.matchMedia for reduced motion
@@ -52,21 +52,21 @@ describe('Modal', () => {
           <div>Test</div>
         </Modal>,
       )
-      expect(screen.getByRole('dialog')).toHaveClass('hi-modal--sm')
+      expect(screen.getByRole('dialog')).toHaveClass('modal--sm')
 
       rerender(
         <Modal visible={true} onClose={vi.fn()} size="md">
           <div>Test</div>
         </Modal>,
       )
-      expect(screen.getByRole('dialog')).toHaveClass('hi-modal--md')
+      expect(screen.getByRole('dialog')).toHaveClass('modal--md')
 
       rerender(
         <Modal visible={true} onClose={vi.fn()} size="lg">
           <div>Test</div>
         </Modal>,
       )
-      expect(screen.getByRole('dialog')).toHaveClass('hi-modal--lg')
+      expect(screen.getByRole('dialog')).toHaveClass('modal--lg')
     })
   })
 
@@ -92,7 +92,7 @@ describe('Modal', () => {
         </Modal>,
       )
 
-      const backdrop = screen.getByTestId('hi-modal-overlay')
+      const backdrop = screen.getByTestId('modal-overlay')
       fireEvent.click(backdrop)
       expect(handleClose).toHaveBeenCalledTimes(1)
     })
@@ -204,7 +204,7 @@ describe('Modal', () => {
         </Modal>,
       )
 
-      const backdrop = screen.getByTestId('hi-modal-overlay')
+      const backdrop = screen.getByTestId('modal-overlay')
       fireEvent.click(backdrop)
       expect(handleClose).not.toHaveBeenCalled()
     })

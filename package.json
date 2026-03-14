@@ -17,6 +17,8 @@
     "format": "biome format --write .",
     "check": "biome check --write .",
     "type-check": "turbo run type-check",
+    "ai-score": "node scripts/measure-ai-score.js",
+    "ai-score-full": "node scripts/measure-full-package.js",
     "clean": "turbo run clean && rm -rf node_modules",
     "changeset": "changeset",
     "version-packages": "changeset version",

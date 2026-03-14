@@ -54,18 +54,18 @@ export const Input: React.FC<InputProps> = ({
     onChangeText?.(text)
   }
 
-  const handleFocus = () => {
+  const handleFocus = (event: any) => {
     setIsFocused(true)
-    onFocus?.()
+    onFocus?.(event)
   }
 
-  const handleBlur = () => {
+  const handleBlur = (event: any) => {
     setIsFocused(false)
-    onBlur?.()
+    onBlur?.(event)
   }
 
-  const handleSubmit = () => {
-    onSubmit?.()
+  const handleSubmit = (event: any) => {
+    onSubmit?.(event)
   }
 
   const containerStyle = StyleSheet.flatten([styles.container, fullWidth && styles.fullWidth])

@@ -106,7 +106,7 @@ export interface InputProps {
    * Input type attribute
    * @default 'text'
    */
-  type?: 'text' | 'email' | 'password' | 'url' | 'tel' | 'number' | 'search'
+  type?: 'text' | 'email' | 'password' | 'url' | 'tel' | 'number' | 'search' | 'textarea'
 
   /**
    * Visual style variant
@@ -177,17 +177,17 @@ export interface InputProps {
   /**
    * Focus change handler
    */
-  onFocus?: () => void
+  onFocus?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 
   /**
    * Blur handler
    */
-  onBlur?: () => void
+  onBlur?: (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void
 
   /**
    * Submit handler (called on Enter key press)
    */
-  onSubmit?: () => void
+  onSubmit?: (event: React.FormEvent) => void
 
   /**
    * Test ID for testing
@@ -218,6 +218,21 @@ export interface InputProps {
    * Validation pattern
    */
   pattern?: string
+
+  /**
+   * Show password toggle state (for password input)
+   */
+  showPassword?: boolean
+
+  /**
+   * Toggle password visibility handler
+   */
+  onTogglePassword?: (visible: boolean) => void
+
+  /**
+   * Number of rows for textarea
+   */
+  rows?: number
 }
 
 /**

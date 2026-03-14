@@ -145,6 +145,47 @@ applyTheme('dark');  // Switch to dark mode
 applyTheme('light'); // Switch to light mode
 ```
 
+## Scripts
+
+### Development
+```bash
+pnpm dev          # Start development servers
+pnpm build        # Build all packages
+pnpm test         # Run tests
+pnpm test:ui      # Run tests with UI
+pnpm test:run     # Run tests without watch
+pnpm coverage     # Run tests with coverage
+```
+
+### Code Quality
+```bash
+pnpm lint         # Check code linting
+pnpm lint:fix     # Fix linting issues
+pnpm format       # Format code with Biome
+pnpm check        # Run all quality checks
+pnpm type-check   # Type checking with Turbo
+```
+
+### AI Friendliness
+```bash
+# Measure AI friendliness score for components
+pnpm ai-score packages/react/src/components/Toast/Toast.tsx
+pnpm ai-score packages/hooks/src/useTheme.ts
+
+# Measure multiple components at once
+pnpm ai-score packages/react/src/components/Toast/Toast.tsx packages/hooks/src/useTheme.ts
+
+# Get JSON output (useful for CI/CD)
+JSON_OUTPUT=true pnpm ai-score packages/react/src/components/Toast/Toast.tsx
+```
+
+### Scripts
+```bash
+pnpm ai-score packages/react/src/components/Toast/Toast.tsx
+pnpm ai-score packages/hooks/src/useTheme.ts
+pnpm ai-score packages/react/src/components/Toast/Toast.tsx packages/hooks/src/useTheme.ts
+```
+
 ### React (Web)
 
 ```tsx
