@@ -2,7 +2,7 @@
   "name": "hi-design-system",
   "version": "0.0.1",
   "private": true,
-  "description": "AI-friendly cross-platform design system for React, React Native, and Flutter",
+  "description": "AI-friendly design system for React web applications",
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",

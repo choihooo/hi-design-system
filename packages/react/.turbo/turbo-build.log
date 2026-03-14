@@ -12,4 +12,4 @@ dist/style.css        10.50 kB │ gzip:  2.42 kB
 dist/hi-design.es.js  76.57 kB │ gzip: 16.91 kB
 dist/style.css         10.50 kB │ gzip:  2.42 kB
 dist/hi-design.umd.js  51.89 kB │ gzip: 14.38 kB
-✓ built in 259ms
+✓ built in 245ms

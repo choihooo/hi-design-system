@@ -102,18 +102,12 @@ pnpm dev
 
 Open http://localhost:3000 in your browser.
 
-#### React Native Demo
-
-```bash
 cd apps/rn-demo
 pnpm start
 ```
 
 Scan the QR code with Expo Go on your mobile device.
 
-#### Flutter Demo
-
-```bash
 cd flutter
 flutter run
 ```
@@ -212,9 +206,6 @@ function App() {
 }
 ```
 
-### React Native
-
-```tsx
 import { Button, Input, Card, Typography, Modal, Toast } from '@hi-design/react-native';
 import { tokens } from '@hi-design/tokens';
 
@@ -231,9 +222,6 @@ function App() {
 }
 ```
 
-### Flutter
-
-```dart
 import 'package:hi_design/hi_design.dart';
 
 // In your widget

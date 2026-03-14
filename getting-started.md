@@ -36,45 +36,8 @@ pnpm build
 
 No additional setup required. The React components work out of the box with Vite.
 
-### React Native
-
-#### Option 1: Expo (Recommended for Development)
 
 ```bash
-# Install Expo CLI
-npm install -g expo-cli
-
-# Run the demo app
-cd apps/rn-demo
-pnpm start
-
-# Scan the QR code with Expo Go app on your mobile device
-```
-
-#### Option 2: React Native CLI
-
-```bash
-# Install dependencies
-cd apps/rn-demo
-pnpm install
-
-# iOS (macOS only)
-pnpm ios
-
-# Android
-pnpm android
-```
-
-### Flutter
-
-```bash
-# Install Flutter SDK
-# https://docs.flutter.dev/get-started/install
-
-# Verify Flutter installation
-flutter doctor
-
-# Run Flutter demo
 cd flutter
 flutter run
 
@@ -301,48 +264,6 @@ pnpm build
 pnpm type-check
 ```
 
-#### React Native Package
-
-```bash
-cd packages/react-native
-
-# Type check
-pnpm type-check
-
-# Lint
-pnpm lint
-```
-
-#### Tokens Package
-
-```bash
-cd packages/tokens
-
-# No build step - TypeScript files used directly
-# Just edit and save
-```
-
-### Running Demo Applications
-
-#### React Demo (Web)
-
-```bash
-cd apps/react-demo
-pnpm dev
-```
-
-Open http://localhost:3000 in your browser.
-
-#### React Native Demo
-
-```bash
-cd apps/rn-demo
-pnpm start
-```
-
-Press `i` for iOS simulator or `a` for Android emulator.
-
-#### Flutter Demo
 
 ```bash
 cd flutter
