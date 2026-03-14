@@ -17,7 +17,12 @@ const COMPONENT_PATHS = [
   'packages/react/src/components/Input/Input.tsx',
   'packages/react/src/components/Modal/Modal.tsx',
   'packages/react/src/components/Toast/Toast.tsx',
-  'packages/react/src/components/Typography/Typography.tsx'
+  'packages/react/src/components/Typography/Typography.tsx',
+  // Primitive components
+  'packages/primitives/src/Box/Box.tsx',
+  'packages/primitives/src/Text/Text.tsx',
+  'packages/primitives/src/Pressable/Pressable.tsx',
+  'packages/primitives/src/Icon/Icon.tsx'
 ];
 
 // 점수 측정 함수

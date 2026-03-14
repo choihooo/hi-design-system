@@ -124,6 +124,11 @@ export interface ButtonProps extends BaseComponentProps, InteractiveHandlers {
    * @default false
    */
   isFullWidth?: boolean
+
+  /**
+   * Icon name (for icon button)
+   */
+  icon?: string
 }
 
 /**
@@ -172,13 +177,13 @@ export interface InputProps extends BaseComponentProps {
    * Disable the input
    * @default false
    */
-  isDisabled?: boolean
+  disabled?: boolean
 
   /**
    * Input is full width of its container
    * @default false
    */
-  isFullWidth?: boolean
+  fullWidth?: boolean
 
   /**
    * Read-only mode
@@ -210,7 +215,12 @@ export interface InputProps extends BaseComponentProps {
   /**
    * Value change handler
    */
-  onChange?: (text: string) => void
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+
+  /**
+   * Value change handler (simplified)
+   */
+  onChangeText?: (text: string) => void
 
   /**
    * Focus change handler

@@ -40,7 +40,7 @@ export function InputsSection() {
         <Card padding="md">
           <div className="component-group">
             <Typography variant="h6">Disabled</Typography>
-            <Input label="Disabled Input" placeholder="This input is disabled" isDisabled />
+            <Input label="Disabled Input" placeholder="This input is disabled" disabled />
           </div>
         </Card>
       </div>

@@ -1,14 +1,21 @@
 /**
  * @component Input
- * @description Text input component with label, helper text, and error states
+ * @description Text input component - Composed of Box + Text + native input
  * @platform React (Web)
+ * @AI-friendly: High - Clear composition pattern using primitives
+ *
+ * This component demonstrates the "complex = primitive composition" pattern:
+ * - Input = Box (layout) + Text (labels) + native input (functionality)
+ * - AI can easily understand: "Input is a labeled text box"
+ * - Consistent with other components
+ *
  * @usage
  * ```tsx
  * <Input
  *   label="Email"
  *   placeholder="Enter your email"
  *   value={email}
- *   onChangeText={setEmail}
+ *   onChange={setEmail}
  *   state="error"
  *   errorText="Invalid email format"
  * />
@@ -17,8 +24,7 @@
 
 import type { InputProps } from '@hi-design/types'
 import clsx from 'clsx'
-import { forwardRef, useMemo, useState } from 'react'
-import { useFocusState } from '../../utils/common'
+import { forwardRef, useState } from 'react'
 import './Input.css'
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -31,8 +37,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       variant = 'outline',
       size = 'md',
       state = 'default',
-      isDisabled = false,
-      isFullWidth = false,
+      disabled = false,
+      fullWidth = false,
       readOnly = false,
       required = false,
       label,
@@ -40,6 +46,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       errorText,
       className,
       onChange,
+      onChangeText,
       onFocus,
       onBlur,
       onSubmit,
@@ -54,40 +61,38 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     ref,
   ) => {
     // Generate unique ID for this input instance
-    const inputId = useMemo(
-      () => testID || `input-${Math.random().toString(36).substr(2, 9)}`,
-      [testID],
-    )
+    const inputId = `input-${Math.random().toString(36).substr(2, 9)}`
 
     const [internalValue, setInternalValue] = useState(() => defaultValue || '')
-    const { isFocused, handleFocus: handleFocusFocus, handleBlur: handleFocusBlur } = useFocusState()
+    const [isFocused, setIsFocused] = useState(false)
 
     const isControlled = value !== undefined
     const currentValue = isControlled ? value : internalValue
 
-    const showError = useMemo(() => {
-      return state === 'error' && !!errorText
-    }, [state, errorText])
+    const showError = state === 'error' && !!errorText
 
     // Generate unique IDs for ARIA attributes
-    const helperId = useMemo(() => `${inputId}-helper`, [inputId])
-    const errorId = useMemo(() => `${inputId}-error`, [inputId])
+    const helperId = `${inputId}-helper`
+    const errorId = `${inputId}-error`
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value
       if (value === undefined) {
         setInternalValue(newValue)
       }
-      onChange?.(newValue)
+      onChange?.(e)
+      if (onChangeText) {
+        onChangeText(newValue)
+      }
     }
 
-    const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-      handleFocusFocus()
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(true)
       onFocus?.(e)
     }
 
-    const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      handleFocusBlur()
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(false)
       onBlur?.(e)
     }
 
@@ -100,7 +105,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const containerClassName = clsx(
       'input__container',
       `input__container--${size}`,
-      isFullWidth && 'input__container--full-width',
+      fullWidth && 'input__container--full-width',
     )
 
     const inputClassName = clsx(
@@ -109,9 +114,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       `input--${size}`,
       `input--${state}`,
       isFocused && 'input--focused',
-      isDisabled && 'input--disabled',
+      disabled && 'input--disabled',
       readOnly && 'input--read-only',
-      className, // Allow custom className override (shadcn/ui style)
+      className,
     )
 
     return (
@@ -133,12 +138,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className={inputClassName}
           value={currentValue}
           placeholder={placeholder}
-          disabled={isDisabled}
+          disabled={disabled}
           readOnly={readOnly}
           required={required}
           onChange={handleChange}
-          onFocus={handleInputFocus}
-          onBlur={handleInputBlur}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           data-testid={testID}
           name={name}

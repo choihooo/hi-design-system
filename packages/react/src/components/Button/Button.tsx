@@ -1,19 +1,39 @@
 /**
  * @component Button
- * @description Interactive button component with multiple variants and sizes
+ * @description Interactive button component - Composed of Pressable + Text + Icon primitives
  * @platform React (Web)
+ * @AI-friendly: High - Clear composition pattern using primitives
+ *
+ * This component demonstrates the "complex = primitive composition" pattern:
+ * - Button = Pressable (interaction) + Text (content) + optional Icon (visual)
+ * - AI can easily understand: "Button is a clickable text with optional icon"
+ * - Consistent with other components: Input, Card, etc.
+ *
  * @usage
  * ```tsx
+ * // Basic button
  * <Button variant="primary" size="md" onPress={handleClick}>
  *   Click me
+ * </Button>
+ *
+ * // Button with icon
+ * <Button variant="secondary" icon="star" onPress={handleClick}>
+ *   Rate us
+ * </Button>
+ *
+ * // Loading button
+ * <Button variant="primary" isLoading onPress={handleClick}>
+ *   Processing...
  * </Button>
  * ```
  */
 
 import type { ButtonProps } from '@hi-design/types'
+import { Icon } from '@hi-design/primitives'
+import { Pressable } from '@hi-design/primitives'
+import { Text } from '@hi-design/primitives'
 import clsx from 'clsx'
 import { forwardRef } from 'react'
-import { useCommonHandlers, useFocusState } from '../../utils/common'
 import './Button.css'
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -22,9 +42,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'primary',
       size = 'md',
       color = 'primary',
-      isDisabled = false,
-      isLoading = false,
-      isFullWidth = false,
+      disabled = false,
+      loading = false,
+      fullWidth = false,
       onPress,
       onClick,
       onFocus,
@@ -35,66 +55,58 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       children,
       testID,
+      icon,
       ...rest
     },
     ref,
   ) => {
-    const { isFocused } = useFocusState()
-    const commonHandlers = useCommonHandlers({
-      onPress,
-      onClick,
-      onFocus,
-      onBlur,
-      onMouseDown,
-      onMouseUp,
-      onMouseLeave,
-    })
-
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (isDisabled || isLoading) {
-        return
-      }
-
-      commonHandlers.onClick?.(e)
-      if (commonHandlers.onPress) {
-        commonHandlers.onPress()
-      }
-    }
-
     const buttonClassName = clsx(
       'button',
       `button--${variant}`,
       `button--${size}`,
       `button--${color}`,
-      isFullWidth && 'button--full-width',
-      isDisabled && 'button--disabled',
-      isLoading && 'button--loading',
-      isFocused && 'button--focused',
-      className, // Allow custom className override (shadcn/ui style)
+      fullWidth && 'button--full-width',
+      disabled && 'button--disabled',
+      loading && 'button--loading',
+      className,
     )
 
     return (
-      <button
+      <Pressable
         ref={ref}
         className={buttonClassName}
-        disabled={isDisabled || isLoading}
-        onClick={handleClick}
-        onFocus={commonHandlers.handleFocus}
-        onBlur={commonHandlers.handleBlur}
-        onMouseDown={commonHandlers.handleMouseDown}
-        onMouseUp={commonHandlers.handleMouseUp}
-        onMouseLeave={commonHandlers.handleMouseLeave}
-        data-testid={testID}
-        aria-busy={isLoading}
+        disabled={disabled || loading}
+        onPress={() => {
+          if (onPress) {
+            onPress()
+          }
+        }}
+        onClick={onClick}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseLeave}
+        testID={testID}
+        aria-busy={loading}
         {...rest}
       >
-        {isLoading && (
+        {loading && (
           <span className="button__spinner" aria-hidden="true">
             <span className="sr-only">Loading...</span>
           </span>
         )}
-        <span className="button__content">{children}</span>
-      </button>
+
+        {icon && !loading && (
+          <Icon name={icon} size={size} className="button__icon" aria-hidden="true" />
+        )}
+
+        {children && (
+          <Text variant="button" className="button__content">
+            {children}
+          </Text>
+        )}
+      </Pressable>
     )
   },
 )

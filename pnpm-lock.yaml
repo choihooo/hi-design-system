@@ -260,6 +260,9 @@ importers:
       '@hi-design/icons':
         specifier: workspace:*
         version: link:../icons
+      '@hi-design/primitives':
+        specifier: workspace:*
+        version: link:../primitives
       '@hi-design/tokens':
         specifier: workspace:*
         version: link:../tokens

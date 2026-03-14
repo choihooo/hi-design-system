@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@hi-design/icons": "workspace:*",
+    "@hi-design/primitives": "workspace:*",
     "@hi-design/tokens": "workspace:*",
     "@hi-design/types": "workspace:*",
     "clsx": "^2.1.1"

@@ -1,35 +1,29 @@
 /**
  * @component Typography
- * @description Text component with predefined style variants
+ * @description Text component wrapper - Uses Text primitive for backward compatibility
  * @platform React (Web)
- * @type {React.ForwardRefExoticComponent<TypographyProps>}
- * @prop {string} variant - Typography variant ('h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'button' | 'caption' | 'overline')
- * @prop {string} weight - Font weight override
- * @prop {string} color - Text color override
- * @prop {string} align - Text alignment ('left' | 'center' | 'right' | 'justify')
- * @prop {boolean} noWrap - Whether to prevent text wrapping
- * @prop {number} numberOfLines - Number of lines to show (with ellipsis)
- * @prop {string} className - Additional CSS classes
- * @prop {CSSProperties} style - Inline styles
- * @prop {React.ReactNode} children - Text content
- * @prop {string} testID - Test identifier
+ * @AI-friendly: High - Simple wrapper around Text primitive
+ *
+ * This component provides backward compatibility while using the Text primitive:
+ * - Typography = Text (primitive) + alias for consistency
+ * - AI can understand: "Typography is just an alias for Text"
+ * - Migration path for existing code
+ *
  * @usage
  * ```tsx
- * <Typography variant="h1">Heading 1</Typography>
- * <Typography variant="body1">Body text goes here</Typography>
- * <Typography variant="caption" color="neutral.500">
- *   Caption text
- * </Typography>
+ * // Use Text primitive directly (recommended)
+ * import { Text } from '@hi-design/primitives'
+ * <Text variant="h1">Heading</Text>
+ *
+ * // Or use Typography for backward compatibility
+ * import { Typography } from '@hi-design/react'
+ * <Typography variant="h1">Heading</Typography>
  * ```
  */
 
-import React, { forwardRef, useMemo } from 'react'
-import { generateUniqueId } from '../../utils/common'
-import './Typography.css'
+import { Text as TextPrimitive } from '@hi-design/primitives'
+import { forwardRef } from 'react'
 
-/**
- * Typography component props (temporary local definition)
- */
 interface TypographyProps {
   variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'button' | 'caption' | 'overline'
   weight?: 'light' | 'regular' | 'medium' | 'semibold' | 'bold'
@@ -43,74 +37,26 @@ interface TypographyProps {
   testID?: string
 }
 
-const elementTagMap = {
-  h1: 'h1',
-  h2: 'h2',
-  h3: 'h3',
-  h4: 'h4',
-  h5: 'h5',
-  h6: 'h6',
-  body1: 'p',
-  body2: 'p',
-  button: 'span',
-  caption: 'span',
-  overline: 'span',
-}
-
-const Typography = forwardRef<HTMLElement, TypographyProps>(({
-  variant = 'body1',
-  weight,
-  color,
-  align = 'left',
-  noWrap = false,
-  numberOfLines,
-  className,
-  style,
-  children,
-  testID,
-  ...rest
-}, ref) => {
-  const elementTag = elementTagMap[variant]
-  const typographyId = useMemo(() => testID || generateUniqueId('typography'), [testID])
-
-  const typographyClassName = useMemo(() => {
-    const classes = [
-      'typography',
-      `typography--${variant}`,
-      weight && `typography--weight-${weight}`,
-      color && `typography--color-${color}`,
-      align && `typography--align-${align}`,
-      noWrap && 'typography--no-wrap',
-      numberOfLines && 'typography--truncate',
-      className,
-    ].filter(Boolean).join(' ')
-
-    return classes
-  }, [variant, weight, color, align, noWrap, numberOfLines, className])
-
-  const elementProps = {
-    ref,
-    className: typographyClassName,
-    id: typographyId,
-    style: {
-      ...style,
-      ...(numberOfLines && {
-        WebkitLineClamp: numberOfLines,
-        display: '-webkit-box',
-        WebkitBoxOrient: 'vertical',
-        overflow: 'hidden',
-      }),
-    },
-    'data-testid': testID,
-    ...rest,
-  }
-
-  return React.createElement(
-    elementTag,
-    elementProps,
-    children
-  )
-})
+export const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
+  ({ variant = 'body1', weight, color, align, noWrap, numberOfLines, className, style, children, testID }, ref) => {
+    return (
+      <TextPrimitive
+        ref={ref}
+        variant={variant}
+        weight={weight}
+        color={color}
+        align={align}
+        isNoWrap={noWrap}
+        numberOfLines={numberOfLines}
+        className={className}
+        style={style}
+        testID={testID}
+      >
+        {children}
+      </TextPrimitive>
+    )
+  },
+)
 
 Typography.displayName = 'Typography'
 
