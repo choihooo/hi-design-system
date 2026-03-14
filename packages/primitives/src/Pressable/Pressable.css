@@ -1,0 +1,56 @@
+/**
+ * Pressable Component Styles
+ *
+ * Interaction states and accessibility features.
+ */
+
+.pressable {
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* States */
+.pressable--pressed {
+  opacity: 0.7;
+}
+
+.pressable--hovered {
+  opacity: 0.9;
+}
+
+.pressable--focused {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.pressable--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .pressable {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .pressable--hovered {
+    opacity: 1;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .pressable {
+    transition: none;
+  }
+}

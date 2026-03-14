@@ -475,3 +475,193 @@ export interface ToastProps {
    */
   testID?: string
 }
+
+/**
+ * Box component props - Core layout primitive
+ */
+export interface BoxProps extends BaseComponentProps {
+  /**
+   * CSS display property
+   */
+  display?: 'block' | 'flex' | 'grid' | 'inline' | 'inline-block' | 'none'
+
+  /**
+   * Flexbox properties (when display="flex")
+   */
+  flexDirection?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
+  justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
+  alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline'
+  flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse'
+  gap?: string | number
+
+  /**
+   * Grid properties (when display="grid")
+   */
+  gridTemplateColumns?: string
+  gridTemplateRows?: string
+  gridGap?: string | number
+
+  /**
+   * Spacing
+   */
+  padding?: string | number
+  margin?: string | number
+  paddingTop?: string | number
+  paddingBottom?: string | number
+  paddingLeft?: string | number
+  paddingRight?: string | number
+
+  /**
+   * Dimensions
+   */
+  width?: string | number
+  height?: string | number
+  minWidth?: string | number
+  maxWidth?: string | number
+  minHeight?: string | number
+  maxHeight?: string | number
+
+  /**
+   * Colors
+   */
+  backgroundColor?: string
+  color?: string
+  borderColor?: string
+  borderWidth?: string | number
+  borderRadius?: string | number
+
+  /**
+   * Position
+   */
+  position?: 'static' | 'relative' | 'absolute' | 'fixed' | 'sticky'
+  top?: string | number
+  right?: string | number
+  bottom?: string | number
+  left?: string | number
+  zIndex?: number
+
+  /**
+   * Other CSS properties
+   */
+  opacity?: number
+  overflow?: 'visible' | 'hidden' | 'scroll' | 'auto'
+  cursor?: 'pointer' | 'default' | 'move' | 'text' | 'wait' | 'not-allowed'
+
+  /**
+   * Responsive design
+   */
+  responsive?: {
+    mobile?: Partial<BoxProps>
+    tablet?: Partial<BoxProps>
+    desktop?: Partial<BoxProps>
+  }
+}
+
+/**
+ * Text component props - Core text primitive
+ */
+export interface TextProps extends BaseComponentProps {
+  /**
+   * Text variant for predefined styles
+   */
+  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'button' | 'caption' | 'overline'
+
+  /**
+   * Font weight
+   */
+  weight?: 'light' | 'regular' | 'medium' | 'semibold' | 'bold'
+
+  /**
+   * Text color
+   */
+  color?: string
+
+  /**
+   * Text alignment
+   */
+  align?: 'left' | 'center' | 'right' | 'justify'
+
+  /**
+   * Text decoration
+   */
+  textDecoration?: 'none' | 'underline' | 'line-through'
+
+  /**
+   * Text transformation
+   */
+  textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize'
+
+  /**
+   * Line height
+   */
+  lineHeight?: string | number
+
+  /**
+   * Letter spacing
+   */
+  letterSpacing?: string | number
+
+  /**
+   * Disable text wrapping
+   */
+  isNoWrap?: boolean
+
+  /**
+   * Number of lines to show (with ellipsis)
+   */
+  numberOfLines?: number
+
+  /**
+   * Font size override
+   */
+  fontSize?: string | number
+}
+
+/**
+ * PressableProps has been defined earlier for interactive components
+ */
+
+/**
+ * Icon component props - Core icon primitive
+ */
+export interface IconProps extends BaseComponentProps {
+  /**
+   * Icon name/identifier
+   */
+  name: string
+
+  /**
+   * Icon size
+   */
+  size?: string | number
+
+  /**
+   * Icon color
+   */
+  color?: string
+
+  /**
+   * Icon variant/style
+   */
+  variant?: 'filled' | 'outlined' | 'rounded' | 'sharp'
+
+  /**
+   * Rotate icon (degrees)
+   */
+  rotate?: number
+
+  /**
+   * Flip icon
+   */
+  flip?: 'horizontal' | 'vertical' | 'both'
+
+  /**
+   * Accessibility label for screen readers
+   */
+  ariaLabel?: string
+
+  /**
+   * ARIA role
+   */
+  role?: string
+}

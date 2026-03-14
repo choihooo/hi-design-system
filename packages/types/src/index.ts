@@ -9,6 +9,7 @@ export type {
   ButtonProps,
   CardProps,
   ColorVariant,
+  IconProps,
   InputProps,
   ModalProps,
   SizeVariant,

@@ -1,0 +1,39 @@
+/**
+ * Icon Component Styles
+ *
+ * Consistent icon sizing and styling.
+ */
+
+.icon {
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+/* Icon variants */
+.icon--variant-filled {
+  fill: currentColor;
+}
+
+.icon--variant-outlined {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.icon--variant-rounded {
+  fill: currentColor;
+}
+
+.icon--variant-sharp {
+  fill: currentColor;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .icon {
+    transition: none;
+  }
+}
