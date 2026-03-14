@@ -4,7 +4,7 @@
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { Card } from './Card'
+import Card from './Card'
 import '@testing-library/jest-dom'
 
 describe('Card', () => {
@@ -22,53 +22,53 @@ describe('Card', () => {
 
     it('renders with different elevations', () => {
       const { rerender } = render(<Card elevation="none">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--elevation-none')
+      expect(screen.getByText('Test')).toHaveClass('card--elevation-none')
 
       rerender(<Card elevation="sm">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--elevation-sm')
+      expect(screen.getByText('Test')).toHaveClass('card--elevation-sm')
 
       rerender(<Card elevation="md">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--elevation-md')
+      expect(screen.getByText('Test')).toHaveClass('card--elevation-md')
 
       rerender(<Card elevation="lg">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--elevation-lg')
+      expect(screen.getByText('Test')).toHaveClass('card--elevation-lg')
 
       rerender(<Card elevation="xl">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--elevation-xl')
+      expect(screen.getByText('Test')).toHaveClass('card--elevation-xl')
     })
 
     it('renders with different padding', () => {
       const { rerender } = render(<Card padding="none">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--padding-none')
+      expect(screen.getByText('Test')).toHaveClass('card--padding-none')
 
       rerender(<Card padding="sm">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--padding-sm')
+      expect(screen.getByText('Test')).toHaveClass('card--padding-sm')
 
       rerender(<Card padding="md">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--padding-md')
+      expect(screen.getByText('Test')).toHaveClass('card--padding-md')
 
       rerender(<Card padding="lg">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--padding-lg')
+      expect(screen.getByText('Test')).toHaveClass('card--padding-lg')
 
       rerender(<Card padding="xl">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--padding-xl')
+      expect(screen.getByText('Test')).toHaveClass('card--padding-xl')
     })
 
     it('renders with different radius', () => {
       const { rerender } = render(<Card radius="none">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--radius-none')
+      expect(screen.getByText('Test')).toHaveClass('card--radius-none')
 
       rerender(<Card radius="sm">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--radius-sm')
+      expect(screen.getByText('Test')).toHaveClass('card--radius-sm')
 
       rerender(<Card radius="md">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--radius-md')
+      expect(screen.getByText('Test')).toHaveClass('card--radius-md')
 
       rerender(<Card radius="lg">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--radius-lg')
+      expect(screen.getByText('Test')).toHaveClass('card--radius-lg')
 
       rerender(<Card radius="full">Test</Card>)
-      expect(screen.getByText('Test')).toHaveClass('hi-card--radius-full')
+      expect(screen.getByText('Test')).toHaveClass('card--radius-full')
     })
   })
 
@@ -138,7 +138,7 @@ describe('Card', () => {
   describe('States', () => {
     it('applies pressable class when pressable', () => {
       render(<Card pressable>Hover me</Card>)
-      expect(screen.getByRole('button')).toHaveClass('hi-card--pressable')
+      expect(screen.getByRole('button')).toHaveClass('card--pressable')
     })
   })
 
@@ -150,10 +150,10 @@ describe('Card', () => {
         </Card>,
       )
       const card = screen.getByRole('button')
-      expect(card).toHaveClass('hi-card--elevation-lg')
-      expect(card).toHaveClass('hi-card--padding-xl')
-      expect(card).toHaveClass('hi-card--radius-lg')
-      expect(card).toHaveClass('hi-card--pressable')
+      expect(card).toHaveClass('card--elevation-lg')
+      expect(card).toHaveClass('card--padding-xl')
+      expect(card).toHaveClass('card--radius-lg')
+      expect(card).toHaveClass('card--pressable')
     })
   })
 

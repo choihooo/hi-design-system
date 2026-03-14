@@ -1,21 +1,24 @@
 
-> @hi-design/react-demo@0.0.1 build /home/choiho/hi-design-system/apps/react-demo
+> @hi-design/react-demo@0.0.1 build /Users/choiho/coding/hi-design-system/apps/react-demo
 > tsc && vite build
 
-src/App.tsx(1,28): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
-src/App.tsx(2,26): error TS6133: 'useEffect' is declared but its value is never read.
-src/App.tsx(7,33): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
-src/App.tsx(8,33): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
-src/App.tsx(97,10): error TS2322: Type '{ children: Element[]; visible: boolean; title: string; size: "md" | "sm" | "lg"; onClose: () => void; }' is not assignable to type 'IntrinsicAttributes'.
-  Property 'children' does not exist on type 'IntrinsicAttributes'.
-src/App.tsx(116,11): error TS2322: Type '{ visible: boolean; message: string; variant: "error" | "success" | "warning" | "info"; onClose: () => void; }' is not assignable to type 'IntrinsicAttributes'.
-  Property 'visible' does not exist on type 'IntrinsicAttributes'.
-src/components/AnalyticsProvider.tsx(29,32): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
-src/components/ButtonsSection.tsx(1,42): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
-src/components/CardsSection.tsx(1,34): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
-src/components/InputsSection.tsx(1,41): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
-src/components/ModalsSection.tsx(1,42): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
-src/components/ToastsSection.tsx(1,42): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
-src/components/TypographySection.tsx(1,34): error TS6305: Output file '/home/choiho/hi-design-system/packages/react/dist/index.d.ts' has not been built from source file '/home/choiho/hi-design-system/packages/react/src/index.ts'.
-src/main.tsx(1,31): error TS2307: Cannot find module '@hi-design/tokens' or its corresponding type declarations.
- ELIFECYCLE  Command failed with exit code 2.
+vite v5.4.21 building for production...
+transforming...
+✓ 97 modules transformed.
+rendering chunks...
+[plugin:vite:reporter] [plugin vite:reporter] 
+(!) /Users/choiho/coding/hi-design-system/packages/react/src/index.ts is dynamically imported by /Users/choiho/coding/hi-design-system/apps/react-demo/src/App.tsx, /Users/choiho/coding/hi-design-system/apps/react-demo/src/App.tsx but also statically imported by /Users/choiho/coding/hi-design-system/apps/react-demo/src/App.tsx, /Users/choiho/coding/hi-design-system/apps/react-demo/src/components/ButtonsSection.tsx, /Users/choiho/coding/hi-design-system/apps/react-demo/src/components/CardsSection.tsx, /Users/choiho/coding/hi-design-system/apps/react-demo/src/components/IconsSection.tsx, /Users/choiho/coding/hi-design-system/apps/react-demo/src/components/InputsSection.tsx, /Users/choiho/coding/hi-design-system/apps/react-demo/src/components/ModalsSection.tsx, /Users/choiho/coding/hi-design-system/apps/react-demo/src/components/ToastsSection.tsx, /Users/choiho/coding/hi-design-system/apps/react-demo/src/components/TypographySection.tsx, dynamic import will not move module into another chunk.
+
+computing gzip size...
+dist/index.html                              1.55 kB │ gzip:  0.92 kB
+dist/assets/index-CrPYLs_2.css              12.64 kB │ gzip:  3.00 kB
+dist/assets/analytics-CeDi8N4U.js            0.51 kB │ gzip:  0.35 kB
+dist/assets/ModalsSection-C5mGrw7_.js        0.64 kB │ gzip:  0.33 kB
+dist/assets/TypographySection-Ch4dfjw-.js    0.86 kB │ gzip:  0.37 kB
+dist/assets/ToastsSection-Chx9ihZF.js        0.88 kB │ gzip:  0.43 kB
+dist/assets/InputsSection-pOJi-wt8.js        1.18 kB │ gzip:  0.42 kB
+dist/assets/CardsSection-CSvCRxds.js         1.43 kB │ gzip:  0.45 kB
+dist/assets/ButtonsSection-UM1TdzcG.js       1.68 kB │ gzip:  0.37 kB
+dist/assets/IconsSection-DveN8tot.js        13.30 kB │ gzip:  3.93 kB
+dist/assets/index-D7t28YHu.js              181.84 kB │ gzip: 56.57 kB
+✓ built in 665ms

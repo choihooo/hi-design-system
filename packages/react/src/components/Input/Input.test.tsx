@@ -4,7 +4,7 @@
 
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { Input } from './Input'
+import Input from './Input'
 import '@testing-library/jest-dom'
 
 describe('Input', () => {
@@ -111,7 +111,7 @@ describe('Input', () => {
         input.focus()
       })
 
-      expect(input).toHaveClass('hi-input--focused')
+      expect(input).toHaveClass('input--focused')
     })
   })
 

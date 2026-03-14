@@ -4,7 +4,7 @@
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
-import { Button } from './Button'
+import Button from './Button'
 import '@testing-library/jest-dom'
 
 describe('Button', () => {
@@ -17,40 +17,40 @@ describe('Button', () => {
     it('renders with default variant', () => {
       render(<Button>Test</Button>)
       const button = screen.getByRole('button')
-      expect(button).toHaveClass('hi-button--primary')
+      expect(button).toHaveClass('button--primary')
     })
 
     it('renders with different variants', () => {
       const { rerender } = render(<Button variant="secondary">Test</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--secondary')
+      expect(screen.getByRole('button')).toHaveClass('button--secondary')
 
       rerender(<Button variant="ghost">Test</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--ghost')
+      expect(screen.getByRole('button')).toHaveClass('button--ghost')
 
       rerender(<Button variant="outline">Test</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--outline')
+      expect(screen.getByRole('button')).toHaveClass('button--outline')
     })
 
     it('renders with different sizes', () => {
       const { rerender } = render(<Button size="sm">Test</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--sm')
+      expect(screen.getByRole('button')).toHaveClass('button--sm')
 
       rerender(<Button size="md">Test</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--md')
+      expect(screen.getByRole('button')).toHaveClass('button--md')
 
       rerender(<Button size="lg">Test</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--lg')
+      expect(screen.getByRole('button')).toHaveClass('button--lg')
     })
 
     it('renders with different colors', () => {
       const { rerender } = render(<Button color="success">Test</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--success')
+      expect(screen.getByRole('button')).toHaveClass('button--success')
 
       rerender(<Button color="error">Test</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--error')
+      expect(screen.getByRole('button')).toHaveClass('button--error')
 
       rerender(<Button color="warning">Test</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--warning')
+      expect(screen.getByRole('button')).toHaveClass('button--warning')
     })
   })
 
@@ -109,7 +109,7 @@ describe('Button', () => {
   describe('States', () => {
     it('renders in full width when fullWidth is true', () => {
       render(<Button fullWidth>Full Width</Button>)
-      expect(screen.getByRole('button')).toHaveClass('hi-button--full-width')
+      expect(screen.getByRole('button')).toHaveClass('button--full-width')
     })
 
     it('shows spinner when loading', () => {
@@ -124,8 +124,8 @@ describe('Button', () => {
         </Button>,
       )
       const button = screen.getByRole('button')
-      expect(button).toHaveClass('hi-button--primary')
-      expect(button).toHaveClass('hi-button--success')
+      expect(button).toHaveClass('button--primary')
+      expect(button).toHaveClass('button--success')
     })
   })
 })
