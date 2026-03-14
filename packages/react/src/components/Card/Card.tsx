@@ -4,7 +4,7 @@
  * @platform React (Web)
  * @usage
  * ```tsx
- * <Card elevation="md" padding="lg" pressable onPress={handleClick}>
+ * <Card elevation="md" padding="lg" isPressable onClick={handleClick}>
  *   <h3>Card Title</h3>
  *   <p>Card content goes here</p>
  * </Card>
@@ -22,8 +22,8 @@ export const Card = forwardRef<HTMLElement, CardProps>(
       elevation = 'md',
       padding = 'md',
       radius = 'md',
-      pressable = false,
-      onPress,
+      isPressable = false,
+      onClick,
       className,
       children,
       testID,
@@ -32,20 +32,20 @@ export const Card = forwardRef<HTMLElement, CardProps>(
     ref,
   ) => {
     const cardClassName = clsx(
-      'hi-card',
-      `hi-card--elevation-${elevation}`,
-      `hi-card--padding-${padding}`,
-      `hi-card--radius-${radius}`,
-      pressable && 'hi-card--pressable',
+      'card',
+      `card--elevation-${elevation}`,
+      `card--padding-${padding}`,
+      `card--radius-${radius}`,
+      isPressable && 'card--pressable',
       className,
     )
 
-    if (pressable) {
+    if (isPressable) {
       return (
         <button
           ref={ref as React.Ref<HTMLButtonElement>}
           className={cardClassName}
-          onClick={onPress}
+          onClick={onClick}
           data-testid={testID}
           type="button"
           {...rest}

@@ -4,7 +4,7 @@
  * @platform React (Web)
  * @usage
  * ```tsx
- * <Button variant="primary" size="md" onPress={handleClick}>
+ * <Button variant="primary" size="md" onClick={handleClick}>
  *   Click me
  * </Button>
  * ```
@@ -21,10 +21,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'primary',
       size = 'md',
       color = 'primary',
-      disabled = false,
-      loading = false,
-      fullWidth = false,
-      onPress,
+      isDisabled = false,
+      isLoading = false,
+      isFullWidth = false,
       onClick,
       className,
       children,
@@ -33,23 +32,22 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    const handleClick = () => {
-      if (disabled || loading) {
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (isDisabled || isLoading) {
         return
       }
 
-      onPress?.()
-      onClick?.()
+      onClick?.(event)
     }
 
     const buttonClassName = clsx(
-      'hi-button',
-      `hi-button--${variant}`,
-      `hi-button--${size}`,
-      `hi-button--${color}`,
-      fullWidth && 'hi-button--full-width',
-      disabled && 'hi-button--disabled',
-      loading && 'hi-button--loading',
+      'button',
+      `button--${variant}`,
+      `button--${size}`,
+      `button--${color}`,
+      isFullWidth && 'button--full-width',
+      isDisabled && 'button--disabled',
+      isLoading && 'button--loading',
       className, // Allow custom className override (shadcn/ui style)
     )
 

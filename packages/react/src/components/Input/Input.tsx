@@ -8,7 +8,7 @@
  *   label="Email"
  *   placeholder="Enter your email"
  *   value={email}
- *   onChangeText={setEmail}
+ *   onChange={setEmail}
  *   state="error"
  *   errorText="Invalid email format"
  * />
@@ -30,15 +30,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       variant = 'outline',
       size = 'md',
       state = 'default',
-      disabled = false,
-      fullWidth = false,
-      readOnly = false,
-      required = false,
+      isDisabled = false,
+      isFullWidth = false,
+      isReadOnly = false,
+      isRequired = false,
       label,
       helperText,
       errorText,
       className,
-      onChangeText,
+      onChange,
       onFocus,
       onBlur,
       onSubmit,
@@ -54,7 +54,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     // Generate unique ID for this input instance
     const inputId = useMemo(
-      () => testID || `hi-input-${Math.random().toString(36).substr(2, 9)}`,
+      () => testID || `input-${Math.random().toString(36).substr(2, 9)}`,
       [testID],
     )
 
@@ -77,17 +77,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       if (value === undefined) {
         setInternalValue(newValue)
       }
-      onChangeText?.(newValue)
+      onChange?.(e)
     }
 
-    const handleFocus = (_e: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(true)
-      onFocus?.()
+      onFocus?.(e)
     }
 
-    const handleBlur = (_e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(false)
-      onBlur?.()
+      onBlur?.(e)
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -97,19 +97,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }
 
     const containerClassName = clsx(
-      'hi-input__container',
-      `hi-input__container--${size}`,
-      fullWidth && 'hi-input__container--full-width',
+      'input__container',
+      `input__container--${size}`,
+      isFullWidth && 'input__container--full-width',
     )
 
     const inputClassName = clsx(
-      'hi-input',
-      `hi-input--${variant}`,
-      `hi-input--${size}`,
-      `hi-input--${state}`,
-      isFocused && 'hi-input--focused',
-      disabled && 'hi-input--disabled',
-      readOnly && 'hi-input--read-only',
+      'input',
+      `input--${variant}`,
+      `input--${size}`,
+      `input--${state}`,
+      isFocused && 'input--focused',
+      isDisabled && 'input--disabled',
+      isReadOnly && 'input--read-only',
       className, // Allow custom className override (shadcn/ui style)
     )
 
