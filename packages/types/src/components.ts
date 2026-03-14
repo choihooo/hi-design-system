@@ -8,29 +8,9 @@
 import type { CSSProperties, ReactNode } from 'react'
 
 /**
- * Base component props interface
+ * Base size variants for components
  */
-export interface BaseComponentProps {
-  /**
-   * Test ID for testing
-   */
-  testID?: string
-
-  /**
-   * CSS class name (web only)
-   */
-  className?: string
-
-  /**
-   * Inline styles (web only)
-   */
-  style?: CSSProperties
-
-  /**
-   * Content to render
-   */
-  children?: ReactNode
-}
+export type SizeVariant = 'sm' | 'md' | 'lg'
 
 /**
  * Base color variants for interactive components
@@ -40,7 +20,7 @@ export type ColorVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'er
 /**
  * Button component props
  */
-export interface ButtonProps extends BaseComponentProps {
+export interface ButtonProps {
   /**
    * Visual style variant of the button
    * @default 'primary'
@@ -86,12 +66,27 @@ export interface ButtonProps extends BaseComponentProps {
    * Web click handler
    */
   onClick?: () => void
+
+  /**
+   * Custom className for styling overrides (shadcn/ui style)
+   */
+  className?: string
+
+  /**
+   * Button content
+   */
+  children?: ReactNode
+
+  /**
+   * Test ID for testing
+   */
+  testID?: string
 }
 
 /**
  * Input component props
  */
-export interface InputProps extends BaseComponentProps {
+export interface InputProps {
   /**
    * Input value
    */
@@ -170,6 +165,11 @@ export interface InputProps extends BaseComponentProps {
   errorText?: string
 
   /**
+   * Custom className for styling overrides (shadcn/ui style)
+   */
+  className?: string
+
+  /**
    * Value change handler
    */
   onChangeText?: (text: string) => void
@@ -188,6 +188,11 @@ export interface InputProps extends BaseComponentProps {
    * Submit handler (called on Enter key press)
    */
   onSubmit?: (event: React.FormEvent) => void
+
+  /**
+   * Test ID for testing
+   */
+  testID?: string
 
   /**
    * Input name attribute for forms
@@ -262,12 +267,28 @@ export interface CardProps extends BaseComponentProps {
    * Click/tap handler (when pressable is true)
    */
   onPress?: () => void
+
+  /**
+   * Type of element to render when pressable
+   * @default 'button'
+   */
+  pressableAs?: 'button' | 'a' | 'div'
+
+  /**
+   * Additional props for pressable element (when pressable is true)
+   */
+  pressableProps?: React.HTMLAttributes<HTMLElement>
+
+  /**
+   * Accessibility props for pressable element
+   */
+  accessibleProps?: React.AriaAttributes
 }
 
 /**
  * Typography component props
  */
-export interface TypographyProps extends BaseComponentProps {
+export interface TypographyProps {
   /**
    * Text style variant
    * @default 'body1'
@@ -303,6 +324,16 @@ export interface TypographyProps extends BaseComponentProps {
   align?: 'left' | 'center' | 'right' | 'justify'
 
   /**
+   * Custom className for styling overrides (shadcn/ui style)
+   */
+  className?: string
+
+  /**
+   * Inline styles for web rendering
+   */
+  style?: CSSProperties
+
+  /**
    * Disable text wrapping
    * @default false
    */
@@ -312,6 +343,16 @@ export interface TypographyProps extends BaseComponentProps {
    * Number of lines to show (React Native only, web uses line-clamp)
    */
   numberOfLines?: number
+
+  /**
+   * Text content
+   */
+  children?: ReactNode
+
+  /**
+   * Test ID for testing
+   */
+  testID?: string
 }
 
 /**
@@ -327,7 +368,7 @@ export interface ModalProps extends BaseComponentProps {
   /**
    * Modal title
    */
-  title?: string
+  title?: React.ReactNode
 
   /**
    * Modal size
@@ -336,10 +377,28 @@ export interface ModalProps extends BaseComponentProps {
   size?: SizeVariant
 
   /**
+   * Modal width in pixels or CSS units
+   * @default depends on size
+   */
+  width?: string | number
+
+  /**
+   * Modal height in pixels or CSS units
+   * @default 'auto'
+   */
+  height?: string | number
+
+  /**
    * Close on backdrop click
    * @default true
    */
   closeOnBackdropPress?: boolean
+
+  /**
+   * Close on escape key press
+   * @default true
+   */
+  closeOnEscape?: boolean
 
   /**
    * Show close button
@@ -348,15 +407,82 @@ export interface ModalProps extends BaseComponentProps {
   showCloseButton?: boolean
 
   /**
+   * Close button icon (React element)
+   */
+  closeIcon?: React.ReactNode
+
+  /**
+   * Backdrop opacity
+   * @default 0.5
+   */
+  backdropOpacity?: number
+
+  /**
+   * Whether modal should be centered
+   * @default true
+   */
+  centered?: boolean
+
+  /**
+   * Whether modal should be scrollable
+   * @default false
+   */
+  scrollable?: boolean
+
+  /**
+   * Animation duration in milliseconds
+   * @default 300
+   */
+  animationDuration?: number
+
+  /**
+   * Z-index for modal stack
+   * @default 1000
+   */
+  zIndex?: number
+
+  /**
    * Close handler
    */
-  onClose?: () => void
+  onClose?: (reason?: 'backdrop' | 'escape' | 'close-button') => void
+
+  /**
+   * Modal content container props
+   */
+  contentProps?: React.HTMLAttributes<HTMLDivElement>
+
+  /**
+   * Overlay style props
+   */
+  overlayStyle?: React.CSSProperties
+
+  /**
+   * Modal container style props
+   */
+  containerStyle?: React.CSSProperties
+
+  /**
+   * Prevent body scroll when modal is open
+   * @default true
+   */
+  preventBodyScroll?: boolean
+
+  /**
+   * Focus trap for accessibility
+   * @default true
+   */
+  trapFocus?: boolean
+
+  /**
+   * Initial focus element selector
+   */
+  initialFocus?: string
 }
 
 /**
  * Toast component props
  */
-export interface ToastProps extends BaseComponentProps {
+export interface ToastProps {
   /**
    * Toast visibility
    * @default false
@@ -390,4 +516,9 @@ export interface ToastProps extends BaseComponentProps {
    * Close handler
    */
   onClose?: () => void
+
+  /**
+   * Test ID for testing
+   */
+  testID?: string
 }
