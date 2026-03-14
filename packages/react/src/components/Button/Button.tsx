@@ -13,6 +13,7 @@
 import type { ButtonProps } from '@hi-design/types'
 import clsx from 'clsx'
 import { forwardRef } from 'react'
+import { useCommonHandlers, useFocusState } from '../../utils/common'
 import './Button.css'
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -21,11 +22,16 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'primary',
       size = 'md',
       color = 'primary',
-      disabled = false,
-      loading = false,
-      fullWidth = false,
+      isDisabled = false,
+      isLoading = false,
+      isFullWidth = false,
       onPress,
       onClick,
+      onFocus,
+      onBlur,
+      onMouseDown,
+      onMouseUp,
+      onMouseLeave,
       className,
       children,
       testID,
@@ -33,23 +39,35 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
+    const { isFocused } = useFocusState()
+    const commonHandlers = useCommonHandlers({
+      onPress,
+      onClick,
+      onFocus,
+      onBlur,
+      onMouseDown,
+      onMouseUp,
+      onMouseLeave,
+    })
+
     const handleClick = () => {
-      if (disabled || loading) {
+      if (isDisabled || isLoading) {
         return
       }
 
-      onPress?.()
-      onClick?.()
+      commonHandlers.onClick?.()
+      commonHandlers.onPress?.()
     }
 
     const buttonClassName = clsx(
-      'hi-button',
-      `hi-button--${variant}`,
-      `hi-button--${size}`,
-      `hi-button--${color}`,
-      fullWidth && 'hi-button--full-width',
-      disabled && 'hi-button--disabled',
-      loading && 'hi-button--loading',
+      'button',
+      `button--${variant}`,
+      `button--${size}`,
+      `button--${color}`,
+      isFullWidth && 'button--full-width',
+      isDisabled && 'button--disabled',
+      isLoading && 'button--loading',
+      isFocused && 'button--focused',
       className, // Allow custom className override (shadcn/ui style)
     )
 
@@ -57,18 +75,23 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={buttonClassName}
-        disabled={disabled || loading}
+        disabled={isDisabled || isLoading}
         onClick={handleClick}
+        onFocus={commonHandlers.onFocus}
+        onBlur={commonHandlers.onBlur}
+        onMouseDown={commonHandlers.onMouseDown}
+        onMouseUp={commonHandlers.onMouseUp}
+        onMouseLeave={commonHandlers.onMouseLeave}
         data-testid={testID}
-        aria-busy={loading}
+        aria-busy={isLoading}
         {...rest}
       >
-        {loading && (
-          <span className="hi-button__spinner" aria-hidden="true">
+        {isLoading && (
+          <span className="button__spinner" aria-hidden="true">
             <span className="sr-only">Loading...</span>
           </span>
         )}
-        <span className="hi-button__content">{children}</span>
+        <span className="button__content">{children}</span>
       </button>
     )
   },

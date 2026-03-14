@@ -14,6 +14,7 @@
 import type { CardProps } from '@hi-design/types'
 import clsx from 'clsx'
 import { forwardRef, memo } from 'react'
+import { useCommonHandlers } from '../../utils/common'
 import './Card.css'
 
 export const Card = forwardRef<HTMLElement, CardProps>(
@@ -22,8 +23,15 @@ export const Card = forwardRef<HTMLElement, CardProps>(
       elevation = 'md',
       padding = 'md',
       radius = 'md',
-      pressable = false,
+      isPressable = false,
+      pressableAs = 'button',
       onPress,
+      onClick,
+      onFocus,
+      onBlur,
+      onMouseDown,
+      onMouseUp,
+      onMouseLeave,
       className,
       children,
       testID,
@@ -31,28 +39,88 @@ export const Card = forwardRef<HTMLElement, CardProps>(
     },
     ref,
   ) => {
+    const commonHandlers = useCommonHandlers({
+      onPress,
+      onClick,
+      onFocus,
+      onBlur,
+      onMouseDown,
+      onMouseUp,
+      onMouseLeave,
+    })
+
     const cardClassName = clsx(
-      'hi-card',
-      `hi-card--elevation-${elevation}`,
-      `hi-card--padding-${padding}`,
-      `hi-card--radius-${radius}`,
-      pressable && 'hi-card--pressable',
+      'card',
+      `card--elevation-${elevation}`,
+      `card--padding-${padding}`,
+      `card--radius-${radius}`,
+      isPressable && 'card--pressable',
       className,
     )
 
-    if (pressable) {
-      return (
-        <button
-          ref={ref as React.Ref<HTMLButtonElement>}
-          className={cardClassName}
-          onClick={onPress}
-          data-testid={testID}
-          type="button"
-          {...rest}
-        >
-          {children}
-        </button>
-      )
+    if (isPressable) {
+      if (pressableAs === 'button') {
+        return (
+          <button
+            ref={ref as React.Ref<HTMLButtonElement>}
+            className={cardClassName}
+            onClick={(e) => {
+              commonHandlers.onClick?.()
+              commonHandlers.onPress?.()
+            }}
+            onFocus={commonHandlers.handleFocus}
+            onBlur={commonHandlers.handleBlur}
+            onMouseDown={commonHandlers.handleMouseDown}
+            onMouseUp={commonHandlers.handleMouseUp}
+            onMouseLeave={commonHandlers.handleMouseLeave}
+            data-testid={testID}
+            type="button"
+            {...rest}
+          >
+            {children}
+          </button>
+        )
+      } else if (pressableAs === 'a') {
+        return (
+          <a
+            ref={ref as React.Ref<HTMLAnchorElement>}
+            className={cardClassName}
+            onClick={(e) => {
+              commonHandlers.onClick?.()
+              commonHandlers.onPress?.()
+            }}
+            onFocus={commonHandlers.handleFocus}
+            onBlur={commonHandlers.handleBlur}
+            onMouseDown={commonHandlers.handleMouseDown}
+            onMouseUp={commonHandlers.handleMouseUp}
+            onMouseLeave={commonHandlers.handleMouseLeave}
+            data-testid={testID}
+            {...rest}
+          >
+            {children}
+          </a>
+        )
+      } else {
+        return (
+          <div
+            ref={ref as React.Ref<HTMLDivElement>}
+            className={cardClassName}
+            onClick={(e) => {
+              commonHandlers.onClick?.()
+              commonHandlers.onPress?.()
+            }}
+            onFocus={commonHandlers.handleFocus}
+            onBlur={commonHandlers.handleBlur}
+            onMouseDown={commonHandlers.handleMouseDown}
+            onMouseUp={commonHandlers.handleMouseUp}
+            onMouseLeave={commonHandlers.handleMouseLeave}
+            data-testid={testID}
+            {...rest}
+          >
+            {children}
+          </div>
+        )
+      }
     }
 
     return (

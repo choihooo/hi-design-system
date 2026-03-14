@@ -18,6 +18,7 @@
 import type { InputProps } from '@hi-design/types'
 import clsx from 'clsx'
 import { forwardRef, useMemo, useState } from 'react'
+import { useFocusState } from '../../utils/common'
 import './Input.css'
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -30,15 +31,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       variant = 'outline',
       size = 'md',
       state = 'default',
-      disabled = false,
-      fullWidth = false,
+      isDisabled = false,
+      isFullWidth = false,
       readOnly = false,
       required = false,
       label,
       helperText,
       errorText,
       className,
-      onChangeText,
+      onChange,
       onFocus,
       onBlur,
       onSubmit,
@@ -54,12 +55,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     // Generate unique ID for this input instance
     const inputId = useMemo(
-      () => testID || `hi-input-${Math.random().toString(36).substr(2, 9)}`,
+      () => testID || `input-${Math.random().toString(36).substr(2, 9)}`,
       [testID],
     )
 
     const [internalValue, setInternalValue] = useState(() => defaultValue || '')
-    const [isFocused, setIsFocused] = useState(false)
+    const { isFocused, handleFocus: handleFocusFocus, handleBlur: handleFocusBlur } = useFocusState()
 
     const isControlled = value !== undefined
     const currentValue = isControlled ? value : internalValue
@@ -77,17 +78,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       if (value === undefined) {
         setInternalValue(newValue)
       }
-      onChangeText?.(newValue)
+      onChange?.(newValue)
     }
 
-    const handleFocus = (_e: React.FocusEvent<HTMLInputElement>) => {
-      setIsFocused(true)
-      onFocus?.()
+    const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+      handleFocusFocus()
+      onFocus?.(e)
     }
 
-    const handleBlur = (_e: React.FocusEvent<HTMLInputElement>) => {
-      setIsFocused(false)
-      onBlur?.()
+    const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      handleFocusBlur()
+      onBlur?.(e)
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -97,29 +98,29 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }
 
     const containerClassName = clsx(
-      'hi-input__container',
-      `hi-input__container--${size}`,
-      fullWidth && 'hi-input__container--full-width',
+      'input__container',
+      `input__container--${size}`,
+      isFullWidth && 'input__container--full-width',
     )
 
     const inputClassName = clsx(
-      'hi-input',
-      `hi-input--${variant}`,
-      `hi-input--${size}`,
-      `hi-input--${state}`,
-      isFocused && 'hi-input--focused',
-      disabled && 'hi-input--disabled',
-      readOnly && 'hi-input--read-only',
+      'input',
+      `input--${variant}`,
+      `input--${size}`,
+      `input--${state}`,
+      isFocused && 'input--focused',
+      isDisabled && 'input--disabled',
+      readOnly && 'input--read-only',
       className, // Allow custom className override (shadcn/ui style)
     )
 
     return (
       <div className={containerClassName}>
         {label && (
-          <label className="hi-input__label" htmlFor={inputId}>
+          <label className="input__label" htmlFor={inputId}>
             {label}
             {required && (
-              <span className="hi-input__required" aria-hidden="true">
+              <span className="input__required" aria-hidden="true">
                 *
               </span>
             )}
@@ -132,12 +133,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className={inputClassName}
           value={currentValue}
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={isDisabled}
           readOnly={readOnly}
           required={required}
           onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
           onKeyDown={handleKeyDown}
           data-testid={testID}
           name={name}
@@ -151,13 +152,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {...rest}
         />
         {(helperText || showError) && (
-          <div className="hi-input__helper" id={showError ? errorId : helperId}>
+          <div className="input__helper" id={showError ? errorId : helperId}>
             {showError ? (
-              <span className="hi-input__error" role="alert">
+              <span className="input__error" role="alert">
                 {errorText}
               </span>
             ) : (
-              <span className="hi-input__helper-text">{helperText}</span>
+              <span className="input__helper-text">{helperText}</span>
             )}
           </div>
         )}

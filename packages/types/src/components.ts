@@ -18,9 +18,49 @@ export type SizeVariant = 'sm' | 'md' | 'lg'
 export type ColorVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'error'
 
 /**
+ * Standardized event handlers for all interactive components
+ */
+export interface InteractiveHandlers {
+  /**
+   * Press/Click handler
+   */
+  onPress?: () => void | Promise<void>
+
+  /**
+   * Click handler for web
+   */
+  onClick?: () => void
+
+  /**
+   * Focus handler
+   */
+  onFocus?: (event: React.FocusEvent) => void
+
+  /**
+   * Blur handler
+   */
+  onBlur?: (event: React.FocusEvent) => void
+
+  /**
+   * Mouse down handler
+   */
+  onMouseDown?: (event: React.MouseEvent) => void
+
+  /**
+   * Mouse up handler
+   */
+  onMouseUp?: (event: React.MouseEvent) => void
+
+  /**
+   * Mouse leave handler
+   */
+  onMouseLeave?: (event: React.MouseEvent) => void
+}
+
+/**
  * Button component props
  */
-export interface ButtonProps {
+export interface ButtonProps extends BaseComponentProps, InteractiveHandlers {
   /**
    * Visual style variant of the button
    * @default 'primary'
@@ -58,35 +98,28 @@ export interface ButtonProps {
   fullWidth?: boolean
 
   /**
-   * Click/tap handler
+   * Button is loading (shows spinner)
+   * @default false
    */
-  onPress?: () => void | Promise<void>
+  isLoading?: boolean
 
   /**
-   * Web click handler
+   * Button is disabled (prevents interactions)
+   * @default false
    */
-  onClick?: () => void
+  isDisabled?: boolean
 
   /**
-   * Custom className for styling overrides (shadcn/ui style)
+   * Button takes full width
+   * @default false
    */
-  className?: string
-
-  /**
-   * Button content
-   */
-  children?: ReactNode
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
+  isFullWidth?: boolean
 }
 
 /**
  * Input component props
  */
-export interface InputProps {
+export interface InputProps extends BaseComponentProps {
   /**
    * Input value
    */
@@ -129,13 +162,13 @@ export interface InputProps {
    * Disable the input
    * @default false
    */
-  disabled?: boolean
+  isDisabled?: boolean
 
   /**
    * Input is full width of its container
    * @default false
    */
-  fullWidth?: boolean
+  isFullWidth?: boolean
 
   /**
    * Read-only mode
@@ -165,14 +198,9 @@ export interface InputProps {
   errorText?: string
 
   /**
-   * Custom className for styling overrides (shadcn/ui style)
-   */
-  className?: string
-
-  /**
    * Value change handler
    */
-  onChangeText?: (text: string) => void
+  onChange?: (text: string) => void
 
   /**
    * Focus change handler
@@ -188,11 +216,6 @@ export interface InputProps {
    * Submit handler (called on Enter key press)
    */
   onSubmit?: (event: React.FormEvent) => void
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
 
   /**
    * Input name attribute for forms
@@ -238,7 +261,7 @@ export interface InputProps {
 /**
  * Card component props
  */
-export interface CardProps {
+export interface CardProps extends BaseComponentProps, InteractiveHandlers {
   /**
    * Elevation/shadow depth
    * @default 'md'
@@ -261,27 +284,23 @@ export interface CardProps {
    * Card is clickable/pressable
    * @default false
    */
-  pressable?: boolean
+  isPressable?: boolean
 
   /**
-   * Click/tap handler (when pressable is true)
+   * Type of element to render when pressable
+   * @default 'button'
    */
-  onPress?: () => void
+  pressableAs?: 'button' | 'a' | 'div'
 
   /**
-   * Custom className for styling overrides (web)
+   * Additional props for pressable element (when pressable is true)
    */
-  className?: string
+  pressableProps?: React.HTMLAttributes<HTMLElement>
 
   /**
-   * Card content
+   * Accessibility props for pressable element
    */
-  children?: ReactNode
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
+  accessibleProps?: React.AriaAttributes
 }
 
 /**

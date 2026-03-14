@@ -17,6 +17,14 @@ export interface CommonEventHandlers {
   onFocus?: (event: React.FocusEvent) => void
   onBlur?: (event: React.FocusEvent) => void
   onClick?: (event: React.MouseEvent) => void
+  onMouseDown?: (event: React.MouseEvent) => void
+  onMouseUp?: (event: React.MouseEvent) => void
+  onMouseLeave?: (event: React.MouseEvent) => void
+  onMouseEnter?: (event: React.MouseEvent) => void
+  onKeyDown?: (event: React.KeyboardEvent) => void
+  onKeyUp?: (event: React.KeyboardEvent) => void
+  onChange?: (event: React.ChangeEvent) => void
+  onSubmit?: (event: React.FormEvent) => void
 }
 
 // Common state hooks
@@ -41,6 +49,23 @@ export function useFocusState() {
 // Common accessibility utilities
 export function generateUniqueId(prefix = 'component'): string {
   return `${prefix}-${Math.random().toString(36).substr(2, 9)}`
+}
+
+// Common event handler hooks
+export function useCommonHandlers(handlers: CommonEventHandlers) {
+  return {
+    handleFocus: handlers.onFocus,
+    handleBlur: handlers.onBlur,
+    handleClick: handlers.onClick,
+    handleMouseDown: handlers.onMouseDown,
+    handleMouseUp: handlers.onMouseUp,
+    handleMouseLeave: handlers.onMouseLeave,
+    handleMouseEnter: handlers.onMouseEnter,
+    handleKeyDown: handlers.onKeyDown,
+    handleKeyUp: handlers.onKeyUp,
+    handleChange: handlers.onChange,
+    handleSubmit: handlers.onSubmit,
+  }
 }
 
 // Common animation utilities
