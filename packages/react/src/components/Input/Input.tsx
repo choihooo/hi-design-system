@@ -68,10 +68,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       return state === 'error' && !!errorText
     }, [state, errorText])
 
-    const _showSuccess = useMemo(() => {
-      return state === 'success'
-    }, [state])
-
     // Generate unique IDs for ARIA attributes
     const helperId = useMemo(() => `${inputId}-helper`, [inputId])
     const errorId = useMemo(() => `${inputId}-error`, [inputId])

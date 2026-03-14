@@ -34,10 +34,35 @@ body {
 
 .button-grid,
 .input-grid,
-.card-grid {
+.card-grid,
+.icon-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 24px;
+}
+
+.icon-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.icon-preview {
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f7f8fb 0%, #eef1f7 100%);
+  color: #1f2937;
+}
+
+.icon-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .component-group {
@@ -65,7 +90,8 @@ body {
 
   .button-grid,
   .input-grid,
-  .card-grid {
+  .card-grid,
+  .icon-grid {
     grid-template-columns: 1fr;
   }
 }

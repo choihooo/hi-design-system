@@ -20,6 +20,7 @@
     "react-native": ">=0.70.0"
   },
   "dependencies": {
+    "@hi-design/icons-native": "workspace:*",
     "@hi-design/tokens": "workspace:*",
     "@hi-design/types": "workspace:*"
   },

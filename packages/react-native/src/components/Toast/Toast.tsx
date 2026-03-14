@@ -15,7 +15,14 @@
  * ```
  */
 
-import { borderRadius, colors, spacing, typography } from '@hi-design/tokens'
+import {
+  CheckCircle,
+  CloseIcon,
+  ErrorCircleIcon,
+  Info,
+  WarningCircle,
+} from '@hi-design/icons-native'
+import { borderRadius, colors, semantic, spacingPresets, typography } from '@hi-design/tokens'
 import type { ToastProps } from '@hi-design/types'
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
@@ -47,6 +54,24 @@ export const Toast: React.FC<ToastProps> = ({
   useEffect(() => {
     setIsVisible(visible)
   }, [visible])
+
+  const handleClose = () => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+      Animated.timing(slideAnim, {
+        toValue: position === 'bottom' ? 50 : -50,
+        duration: 200,
+        useNativeDriver: true,
+      }),
+    ]).start(() => {
+      setIsVisible(false)
+      onClose?.()
+    })
+  }
 
   useEffect(() => {
     if (isVisible) {
@@ -80,25 +105,9 @@ export const Toast: React.FC<ToastProps> = ({
         return () => clearTimeout(timer)
       }
     }
-  }, [isVisible, duration, fadeAnim, handleClose, message, position, slideAnim, variant])
 
-  const handleClose = () => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: position === 'bottom' ? 50 : -50,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start(() => {
-      setIsVisible(false)
-      onClose?.()
-    })
-  }
+    return undefined
+  }, [isVisible, duration, fadeAnim, handleClose, message, position, slideAnim, variant])
 
   const getVariantStyle = () => {
     switch (variant) {
@@ -116,15 +125,21 @@ export const Toast: React.FC<ToastProps> = ({
   if (!isVisible) return null
 
   const getIcon = () => {
+    const iconProps = {
+      color: colors.white,
+      size: 20,
+      weight: 'bold' as const,
+    }
+
     switch (variant) {
       case 'success':
-        return '✓'
+        return <CheckCircle {...iconProps} />
       case 'error':
-        return '✕'
+        return <ErrorCircleIcon {...iconProps} />
       case 'warning':
-        return '⚠'
+        return <WarningCircle {...iconProps} />
       default:
-        return 'ℹ'
+        return <Info {...iconProps} />
     }
   }
 
@@ -162,7 +177,7 @@ export const Toast: React.FC<ToastProps> = ({
         accessibilityLabel="Close toast"
         accessibilityRole="button"
       >
-        <Text style={styles.closeIcon}>✕</Text>
+        <CloseIcon size={16} color={colors.white} weight="bold" />
       </TouchableOpacity>
     </Animated.View>
   )
@@ -171,12 +186,12 @@ export const Toast: React.FC<ToastProps> = ({
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    left: spacing.md,
-    right: spacing.md,
+    left: spacingPresets.md,
+    right: spacingPresets.md,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: spacing.md,
-    padding: spacing.md,
+    gap: spacingPresets.md,
+    padding: spacingPresets.md,
     borderRadius: borderRadius.md,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
@@ -186,10 +201,10 @@ const styles = StyleSheet.create({
     minWidth: 300,
   },
   positionTop: {
-    top: spacing.lg,
+    top: spacingPresets.lg,
   },
   positionBottom: {
-    bottom: spacing.lg,
+    bottom: spacingPresets.lg,
   },
   positionCenter: {
     top: SCREEN_HEIGHT / 2,
@@ -200,14 +215,11 @@ const styles = StyleSheet.create({
     height: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: colors.white,
   },
   message: {
     flex: 1,
     fontSize: typography.fontSizes.sm,
-    fontWeight: typography.fontWeights.medium,
+    fontWeight: '500',
     color: colors.white,
     lineHeight: typography.lineHeights.normal * typography.fontSizes.sm,
   },
@@ -218,24 +230,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: borderRadius.sm,
   },
-  closeIcon: {
-    fontSize: 14,
-    color: colors.white,
-    opacity: 0.8,
-  },
 })
 
 // Variant-specific styles
 const successStyle = {
-  backgroundColor: colors.success,
+  backgroundColor: semantic.success,
 }
 
 const errorStyle = {
-  backgroundColor: colors.error,
+  backgroundColor: semantic.error,
 }
 
 const warningStyle = {
-  backgroundColor: colors.warning,
+  backgroundColor: semantic.warning,
 }
 
 const infoStyle = {

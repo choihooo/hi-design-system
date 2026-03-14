@@ -64,8 +64,11 @@ Following [Seed Design's KDT (Kernel Design Token) methodology](https://www.npmj
 
 ```
 hi-design-system/
+├── assets/
+│   └── icons/            # 🖼️ Shared raw icon assets
 ├── packages/
 │   ├── tokens/           # 🎨 3-layer design tokens
+│   ├── icons/            # 🧩 Web icon entrypoints
 │   ├── types/            # 📝 TypeScript type definitions
 │   ├── react/            # ⚛️ React web components
 │   └── react-native/     # 📱 React Native components

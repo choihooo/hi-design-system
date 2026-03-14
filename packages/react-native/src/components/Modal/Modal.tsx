@@ -15,7 +15,8 @@
  * ```
  */
 
-import { borderRadius, colors, spacing, typography } from '@hi-design/tokens'
+import { CloseIcon } from '@hi-design/icons-native'
+import { borderRadius, colors, spacingPresets, typography } from '@hi-design/tokens'
 import type { ModalProps } from '@hi-design/types'
 import type React from 'react'
 import { useEffect } from 'react'
@@ -103,7 +104,7 @@ export const Modal: React.FC<ModalProps> = ({
                     accessibilityRole="button"
                     testID="hi-modal-close-button"
                   >
-                    <Text style={styles.closeIcon}>✕</Text>
+                    <CloseIcon size={20} color={colors.neutral[500]} weight="regular" />
                   </TouchableOpacity>
                 )}
               </View>
@@ -122,7 +123,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: spacing.lg,
+    padding: spacingPresets.lg,
   },
   modal: {
     backgroundColor: colors.white,
@@ -145,13 +146,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: spacing.lg,
+    padding: spacingPresets.lg,
     borderBottomWidth: 1,
     borderBottomColor: colors.neutral[200],
   },
   title: {
     fontSize: typography.fontSizes.xl,
-    fontWeight: typography.fontWeights.semibold,
+    fontWeight: '600',
     color: colors.neutral[900],
     flex: 1,
   },
@@ -161,15 +162,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: borderRadius.sm,
-    marginLeft: spacing.md,
-  },
-  closeIcon: {
-    fontSize: 20,
-    color: colors.neutral[500],
-    fontWeight: '300',
+    marginLeft: spacingPresets.md,
   },
   body: {
-    padding: spacing.lg,
+    padding: spacingPresets.lg,
     flex: 1,
   },
 })

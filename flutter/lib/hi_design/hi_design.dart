@@ -4,6 +4,7 @@
 library;
 
 // Export all widgets
+export 'icons/hi_icons.dart';
 export 'widgets/hi_button.dart';
 export 'widgets/hi_card.dart';
 export 'widgets/hi_input.dart';

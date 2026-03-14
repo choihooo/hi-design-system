@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../icons/hi_icons.dart';
 import '../tokens/colors.dart';
 import '../tokens/spacing.dart';
 import '../tokens/typography.dart';
@@ -32,13 +33,10 @@ class HiToast {
               width: 20,
               height: 20,
               alignment: Alignment.center,
-              child: Text(
+              child: HiIcon(
                 icon,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
+                size: 18,
+                color: Colors.white,
               ),
             ),
             const SizedBox(width: HiSpacing.s3),
@@ -142,17 +140,17 @@ class HiToast {
     }
   }
 
-  static String _getIcon(HiToastVariant variant) {
+  static IconData _getIcon(HiToastVariant variant) {
     switch (variant) {
       case HiToastVariant.success:
-        return '✓';
+        return HiIcons.checkCircle;
       case HiToastVariant.error:
-        return '✕';
+        return HiIcons.errorCircle;
       case HiToastVariant.warning:
-        return '⚠';
+        return HiIcons.warningCircle;
       case HiToastVariant.info:
       default:
-        return 'ℹ';
+        return HiIcons.info;
     }
   }
 }

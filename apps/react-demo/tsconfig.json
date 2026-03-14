@@ -3,12 +3,28 @@
   "compilerOptions": {
     "composite": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "../..",
     "jsx": "react-jsx",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "paths": {
+      "@hi-design/icons": ["../../packages/icons/src"],
+      "@hi-design/react": ["../../packages/react/src"],
+      "@hi-design/tokens": ["../../packages/tokens/src"]
+    },
+    "types": ["vite/client"]
   },
-  "include": ["src"],
-  "references": [{ "path": "../../packages/react" }]
+  "include": [
+    "src",
+    "../../packages/icons/src",
+    "../../packages/react/src",
+    "../../packages/tokens/src",
+    "../../packages/types/src"
+  ],
+  "exclude": [
+    "../../packages/react/src/**/*.stories.tsx",
+    "../../packages/react/src/**/*.test.tsx",
+    "../../packages/react/src/utils/__tests__"
+  ]
 }

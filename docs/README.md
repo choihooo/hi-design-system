@@ -20,6 +20,7 @@ docs/
 │   └── css-variables.md      # CSS variables reference
 ├── components/               # Component documentation
 │   ├── button.md             # Button component
+│   ├── icons.md              # Icon usage and platform mapping
 │   ├── input.md              # Input component
 │   ├── card.md               # Card component
 │   ├── typography.md         # Typography component
@@ -51,6 +52,7 @@ docs/
 
 ### For Component Users
 - [Button](components/button.md) - Button component documentation
+- [Icons](components/icons.md) - Icon usage and platform mapping
 - [Input](components/input.md) - Input component documentation
 - [Modal](components/modal.md) - Modal component documentation
 - [Toast](components/toast.md) - Toast component documentation

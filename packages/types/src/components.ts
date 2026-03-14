@@ -5,7 +5,7 @@
  * Shared across React and React Native packages
  */
 
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 
 /**
  * Base size variants for components
@@ -61,6 +61,11 @@ export interface ButtonProps {
    * Click/tap handler
    */
   onPress?: () => void | Promise<void>
+
+  /**
+   * Web click handler
+   */
+  onClick?: () => void
 
   /**
    * Custom className for styling overrides (shadcn/ui style)
@@ -229,13 +234,13 @@ export interface CardProps {
    * Padding variant
    * @default 'md'
    */
-  padding?: 'none' | 'sm' | 'md' | 'lg'
+  padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
 
   /**
    * Border radius variant
    * @default 'md'
    */
-  radius?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  radius?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | 'full'
 
   /**
    * Card is clickable/pressable
@@ -247,6 +252,11 @@ export interface CardProps {
    * Click/tap handler (when pressable is true)
    */
   onPress?: () => void
+
+  /**
+   * Custom className for styling overrides (web)
+   */
+  className?: string
 
   /**
    * Card content
@@ -301,6 +311,11 @@ export interface TypographyProps {
    * Custom className for styling overrides (shadcn/ui style)
    */
   className?: string
+
+  /**
+   * Inline styles for web rendering
+   */
+  style?: CSSProperties
 
   /**
    * Disable text wrapping
@@ -404,7 +419,7 @@ export interface ToastProps {
    * Position on screen
    * @default 'top'
    */
-  position?: 'top' | 'bottom' | 'center'
+  position?: 'top' | 'bottom' | 'center' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'
 
   /**
    * Close handler

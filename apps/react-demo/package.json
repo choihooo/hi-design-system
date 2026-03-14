@@ -10,8 +10,9 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@hi-design/icons": "workspace:*",
     "@hi-design/react": "workspace:*",
-    "lucide-react": "^0.577.0",
+    "@hi-design/tokens": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

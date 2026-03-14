@@ -15,8 +15,8 @@
  * ```
  */
 
+import { CloseIcon } from '@hi-design/icons'
 import type { ModalProps } from '@hi-design/types'
-import { X } from 'lucide-react'
 import type React from 'react'
 import { memo, useEffect, useMemo, useRef } from 'react'
 import { createPortal } from 'react-dom'
@@ -62,40 +62,40 @@ export const Modal: React.FC<ModalProps> = ({
 
   // Focus trap
   useEffect(() => {
-    if (visible && modalRef.current) {
-      const focusableElements = Array.from(
-        modalRef.current.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
-        ),
-      )
-      const firstElement = focusableElements[0]
-      const lastElement = focusableElements[focusableElements.length - 1]
+    if (!visible || !modalRef.current) {
+      return undefined
+    }
 
-      firstElement?.focus()
+    const focusableElements = Array.from(
+      modalRef.current.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+      ),
+    )
+    const firstElement = focusableElements[0]
+    const lastElement = focusableElements[focusableElements.length - 1]
 
-      const handleTab = (e: KeyboardEvent) => {
-        if (e.key !== 'Tab') return
+    firstElement?.focus()
 
-        if (e.shiftKey) {
-          if (document.activeElement === firstElement) {
-            e.preventDefault()
-            lastElement?.focus()
-          }
-        } else {
-          if (document.activeElement === lastElement) {
-            e.preventDefault()
-            firstElement?.focus()
-          }
+    const handleTab = (e: KeyboardEvent) => {
+      if (e.key !== 'Tab') return
+
+      if (e.shiftKey) {
+        if (document.activeElement === firstElement) {
+          e.preventDefault()
+          lastElement?.focus()
         }
+      } else if (document.activeElement === lastElement) {
+        e.preventDefault()
+        firstElement?.focus()
       }
+    }
 
-      document.addEventListener('keydown', handleTab)
+    document.addEventListener('keydown', handleTab)
 
-      return () => {
-        document.removeEventListener('keydown', handleTab)
-        // Restore focus when modal closes
-        previousActiveElement.current?.focus()
-      }
+    return () => {
+      document.removeEventListener('keydown', handleTab)
+      // Restore focus when modal closes
+      previousActiveElement.current?.focus()
     }
   }, [visible])
 
@@ -145,7 +145,7 @@ export const Modal: React.FC<ModalProps> = ({
                 aria-label="Close modal"
                 type="button"
               >
-                <X width={20} height={20} strokeWidth={2} />
+                <CloseIcon size={20} weight="regular" />
               </button>
             )}
           </div>

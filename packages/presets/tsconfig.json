@@ -8,6 +8,5 @@
     "moduleResolution": "node",
     "lib": ["ES2020"]
   },
-  "include": ["src"],
-  "references": [{ "path": "../tokens" }]
+  "include": ["src"]
 }

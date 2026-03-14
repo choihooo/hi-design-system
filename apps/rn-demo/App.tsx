@@ -1,6 +1,7 @@
 import { Button, Card, Input, Modal, Toast, Typography } from '@hi-design/react-native'
 import { StatusBar } from 'expo-status-bar'
-import { ScrollView, StyleSheet, useState, View } from 'react-native'
+import { useState } from 'react'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
 export default function App() {
   const [modalOpen, setModalOpen] = useState(false)

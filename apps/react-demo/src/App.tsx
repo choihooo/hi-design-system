@@ -17,6 +17,9 @@ const InputsSection = lazy(() =>
 const CardsSection = lazy(() =>
   import('./components/CardsSection').then((m) => ({ default: m.CardsSection })),
 )
+const IconsSection = lazy(() =>
+  import('./components/IconsSection').then((m) => ({ default: m.IconsSection })),
+)
 const TypographySection = lazy(() =>
   import('./components/TypographySection').then((m) => ({ default: m.TypographySection })),
 )
@@ -62,6 +65,12 @@ function App() {
           fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading Cards...</div>}
         >
           <CardsSection />
+        </Suspense>
+
+        <Suspense
+          fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading Icons...</div>}
+        >
+          <IconsSection />
         </Suspense>
 
         <Suspense

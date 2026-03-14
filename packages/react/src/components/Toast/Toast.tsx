@@ -15,8 +15,14 @@
  * ```
  */
 
+import {
+  CheckCircleIcon,
+  CloseIcon,
+  ErrorCircleIcon,
+  InfoIcon,
+  WarningCircleIcon,
+} from '@hi-design/icons'
 import type { ToastProps } from '@hi-design/types'
-import { AlertTriangle, CheckCircle, Info, X, XCircle } from 'lucide-react'
 import type React from 'react'
 import { memo, useEffect, useState } from 'react'
 import { useReducedMotion } from '../../utils/animations'
@@ -51,13 +57,15 @@ export const Toast: React.FC<ToastProps> = ({
   }, [visible])
 
   useEffect(() => {
-    if (isVisible && duration > 0 && !isAnimatingOut) {
-      const timer = setTimeout(() => {
-        handleAnimateOut()
-      }, duration)
-
-      return () => clearTimeout(timer)
+    if (!isVisible || duration <= 0 || isAnimatingOut) {
+      return undefined
     }
+
+    const timer = setTimeout(() => {
+      handleAnimateOut()
+    }, duration)
+
+    return () => clearTimeout(timer)
   }, [isVisible, duration, isAnimatingOut, handleAnimateOut])
 
   const handleClose = () => {
@@ -68,20 +76,19 @@ export const Toast: React.FC<ToastProps> = ({
 
   const getIcon = () => {
     const iconProps = {
-      width: 24,
-      height: 24,
-      strokeWidth: 2,
+      size: 24,
+      weight: 'regular' as const,
     }
 
     switch (variant) {
       case 'success':
-        return <CheckCircle {...iconProps} />
+        return <CheckCircleIcon {...iconProps} />
       case 'error':
-        return <XCircle {...iconProps} />
+        return <ErrorCircleIcon {...iconProps} />
       case 'warning':
-        return <AlertTriangle {...iconProps} />
+        return <WarningCircleIcon {...iconProps} />
       default:
-        return <Info {...iconProps} />
+        return <InfoIcon {...iconProps} />
     }
   }
 
@@ -101,7 +108,7 @@ export const Toast: React.FC<ToastProps> = ({
         aria-label="Close toast"
         type="button"
       >
-        <X width={16} height={16} strokeWidth={2} />
+        <CloseIcon size={16} weight="regular" />
       </button>
     </div>
   )

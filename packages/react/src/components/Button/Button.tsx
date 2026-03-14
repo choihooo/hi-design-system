@@ -25,6 +25,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       loading = false,
       fullWidth = false,
       onPress,
+      onClick,
       className,
       children,
       testID,
@@ -33,9 +34,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     ref,
   ) => {
     const handleClick = () => {
-      if (!disabled && !loading && onPress) {
-        onPress()
+      if (disabled || loading) {
+        return
       }
+
+      onPress?.()
+      onClick?.()
     }
 
     const buttonClassName = clsx(

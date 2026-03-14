@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import '../icons/hi_icons.dart';
 import '../tokens/colors.dart';
 import '../tokens/spacing.dart';
 import '../tokens/typography.dart';
@@ -106,7 +107,10 @@ class HiModal extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(Icons.close),
+            icon: const HiIcon(
+              icon: HiIcons.close,
+              semanticLabel: 'Close modal',
+            ),
             onPressed: () => Navigator.of(context).pop(),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),

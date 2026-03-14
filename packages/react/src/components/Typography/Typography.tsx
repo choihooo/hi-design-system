@@ -16,7 +16,21 @@ import type { TypographyProps } from '@hi-design/types'
 import { forwardRef, memo, useMemo } from 'react'
 import './Typography.css'
 
-export const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
+const elementTagMap = {
+  h1: 'h1',
+  h2: 'h2',
+  h3: 'h3',
+  h4: 'h4',
+  h5: 'h5',
+  h6: 'h6',
+  body1: 'p',
+  body2: 'p',
+  button: 'span',
+  caption: 'span',
+  overline: 'span',
+} as const
+
+export const Typography = forwardRef<HTMLElement, TypographyProps>(
   (
     {
       variant = 'body1',
@@ -123,16 +137,16 @@ export const Typography = forwardRef<HTMLParagraphElement, TypographyProps>(
         textOverflow: numberOfLines ? 'ellipsis' : undefined,
         display: numberOfLines ? '-webkit-box' : undefined,
         WebkitLineClamp: numberOfLines || undefined,
-        WebkitBoxOrient: numberOfLines ? 'vertical' : undefined,
+        WebkitBoxOrient: numberOfLines ? ('vertical' as const) : undefined,
       }),
       [textStyle, fontWeight, color, align, noWrap, numberOfLines],
     )
 
-    const Tag = variant.startsWith('h') ? variant : 'p'
+    const Tag = elementTagMap[variant]
 
     return (
       <Tag
-        ref={ref}
+        ref={ref as never}
         className={`hi-typography hi-typography--${variant} ${className || ''}`}
         style={style}
         data-testid={testID}

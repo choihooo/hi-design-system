@@ -25,7 +25,6 @@ import {
 export const Button: React.FC<ButtonProps> = ({
   variant = 'primary',
   size = 'md',
-  color = 'primary',
   disabled = false,
   loading = false,
   fullWidth = false,

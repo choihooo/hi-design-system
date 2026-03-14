@@ -2,7 +2,7 @@
  * Accessibility and Animation Utilities Tests
  */
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest'
 import { getAnimationDuration, prefersReducedMotion } from '../animations'
 
 // Mock window.matchMedia
@@ -27,7 +27,7 @@ describe('Animation Utilities', () => {
 
   describe('prefersReducedMotion', () => {
     it('should return false when motion is allowed', () => {
-      ;(window.matchMedia as jest.Mock).mockReturnValue({
+      ;(window.matchMedia as Mock).mockReturnValue({
         matches: false,
         media: '(prefers-reduced-motion: reduce)',
         onchange: null,
@@ -42,7 +42,7 @@ describe('Animation Utilities', () => {
     })
 
     it('should return true when user prefers reduced motion', () => {
-      ;(window.matchMedia as jest.Mock).mockReturnValue({
+      ;(window.matchMedia as Mock).mockReturnValue({
         matches: true,
         media: '(prefers-reduced-motion: reduce)',
         onchange: null,
@@ -69,7 +69,7 @@ describe('Animation Utilities', () => {
 
   describe('getAnimationDuration', () => {
     it('should return 0 when reduced motion is preferred', () => {
-      ;(window.matchMedia as jest.Mock).mockReturnValue({
+      ;(window.matchMedia as Mock).mockReturnValue({
         matches: true,
         media: '(prefers-reduced-motion: reduce)',
         onchange: null,
@@ -84,7 +84,7 @@ describe('Animation Utilities', () => {
     })
 
     it('should return default duration when motion is allowed', () => {
-      ;(window.matchMedia as jest.Mock).mockReturnValue({
+      ;(window.matchMedia as Mock).mockReturnValue({
         matches: false,
         media: '(prefers-reduced-motion: reduce)',
         onchange: null,

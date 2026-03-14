@@ -47,6 +47,10 @@
   padding: 32px;
 }
 
+.hi-card--padding-xl {
+  padding: 40px;
+}
+
 /* Border radius variants */
 .hi-card--radius-none {
   border-radius: 0;
@@ -66,6 +70,10 @@
 
 .hi-card--radius-xl {
   border-radius: 16px;
+}
+
+.hi-card--radius-full {
+  border-radius: 9999px;
 }
 
 /* Pressable state */

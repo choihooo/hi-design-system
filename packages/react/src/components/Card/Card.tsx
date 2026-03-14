@@ -24,6 +24,7 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       radius = 'md',
       pressable = false,
       onPress,
+      className,
       children,
       testID,
       ...rest
@@ -43,18 +44,19 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       }
     }
 
-    const className = clsx(
+    const cardClassName = clsx(
       'hi-card',
       `hi-card--elevation-${elevation}`,
       `hi-card--padding-${padding}`,
       `hi-card--radius-${radius}`,
       pressable && 'hi-card--pressable',
+      className,
     )
 
     return (
       <div
         ref={ref}
-        className={className}
+        className={cardClassName}
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         data-testid={testID}

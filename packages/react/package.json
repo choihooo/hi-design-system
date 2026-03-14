@@ -26,6 +26,7 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
+    "@hi-design/icons": "workspace:*",
     "@hi-design/tokens": "workspace:*",
     "@hi-design/types": "workspace:*",
     "clsx": "^2.1.1"

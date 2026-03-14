@@ -32,17 +32,18 @@ export const Card: React.FC<CardProps> = ({
     styles[`radius_${radius}`],
   ] as ViewStyle)
 
-  const Component = pressable ? TouchableOpacity : View
+  if (pressable) {
+    return (
+      <TouchableOpacity style={cardStyle} onPress={onPress} activeOpacity={0.7} testID={testID}>
+        {children}
+      </TouchableOpacity>
+    )
+  }
 
   return (
-    <Component
-      style={cardStyle}
-      onPress={pressable ? onPress : undefined}
-      activeOpacity={pressable ? 0.7 : 1}
-      testID={testID}
-    >
+    <View style={cardStyle} testID={testID}>
       {children}
-    </Component>
+    </View>
   )
 }
 
@@ -96,6 +97,9 @@ const styles = StyleSheet.create({
   padding_lg: {
     padding: spacing[8],
   },
+  padding_xl: {
+    padding: spacing[12],
+  },
   radius_none: {
     borderRadius: 0,
   },
@@ -110,5 +114,8 @@ const styles = StyleSheet.create({
   },
   radius_xl: {
     borderRadius: borderRadius.xl,
+  },
+  radius_full: {
+    borderRadius: 9999,
   },
 })
