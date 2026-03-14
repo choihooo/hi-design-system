@@ -4,7 +4,7 @@
 
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { Typography } from './Typography'
+import Typography from './Typography'
 import '@testing-library/jest-dom'
 
 describe('Typography', () => {
@@ -16,34 +16,34 @@ describe('Typography', () => {
 
     it('renders with different variants', () => {
       const { rerender } = render(<Typography variant="h1">Heading 1</Typography>)
-      expect(screen.getByText('Heading 1')).toHaveClass('hi-typography--h1')
+      expect(screen.getByText('Heading 1')).toHaveClass('typography--h1')
 
       rerender(<Typography variant="h2">Heading 2</Typography>)
-      expect(screen.getByText('Heading 2')).toHaveClass('hi-typography--h2')
+      expect(screen.getByText('Heading 2')).toHaveClass('typography--h2')
 
       rerender(<Typography variant="h3">Heading 3</Typography>)
-      expect(screen.getByText('Heading 3')).toHaveClass('hi-typography--h3')
+      expect(screen.getByText('Heading 3')).toHaveClass('typography--h3')
 
       rerender(<Typography variant="h4">Heading 4</Typography>)
-      expect(screen.getByText('Heading 4')).toHaveClass('hi-typography--h4')
+      expect(screen.getByText('Heading 4')).toHaveClass('typography--h4')
 
       rerender(<Typography variant="h5">Heading 5</Typography>)
-      expect(screen.getByText('Heading 5')).toHaveClass('hi-typography--h5')
+      expect(screen.getByText('Heading 5')).toHaveClass('typography--h5')
 
       rerender(<Typography variant="h6">Heading 6</Typography>)
-      expect(screen.getByText('Heading 6')).toHaveClass('hi-typography--h6')
+      expect(screen.getByText('Heading 6')).toHaveClass('typography--h6')
 
       rerender(<Typography variant="body1">Body 1</Typography>)
-      expect(screen.getByText('Body 1')).toHaveClass('hi-typography--body1')
+      expect(screen.getByText('Body 1')).toHaveClass('typography--body1')
 
       rerender(<Typography variant="body2">Body 2</Typography>)
-      expect(screen.getByText('Body 2')).toHaveClass('hi-typography--body2')
+      expect(screen.getByText('Body 2')).toHaveClass('typography--body2')
 
       rerender(<Typography variant="caption">Caption</Typography>)
-      expect(screen.getByText('Caption')).toHaveClass('hi-typography--caption')
+      expect(screen.getByText('Caption')).toHaveClass('typography--caption')
 
       rerender(<Typography variant="overline">Overline</Typography>)
-      expect(screen.getByText('Overline')).toHaveClass('hi-typography--overline')
+      expect(screen.getByText('Overline')).toHaveClass('typography--overline')
     })
   })
 

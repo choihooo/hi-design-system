@@ -2,6 +2,29 @@
  * @component Input
  * @description Text input component with label, helper text, and error states
  * @platform React (Web)
+ * @type {React.ForwardRefExoticComponent<InputProps>}
+ * @prop {string} label - Input label text
+ * @prop {string} placeholder - Input placeholder text
+ * @prop {string} value - Input value (controlled component)
+ * @prop {string} defaultValue - Default value (uncontrolled component)
+ * @prop {string} type - Input type ('text' | 'password' | 'textarea')
+ * @prop {string} variant - Input variant ('outline' | 'filled')
+ * @prop {string} size - Input size ('sm' | 'md' | 'lg')
+ * @prop {string} state - Input state ('default' | 'error' | 'success')
+ * @prop {boolean} disabled - Disabled state
+ * @prop {boolean} fullWidth - Full width option
+ * @prop {boolean} readOnly - Read only state
+ * @prop {boolean} required - Required state
+ * @prop {Function} onChangeText - Text change handler
+ * @prop {Function} onFocus - Focus handler
+ * @prop {Function} onBlur - Blur handler
+ * @param {string} testID - Test identifier
+ * @param {string} name - Input name
+ * @param {string} autoComplete - Autocomplete attribute
+ * @param {number} minLength - Minimum length
+ * @param {number} maxLength - Maximum length
+ * @param {string} pattern - Validation pattern
+ * @param {number} rows - Number of rows for textarea
  * @usage
  * ```tsx
  * <Input
@@ -12,158 +35,165 @@
  *   state="error"
  *   errorText="Invalid email format"
  * />
+ * <Input.Password
+ *   placeholder="Enter password"
+ *   value={password}
+ *   onChangeText={setPassword}
+ * />
  * ```
  */
 
 import type { InputProps } from '@hi-design/types'
 import clsx from 'clsx'
-import { forwardRef, useMemo, useState } from 'react'
+import { forwardRef, useState } from 'react'
 import './Input.css'
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      value,
-      defaultValue,
-      placeholder,
-      type = 'text',
-      variant = 'outline',
-      size = 'md',
-      state = 'default',
-      disabled = false,
-      fullWidth = false,
-      readOnly = false,
-      required = false,
-      label,
-      helperText,
-      errorText,
-      className,
-      onChangeText,
-      onFocus,
-      onBlur,
-      onSubmit,
-      testID,
-      name,
-      autoComplete,
-      minLength,
-      maxLength,
-      pattern,
-      ...rest
-    },
-    ref,
-  ) => {
-    // Generate unique ID for this input instance
-    const inputId = useMemo(
-      () => testID || `hi-input-${Math.random().toString(36).substr(2, 9)}`,
-      [testID],
-    )
+const Input = forwardRef<HTMLInputElement, InputProps>(({
+  value,
+  defaultValue,
+  placeholder,
+  type = 'text',
+  variant = 'outline',
+  size = 'md',
+  state = 'default',
+  disabled = false,
+  fullWidth = false,
+  readOnly = false,
+  required = false,
+  label,
+  helperText,
+  errorText,
+  onChangeText,
+  onFocus,
+  onBlur,
+  testID,
+  name,
+  autoComplete,
+  minLength,
+  maxLength,
+  pattern,
+  rows,
+  className,
+  ...rest
+}, ref) => {
+  const [internalValue, setInternalValue] = useState(defaultValue || '')
+  const [isFocused, setIsFocused] = useState(false)
 
-    const [internalValue, setInternalValue] = useState(() => defaultValue || '')
-    const [isFocused, setIsFocused] = useState(false)
+  const currentValue = value !== undefined ? value : internalValue
+  const showError = state === 'error' && !!errorText
 
-    const isControlled = value !== undefined
-    const currentValue = isControlled ? value : internalValue
-
-    const showError = useMemo(() => {
-      return state === 'error' && !!errorText
-    }, [state, errorText])
-
-    // Generate unique IDs for ARIA attributes
-    const helperId = useMemo(() => `${inputId}-helper`, [inputId])
-    const errorId = useMemo(() => `${inputId}-error`, [inputId])
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const newValue = e.target.value
-      if (value === undefined) {
-        setInternalValue(newValue)
-      }
-      onChangeText?.(newValue)
+  const handleChange = (text: string) => {
+    if (value === undefined) {
+      setInternalValue(text)
     }
+    onChangeText?.(text)
+  }
 
-    const handleFocus = (_e: React.FocusEvent<HTMLInputElement>) => {
-      setIsFocused(true)
-      onFocus?.()
-    }
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setIsFocused(true)
+    onFocus?.(event)
+  }
 
-    const handleBlur = (_e: React.FocusEvent<HTMLInputElement>) => {
-      setIsFocused(false)
-      onBlur?.()
-    }
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setIsFocused(false)
+    onBlur?.(event)
+  }
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter' && onSubmit) {
-        onSubmit()
-      }
-    }
+  const inputClassName = clsx(
+    'input',
+    `input--${variant}`,
+    `input--${size}`,
+    state && `input--${state}`,
+    fullWidth && 'input--full-width',
+    disabled && 'input--disabled',
+    readOnly && 'input--read-only',
+    isFocused && 'input--focused',
+    showError && 'input--error',
+    label && 'input--has-label',
+    className,
+  )
 
-    const containerClassName = clsx(
-      'hi-input__container',
-      `hi-input__container--${size}`,
-      fullWidth && 'hi-input__container--full-width',
-    )
+  const inputProps = {
+    value: currentValue,
+    defaultValue: value === undefined ? defaultValue : undefined,
+    placeholder,
+    disabled,
+    readOnly,
+    required,
+    name,
+    autoComplete,
+    minLength,
+    maxLength,
+    pattern,
+    'data-testid': testID,
+    'aria-label': label || placeholder,
+    'aria-required': required,
+    'aria-invalid': state === 'error',
+    ...rest,
+  }
 
-    const inputClassName = clsx(
-      'hi-input',
-      `hi-input--${variant}`,
-      `hi-input--${size}`,
-      `hi-input--${state}`,
-      isFocused && 'hi-input--focused',
-      disabled && 'hi-input--disabled',
-      readOnly && 'hi-input--read-only',
-      className, // Allow custom className override (shadcn/ui style)
-    )
-
+  if (type === 'textarea') {
     return (
-      <div className={containerClassName}>
+      <div className={inputClassName}>
         {label && (
-          <label className="hi-input__label" htmlFor={inputId}>
+          <label className="input__label" htmlFor={testID}>
             {label}
-            {required && (
-              <span className="hi-input__required" aria-hidden="true">
-                *
-              </span>
-            )}
+            {required && <span className="input__required">*</span>}
           </label>
         )}
-        <input
-          ref={ref}
-          id={inputId}
-          type={type}
-          className={inputClassName}
-          value={currentValue}
-          placeholder={placeholder}
-          disabled={disabled}
-          readOnly={readOnly}
-          required={required}
-          onChange={handleChange}
+        <textarea
+          className="input__control"
+          rows={rows}
+          onChange={(e) => handleChange(e.target.value)}
           onFocus={handleFocus}
           onBlur={handleBlur}
-          onKeyDown={handleKeyDown}
-          data-testid={testID}
-          name={name}
-          autoComplete={autoComplete}
-          minLength={minLength}
-          maxLength={maxLength}
-          pattern={pattern}
-          aria-invalid={state === 'error'}
-          aria-describedby={showError ? errorId : helperText ? helperId : undefined}
-          aria-required={required}
-          {...rest}
+          {...inputProps}
         />
-        {(helperText || showError) && (
-          <div className="hi-input__helper" id={showError ? errorId : helperId}>
-            {showError ? (
-              <span className="hi-input__error" role="alert">
-                {errorText}
-              </span>
-            ) : (
-              <span className="hi-input__helper-text">{helperText}</span>
-            )}
+        {helperText && (
+          <div className="input__helper">
+            {helperText}
+          </div>
+        )}
+        {showError && errorText && (
+          <div className="input__error">
+            {errorText}
           </div>
         )}
       </div>
     )
-  },
-)
+  }
+
+  return (
+    <div className={inputClassName}>
+      {label && (
+        <label className="input__label" htmlFor={testID}>
+          {label}
+          {required && <span className="input__required">*</span>}
+        </label>
+      )}
+      <input
+        ref={ref}
+        type={type}
+        className="input__control"
+        onChange={(e) => handleChange(e.target.value)}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+        {...inputProps}
+      />
+      {helperText && (
+        <div className="input__helper">
+          {helperText}
+        </div>
+      )}
+      {showError && errorText && (
+        <div className="input__error">
+          {errorText}
+        </div>
+      )}
+    </div>
+  )
+})
 
 Input.displayName = 'Input'
+
+export default Input

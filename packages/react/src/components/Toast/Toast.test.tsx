@@ -4,7 +4,7 @@
 
 import { fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Toast } from './Toast'
+import Toast from './Toast'
 import '@testing-library/jest-dom'
 
 // Mock window.matchMedia for reduced motion
@@ -50,16 +50,16 @@ describe('Toast', () => {
 
     it('renders with different variants', () => {
       const { rerender } = render(<Toast visible={true} variant="success" message="Success" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--success')
+      expect(screen.getByRole('alert')).toHaveClass('toast--success')
 
       rerender(<Toast visible={true} variant="error" message="Error" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--error')
+      expect(screen.getByRole('alert')).toHaveClass('toast--error')
 
       rerender(<Toast visible={true} variant="warning" message="Warning" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--warning')
+      expect(screen.getByRole('alert')).toHaveClass('toast--warning')
 
       rerender(<Toast visible={true} variant="info" message="Info" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--info')
+      expect(screen.getByRole('alert')).toHaveClass('toast--info')
     })
 
     it('renders close button', () => {
@@ -120,13 +120,13 @@ describe('Toast', () => {
 
     it('renders icons for different variants', () => {
       const { rerender } = render(<Toast visible={true} variant="success" message="Success" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--success')
+      expect(screen.getByRole('alert')).toHaveClass('toast--success')
 
       rerender(<Toast visible={true} variant="error" message="Error" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--error')
+      expect(screen.getByRole('alert')).toHaveClass('toast--error')
 
       rerender(<Toast visible={true} variant="warning" message="Warning" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--warning')
+      expect(screen.getByRole('alert')).toHaveClass('toast--warning')
     })
   })
 
@@ -145,22 +145,22 @@ describe('Toast', () => {
   describe('Position', () => {
     it('renders with different positions', () => {
       const { rerender } = render(<Toast visible={true} position="top" message="Test" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--top')
+      expect(screen.getByRole('alert')).toHaveClass('toast--top')
 
       rerender(<Toast visible={true} position="bottom" message="Test" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--bottom')
+      expect(screen.getByRole('alert')).toHaveClass('toast--bottom')
 
       rerender(<Toast visible={true} position="top-left" message="Test" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--top-left')
+      expect(screen.getByRole('alert')).toHaveClass('toast--top-left')
 
       rerender(<Toast visible={true} position="top-right" message="Test" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--top-right')
+      expect(screen.getByRole('alert')).toHaveClass('toast--top-right')
 
       rerender(<Toast visible={true} position="bottom-left" message="Test" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--bottom-left')
+      expect(screen.getByRole('alert')).toHaveClass('toast--bottom-left')
 
       rerender(<Toast visible={true} position="bottom-right" message="Test" />)
-      expect(screen.getByRole('alert')).toHaveClass('hi-toast--bottom-right')
+      expect(screen.getByRole('alert')).toHaveClass('toast--bottom-right')
     })
   })
 
@@ -168,8 +168,8 @@ describe('Toast', () => {
     it('renders toast with proper classes', () => {
       render(<Toast visible={true} message="Test" />)
       const toast = screen.getByRole('alert')
-      expect(toast).toHaveClass('hi-toast')
-      expect(toast).not.toHaveClass('hi-toast--exiting')
+      expect(toast).toHaveClass('toast')
+      expect(toast).not.toHaveClass('toast--exiting')
     })
   })
 

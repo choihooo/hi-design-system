@@ -2,6 +2,17 @@
  * @component Typography
  * @description Text component with predefined style variants
  * @platform React (Web)
+ * @type {React.ForwardRefExoticComponent<TypographyProps>}
+ * @prop {string} variant - Typography variant ('h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'button' | 'caption' | 'overline')
+ * @prop {string} weight - Font weight override
+ * @prop {string} color - Text color override
+ * @prop {string} align - Text alignment ('left' | 'center' | 'right' | 'justify')
+ * @prop {boolean} noWrap - Whether to prevent text wrapping
+ * @prop {number} numberOfLines - Number of lines to show (with ellipsis)
+ * @prop {string} className - Additional CSS classes
+ * @prop {CSSProperties} style - Inline styles
+ * @prop {React.ReactNode} children - Text content
+ * @prop {string} testID - Test identifier
  * @usage
  * ```tsx
  * <Typography variant="h1">Heading 1</Typography>
@@ -13,7 +24,8 @@
  */
 
 import type { TypographyProps } from '@hi-design/types'
-import { forwardRef, memo, useMemo } from 'react'
+import React, { forwardRef, useMemo } from 'react'
+import { generateUniqueId } from '../../utils/common'
 import './Typography.css'
 
 const elementTagMap = {
@@ -28,136 +40,63 @@ const elementTagMap = {
   button: 'span',
   caption: 'span',
   overline: 'span',
-} as const
+}
 
-export const Typography = forwardRef<HTMLElement, TypographyProps>(
-  (
-    {
-      variant = 'body1',
-      weight,
-      color,
-      align = 'left',
-      noWrap = false,
-      numberOfLines,
+const Typography = forwardRef<HTMLElement, TypographyProps>(({
+  variant = 'body1',
+  weight,
+  color,
+  align = 'left',
+  noWrap = false,
+  numberOfLines,
+  className,
+  style,
+  children,
+  testID,
+  ...rest
+}, ref) => {
+  const elementTag = elementTagMap[variant]
+  const typographyId = useMemo(() => testID || generateUniqueId('typography'), [testID])
+
+  const typographyClassName = useMemo(() => {
+    const classes = [
+      'typography',
+      `typography--${variant}`,
+      weight && `typography--weight-${weight}`,
+      color && `typography--color-${color}`,
+      align && `typography--align-${align}`,
+      noWrap && 'typography--no-wrap',
+      numberOfLines && 'typography--truncate',
       className,
-      children,
-      testID,
-      ...rest
-    },
+    ].filter(Boolean).join(' ')
+
+    return classes
+  }, [variant, weight, color, align, noWrap, numberOfLines, className])
+
+  const elementProps = {
     ref,
-  ) => {
-    const textStyles = {
-      h1: {
-        fontSize: 60,
-        fontWeight: 'bold',
-        lineHeight: 1.2,
-        letterSpacing: '-0.02em',
-      },
-      h2: {
-        fontSize: 48,
-        fontWeight: 'bold',
-        lineHeight: 1.2,
-        letterSpacing: '-0.02em',
-      },
-      h3: {
-        fontSize: 36,
-        fontWeight: '600',
-        lineHeight: 1.2,
-        letterSpacing: '-0.01em',
-      },
-      h4: {
-        fontSize: 30,
-        fontWeight: '600',
-        lineHeight: 1.4,
-        letterSpacing: '0em',
-      },
-      h5: {
-        fontSize: 24,
-        fontWeight: '600',
-        lineHeight: 1.4,
-        letterSpacing: '0em',
-      },
-      h6: {
-        fontSize: 20,
-        fontWeight: '500',
-        lineHeight: 1.5,
-        letterSpacing: '0em',
-      },
-      body1: {
-        fontSize: 16,
-        fontWeight: '400',
-        lineHeight: 1.5,
-        letterSpacing: '0em',
-      },
-      body2: {
-        fontSize: 14,
-        fontWeight: '400',
-        lineHeight: 1.5,
-        letterSpacing: '0em',
-      },
-      button: {
-        fontSize: 16,
-        fontWeight: '600',
-        lineHeight: 1.5,
-        letterSpacing: '0em',
-      },
-      caption: {
-        fontSize: 12,
-        fontWeight: '400',
-        lineHeight: 1.5,
-        letterSpacing: '0em',
-      },
-      overline: {
-        fontSize: 12,
-        fontWeight: '500',
-        lineHeight: 1.5,
-        letterSpacing: '0.1em',
-      },
-    }
-
-    const textStyle = textStyles[variant as keyof typeof textStyles]
-    const fontWeight = weight || (textStyle.fontWeight as string)
-
-    const style = useMemo(
-      () => ({
-        fontSize:
-          typeof textStyle.fontSize === 'number' ? `${textStyle.fontSize}px` : textStyle.fontSize,
-        fontWeight,
-        lineHeight: Array.isArray(textStyle.lineHeight)
-          ? textStyle.lineHeight[0]
-          : textStyle.lineHeight,
-        letterSpacing:
-          typeof textStyle.letterSpacing === 'number'
-            ? `${textStyle.letterSpacing}em`
-            : textStyle.letterSpacing,
-        color: color || '#111827',
-        textAlign: align,
-        whiteSpace: noWrap ? 'nowrap' : undefined,
-        overflow: numberOfLines ? 'hidden' : undefined,
-        textOverflow: numberOfLines ? 'ellipsis' : undefined,
-        display: numberOfLines ? '-webkit-box' : undefined,
-        WebkitLineClamp: numberOfLines || undefined,
-        WebkitBoxOrient: numberOfLines ? ('vertical' as const) : undefined,
+    className: typographyClassName,
+    id: typographyId,
+    style: {
+      ...style,
+      ...(numberOfLines && {
+        WebkitLineClamp: numberOfLines,
+        display: '-webkit-box',
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
       }),
-      [textStyle, fontWeight, color, align, noWrap, numberOfLines],
-    )
+    },
+    'data-testid': testID,
+    ...rest,
+  }
 
-    const Tag = elementTagMap[variant]
-
-    return (
-      <Tag
-        ref={ref as never}
-        className={`hi-typography hi-typography--${variant} ${className || ''}`}
-        style={style}
-        data-testid={testID}
-        {...rest}
-      >
-        {children}
-      </Tag>
-    )
-  },
-)
+  return React.createElement(
+    elementTag,
+    elementProps,
+    children
+  )
+})
 
 Typography.displayName = 'Typography'
 
-export default memo(Typography)
+export default Typography

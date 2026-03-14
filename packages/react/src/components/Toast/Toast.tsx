@@ -1,7 +1,15 @@
 /**
  * @component Toast
  * @description A toast notification component with auto-dismiss and variant styles
- * @platform React
+ * @platform React (Web)
+ * @type {React.ForwardRefExoticComponent<ToastProps>}
+ * @prop {boolean} visible - Whether the toast is visible
+ * @prop {string} message - Toast message content
+ * @prop {string} variant - Toast variant ('info' | 'success' | 'warning' | 'error')
+ * @prop {number} duration - Auto-dismiss duration in milliseconds
+ * @prop {string} position - Toast position ('top' | 'bottom' | 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left')
+ * @prop {Function} onClose - Callback when toast is closed
+ * @prop {string} testID - Test identifier
  * @usage
  * ```tsx
  * <Toast
@@ -23,12 +31,11 @@ import {
   WarningCircleIcon,
 } from '@hi-design/icons'
 import type { ToastProps } from '@hi-design/types'
-import type React from 'react'
-import { memo, useCallback, useEffect, useState } from 'react'
-import { useReducedMotion } from '../../utils/animations'
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react'
+import { generateUniqueId, useReducedMotion } from '../../utils/common'
 import './Toast.css'
 
-export const Toast: React.FC<ToastProps> = ({
+const Toast = React.forwardRef<HTMLDivElement, ToastProps>(({
   visible = false,
   message,
   variant = 'info',
@@ -36,10 +43,11 @@ export const Toast: React.FC<ToastProps> = ({
   position = 'top',
   onClose,
   testID,
-}) => {
+}, ref) => {
   const [isVisible, setIsVisible] = useState(visible)
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
   const prefersReduced = useReducedMotion()
+  const toastId = useMemo(() => testID || generateUniqueId('toast'), [testID])
 
   const handleAnimateOut = useCallback(() => {
     setIsAnimatingOut(true)
@@ -94,16 +102,17 @@ export const Toast: React.FC<ToastProps> = ({
 
   return (
     <div
-      className={`hi-toast hi-toast--${variant} hi-toast--${position} ${isAnimatingOut ? 'hi-toast--exiting' : ''} ${prefersReduced ? 'hi-toast--no-animation' : ''}`}
+      ref={ref}
+      className={`toast toast--${variant} toast--${position} ${isAnimatingOut ? 'toast--exiting' : ''} ${prefersReduced ? 'toast--no-animation' : ''}`}
       role="alert"
       aria-live="polite"
       aria-atomic="true"
-      data-testid={testID || 'hi-toast'}
+      data-testid={toastId}
     >
-      <div className="hi-toast__icon">{getIcon()}</div>
-      <div className="hi-toast__message">{message}</div>
+      <div className="toast__icon">{getIcon()}</div>
+      <div className="toast__message">{message}</div>
       <button
-        className="hi-toast__close"
+        className="toast__close"
         onClick={handleClose}
         aria-label="Close toast"
         type="button"
@@ -112,6 +121,8 @@ export const Toast: React.FC<ToastProps> = ({
       </button>
     </div>
   )
-}
+})
+
+Toast.displayName = 'Toast'
 
 export default memo(Toast)

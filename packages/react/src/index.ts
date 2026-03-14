@@ -14,9 +14,9 @@ export type {
   ToastProps,
   TypographyProps,
 } from '@hi-design/types'
-export { Button } from './components/Button/Button'
-export { Card } from './components/Card/Card'
-export { Input } from './components/Input/Input'
-export { Modal } from './components/Modal/Modal'
-export { Toast } from './components/Toast/Toast'
-export { Typography } from './components/Typography/Typography'
+export { default as Button } from './components/Button/Button'
+export { default as Card } from './components/Card/Card'
+export { default as Input } from './components/Input/Input'
+export { default as Modal } from './components/Modal/Modal'
+export { default as Toast } from './components/Toast/Toast'
+export { default as Typography } from './components/Typography/Typography'
