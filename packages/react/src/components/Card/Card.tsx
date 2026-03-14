@@ -22,7 +22,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(
       elevation = 'md',
       padding = 'md',
       radius = 'md',
-      pressable = false,
+      isPressable = false,
       onPress,
       className,
       children,
@@ -32,15 +32,15 @@ export const Card = forwardRef<HTMLElement, CardProps>(
     ref,
   ) => {
     const cardClassName = clsx(
-      'hi-card',
-      `hi-card--elevation-${elevation}`,
-      `hi-card--padding-${padding}`,
-      `hi-card--radius-${radius}`,
-      pressable && 'hi-card--pressable',
+      'card',
+      `card--elevation-${elevation}`,
+      `card--padding-${padding}`,
+      `card--radius-${radius}`,
+      isPressable && 'card--pressable',
       className,
     )
 
-    if (pressable) {
+    if (isPressable) {
       return (
         <button
           ref={ref as React.Ref<HTMLButtonElement>}

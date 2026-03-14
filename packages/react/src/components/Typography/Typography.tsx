@@ -1,18 +1,18 @@
 /**
- * @component Typography
+ * @component Text
  * @description Text component with predefined style variants
  * @platform React (Web)
  * @usage
  * ```tsx
- * <Typography variant="h1">Heading 1</Typography>
- * <Typography variant="body1">Body text goes here</Typography>
- * <Typography variant="caption" color="neutral.500">
+ * <Text variant="h1">Heading 1</Text>
+ * <Text variant="body1">Body text goes here</Text>
+ * <Text variant="caption" color="neutral.500">
  *   Caption text
- * </Typography>
+ * </Text>
  * ```
  */
 
-import type { TypographyProps } from '@hi-design/types'
+import type { TextProps } from '@hi-design/types'
 import { forwardRef, memo, useMemo } from 'react'
 import './Typography.css'
 
@@ -30,14 +30,14 @@ const elementTagMap = {
   overline: 'span',
 } as const
 
-export const Typography = forwardRef<HTMLElement, TypographyProps>(
+export const Text = forwardRef<HTMLElement, TextProps>(
   (
     {
-      variant = 'body1',
+      textVariant = 'body1',
       weight,
       color,
       align = 'left',
-      noWrap = false,
+      isNoWrap = false,
       numberOfLines,
       className,
       children,
@@ -115,7 +115,7 @@ export const Typography = forwardRef<HTMLElement, TypographyProps>(
       },
     }
 
-    const textStyle = textStyles[variant as keyof typeof textStyles]
+    const textStyle = textStyles[textVariant as keyof typeof textStyles]
     const fontWeight = weight || (textStyle.fontWeight as string)
 
     const style = useMemo(
@@ -132,22 +132,22 @@ export const Typography = forwardRef<HTMLElement, TypographyProps>(
             : textStyle.letterSpacing,
         color: color || '#111827',
         textAlign: align,
-        whiteSpace: noWrap ? 'nowrap' : undefined,
+        whiteSpace: isNoWrap ? 'nowrap' : undefined,
         overflow: numberOfLines ? 'hidden' : undefined,
         textOverflow: numberOfLines ? 'ellipsis' : undefined,
         display: numberOfLines ? '-webkit-box' : undefined,
         WebkitLineClamp: numberOfLines || undefined,
         WebkitBoxOrient: numberOfLines ? ('vertical' as const) : undefined,
       }),
-      [textStyle, fontWeight, color, align, noWrap, numberOfLines],
+      [textStyle, fontWeight, color, align, isNoWrap, numberOfLines],
     )
 
-    const Tag = elementTagMap[variant]
+    const Tag = elementTagMap[textVariant]
 
     return (
       <Tag
         ref={ref as never}
-        className={`hi-typography hi-typography--${variant} ${className || ''}`}
+        className={`typography typography--${textVariant} ${className || ''}`}
         style={style}
         data-testid={testID}
         {...rest}
@@ -158,6 +158,6 @@ export const Typography = forwardRef<HTMLElement, TypographyProps>(
   },
 )
 
-Typography.displayName = 'Typography'
+Text.displayName = 'Text'
 
-export default memo(Typography)
+export default memo(Text)

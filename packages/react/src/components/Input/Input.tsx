@@ -30,15 +30,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       variant = 'outline',
       size = 'md',
       state = 'default',
-      disabled = false,
-      fullWidth = false,
+      isDisabled = false,
+      isFullWidth = false,
       readOnly = false,
       required = false,
       label,
       helperText,
       errorText,
       className,
-      onChangeText,
+      onChange,
       onFocus,
       onBlur,
       onSubmit,
@@ -77,7 +77,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       if (value === undefined) {
         setInternalValue(newValue)
       }
-      onChangeText?.(newValue)
+      onChange?.(newValue)
     }
 
     const handleFocus = (_e: React.FocusEvent<HTMLInputElement>) => {
@@ -97,19 +97,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }
 
     const containerClassName = clsx(
-      'hi-input__container',
-      `hi-input__container--${size}`,
-      fullWidth && 'hi-input__container--full-width',
+      'input__container',
+      `input__container--${size}`,
+      isFullWidth && 'input__container--full-width',
     )
 
     const inputClassName = clsx(
-      'hi-input',
-      `hi-input--${variant}`,
-      `hi-input--${size}`,
-      `hi-input--${state}`,
-      isFocused && 'hi-input--focused',
-      disabled && 'hi-input--disabled',
-      readOnly && 'hi-input--read-only',
+      'input',
+      `input--${variant}`,
+      `input--${size}`,
+      `input--${state}`,
+      isFocused && 'input--focused',
+      isDisabled && 'input--disabled',
+      readOnly && 'input--read-only',
       className, // Allow custom className override (shadcn/ui style)
     )
 
@@ -132,7 +132,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className={inputClassName}
           value={currentValue}
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={isDisabled}
           readOnly={readOnly}
           required={required}
           onChange={handleChange}

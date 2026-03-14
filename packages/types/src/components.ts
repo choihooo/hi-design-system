@@ -129,13 +129,13 @@ export interface InputProps {
    * Disable the input
    * @default false
    */
-  disabled?: boolean
+  isDisabled?: boolean
 
   /**
    * Input is full width of its container
    * @default false
    */
-  fullWidth?: boolean
+  isFullWidth?: boolean
 
   /**
    * Read-only mode
@@ -172,7 +172,7 @@ export interface InputProps {
   /**
    * Value change handler
    */
-  onChangeText?: (text: string) => void
+  onChange?: (text: string) => void
 
   /**
    * Focus change handler
@@ -285,14 +285,14 @@ export interface CardProps {
 }
 
 /**
- * Typography component props
+ * Text component props
  */
-export interface TypographyProps {
+export interface TextProps {
   /**
    * Text style variant
    * @default 'body1'
    */
-  variant?:
+  textVariant?:
     | 'h1'
     | 'h2'
     | 'h3'
@@ -336,7 +336,7 @@ export interface TypographyProps {
    * Disable text wrapping
    * @default false
    */
-  noWrap?: boolean
+  isNoWrap?: boolean
 
   /**
    * Number of lines to show (React Native only, web uses line-clamp)

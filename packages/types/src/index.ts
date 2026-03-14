@@ -13,7 +13,7 @@ export type {
   ModalProps,
   SizeVariant,
   ToastProps,
-  TypographyProps,
+  TextProps,
 } from './components'
 
 /**

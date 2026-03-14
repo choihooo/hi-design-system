@@ -5,11 +5,11 @@
 [33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
 vite v5.4.21 building for production...
 transforming...
-✓ 53 modules transformed.
+✓ 59 modules transformed.
 rendering chunks...
 computing gzip size...
-dist/style.css        11.99 kB │ gzip:  2.59 kB
-dist/hi-design.es.js  47.10 kB │ gzip: 11.94 kB
-dist/style.css         11.99 kB │ gzip:  2.59 kB
-dist/hi-design.umd.js  33.10 kB │ gzip: 10.46 kB
-✓ built in 219ms
+dist/style.css        11.55 kB │ gzip:  2.59 kB
+dist/hi-design.es.js  48.37 kB │ gzip: 12.30 kB
+dist/style.css         11.55 kB │ gzip:  2.59 kB
+dist/hi-design.umd.js  34.06 kB │ gzip: 10.79 kB
+✓ built in 1.37s
