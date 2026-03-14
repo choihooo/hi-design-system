@@ -18,9 +18,49 @@ export type SizeVariant = 'sm' | 'md' | 'lg'
 export type ColorVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'error'
 
 /**
+ * Standardized event handlers for all interactive components
+ */
+export interface InteractiveHandlers {
+  /**
+   * Press/Click handler
+   */
+  onPress?: () => void | Promise<void>
+
+  /**
+   * Click handler for web
+   */
+  onClick?: () => void
+
+  /**
+   * Focus handler
+   */
+  onFocus?: (event: React.FocusEvent) => void
+
+  /**
+   * Blur handler
+   */
+  onBlur?: (event: React.FocusEvent) => void
+
+  /**
+   * Mouse down handler
+   */
+  onMouseDown?: (event: React.MouseEvent) => void
+
+  /**
+   * Mouse up handler
+   */
+  onMouseUp?: (event: React.MouseEvent) => void
+
+  /**
+   * Mouse leave handler
+   */
+  onMouseLeave?: (event: React.MouseEvent) => void
+}
+
+/**
  * Button component props
  */
-export interface ButtonProps {
+export interface ButtonProps extends BaseComponentProps, InteractiveHandlers {
   /**
    * Visual style variant of the button
    * @default 'primary'
@@ -58,35 +98,28 @@ export interface ButtonProps {
   fullWidth?: boolean
 
   /**
-   * Click/tap handler
+   * Button is loading (shows spinner)
+   * @default false
    */
-  onPress?: () => void | Promise<void>
+  isLoading?: boolean
 
   /**
-   * Web click handler
+   * Button is disabled (prevents interactions)
+   * @default false
    */
-  onClick?: () => void
+  isDisabled?: boolean
 
   /**
-   * Custom className for styling overrides (shadcn/ui style)
+   * Button takes full width
+   * @default false
    */
-  className?: string
-
-  /**
-   * Button content
-   */
-  children?: ReactNode
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
+  isFullWidth?: boolean
 }
 
 /**
  * Input component props
  */
-export interface InputProps {
+export interface InputProps extends BaseComponentProps {
   /**
    * Input value
    */
@@ -129,13 +162,13 @@ export interface InputProps {
    * Disable the input
    * @default false
    */
-  disabled?: boolean
+  isDisabled?: boolean
 
   /**
    * Input is full width of its container
    * @default false
    */
-  fullWidth?: boolean
+  isFullWidth?: boolean
 
   /**
    * Read-only mode
@@ -165,14 +198,9 @@ export interface InputProps {
   errorText?: string
 
   /**
-   * Custom className for styling overrides (shadcn/ui style)
-   */
-  className?: string
-
-  /**
    * Value change handler
    */
-  onChangeText?: (text: string) => void
+  onChange?: (text: string) => void
 
   /**
    * Focus change handler
@@ -188,11 +216,6 @@ export interface InputProps {
    * Submit handler (called on Enter key press)
    */
   onSubmit?: (event: React.FormEvent) => void
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
 
   /**
    * Input name attribute for forms
@@ -238,7 +261,7 @@ export interface InputProps {
 /**
  * Card component props
  */
-export interface CardProps extends BaseComponentProps {
+export interface CardProps extends BaseComponentProps, InteractiveHandlers {
   /**
    * Elevation/shadow depth
    * @default 'md'
@@ -261,12 +284,7 @@ export interface CardProps extends BaseComponentProps {
    * Card is clickable/pressable
    * @default false
    */
-  pressable?: boolean
-
-  /**
-   * Click/tap handler (when pressable is true)
-   */
-  onPress?: () => void
+  isPressable?: boolean
 
   /**
    * Type of element to render when pressable
@@ -358,7 +376,7 @@ export interface TypographyProps {
 /**
  * Modal component props
  */
-export interface ModalProps extends BaseComponentProps {
+export interface ModalProps {
   /**
    * Modal visibility
    * @default false
@@ -368,7 +386,7 @@ export interface ModalProps extends BaseComponentProps {
   /**
    * Modal title
    */
-  title?: React.ReactNode
+  title?: string
 
   /**
    * Modal size
@@ -377,28 +395,10 @@ export interface ModalProps extends BaseComponentProps {
   size?: SizeVariant
 
   /**
-   * Modal width in pixels or CSS units
-   * @default depends on size
-   */
-  width?: string | number
-
-  /**
-   * Modal height in pixels or CSS units
-   * @default 'auto'
-   */
-  height?: string | number
-
-  /**
    * Close on backdrop click
    * @default true
    */
   closeOnBackdropPress?: boolean
-
-  /**
-   * Close on escape key press
-   * @default true
-   */
-  closeOnEscape?: boolean
 
   /**
    * Show close button
@@ -407,76 +407,19 @@ export interface ModalProps extends BaseComponentProps {
   showCloseButton?: boolean
 
   /**
-   * Close button icon (React element)
-   */
-  closeIcon?: React.ReactNode
-
-  /**
-   * Backdrop opacity
-   * @default 0.5
-   */
-  backdropOpacity?: number
-
-  /**
-   * Whether modal should be centered
-   * @default true
-   */
-  centered?: boolean
-
-  /**
-   * Whether modal should be scrollable
-   * @default false
-   */
-  scrollable?: boolean
-
-  /**
-   * Animation duration in milliseconds
-   * @default 300
-   */
-  animationDuration?: number
-
-  /**
-   * Z-index for modal stack
-   * @default 1000
-   */
-  zIndex?: number
-
-  /**
    * Close handler
    */
-  onClose?: (reason?: 'backdrop' | 'escape' | 'close-button') => void
+  onClose?: () => void
 
   /**
-   * Modal content container props
+   * Modal content
    */
-  contentProps?: React.HTMLAttributes<HTMLDivElement>
+  children?: ReactNode
 
   /**
-   * Overlay style props
+   * Test ID for testing
    */
-  overlayStyle?: React.CSSProperties
-
-  /**
-   * Modal container style props
-   */
-  containerStyle?: React.CSSProperties
-
-  /**
-   * Prevent body scroll when modal is open
-   * @default true
-   */
-  preventBodyScroll?: boolean
-
-  /**
-   * Focus trap for accessibility
-   * @default true
-   */
-  trapFocus?: boolean
-
-  /**
-   * Initial focus element selector
-   */
-  initialFocus?: string
+  testID?: string
 }
 
 /**
