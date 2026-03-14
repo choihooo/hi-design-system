@@ -37,12 +37,7 @@ export interface HiDesignPluginOptions {
  * - TypeScript support
  */
 export function hiDesignPlugin(options: HiDesignPluginOptions = {}) {
-  const {
-    tokensPath = '../../../tokens/src',
-    typesPath = '../../../types/src',
-    typescript = true,
-    cssModules = false,
-  } = options
+  const { tokensPath = '../../../tokens/src', typesPath = '../../../types/src' } = options
 
   return [
     react(),

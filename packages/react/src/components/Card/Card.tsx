@@ -16,7 +16,7 @@ import clsx from 'clsx'
 import { forwardRef, memo } from 'react'
 import './Card.css'
 
-export const Card = forwardRef<HTMLDivElement, CardProps>(
+export const Card = forwardRef<HTMLElement, CardProps>(
   (
     {
       elevation = 'md',
@@ -31,19 +31,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
     },
     ref,
   ) => {
-    const handleClick = () => {
-      if (pressable && onPress) {
-        onPress()
-      }
-    }
-
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if (pressable && onPress && (e.key === 'Enter' || e.key === ' ')) {
-        e.preventDefault()
-        onPress()
-      }
-    }
-
     const cardClassName = clsx(
       'hi-card',
       `hi-card--elevation-${elevation}`,
@@ -53,15 +40,26 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       className,
     )
 
+    if (pressable) {
+      return (
+        <button
+          ref={ref as React.Ref<HTMLButtonElement>}
+          className={cardClassName}
+          onClick={onPress}
+          data-testid={testID}
+          type="button"
+          {...rest}
+        >
+          {children}
+        </button>
+      )
+    }
+
     return (
       <div
-        ref={ref}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={cardClassName}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
         data-testid={testID}
-        role={pressable ? 'button' : undefined}
-        tabIndex={pressable ? 0 : undefined}
         {...rest}
       >
         {children}

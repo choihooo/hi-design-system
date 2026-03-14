@@ -117,14 +117,22 @@ export const Modal: React.FC<ModalProps> = ({
   const modalContent = (
     <div
       className={`hi-modal-overlay ${prefersReduced ? 'hi-modal-overlay--no-animation' : ''}`}
-      onClick={closeOnBackdropPress ? onClose : undefined}
       data-testid={testID ? `${testID}-overlay` : 'hi-modal-overlay'}
       role="presentation"
     >
+      {closeOnBackdropPress ? (
+        <button
+          className="hi-modal-overlay__backdrop"
+          onClick={onClose}
+          aria-label="Close modal"
+          type="button"
+        />
+      ) : (
+        <div className="hi-modal-overlay__backdrop" aria-hidden="true" />
+      )}
       <div
         ref={modalRef}
         className={`hi-modal hi-modal--${size} ${prefersReduced ? 'hi-modal--no-animation' : ''}`}
-        onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}

@@ -27,7 +27,7 @@ export const Success: Story = {
   },
 }
 
-export const Error: Story = {
+export const ErrorState: Story = {
   args: {
     variant: 'error',
     message: 'An error occurred.',

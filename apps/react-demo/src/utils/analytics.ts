@@ -10,6 +10,10 @@ interface AnalyticsConfig {
   debug?: boolean
 }
 
+type AnalyticsValue = string | number | boolean | null | undefined
+export type AnalyticsParameters = Record<string, AnalyticsValue>
+type GtagArgs = [command: string, ...args: unknown[]]
+
 let isInitialized = false
 
 /**
@@ -35,8 +39,8 @@ export async function initAnalytics(config: AnalyticsConfig) {
 
     // Initialize gtag
     window.dataLayer = window.dataLayer || []
-    window.gtag = function gtag() {
-      window.dataLayer.push(arguments)
+    window.gtag = function gtag(...args: GtagArgs) {
+      window.dataLayer.push(args)
     }
     window.gtag('js', new Date())
     window.gtag('config', config.trackingId, {
@@ -66,7 +70,7 @@ export function trackPageView(page?: string) {
 /**
  * Track custom event
  */
-export function trackEvent(eventName: string, parameters?: Record<string, any>) {
+export function trackEvent(eventName: string, parameters?: AnalyticsParameters) {
   if (typeof window === 'undefined' || !window.gtag) return
 
   window.gtag('event', eventName, parameters)
@@ -89,7 +93,7 @@ export function useAnalytics(config: AnalyticsConfig) {
 // Extend window interface for TypeScript
 declare global {
   interface Window {
-    dataLayer: any[]
-    gtag: (...args: any[]) => void
+    dataLayer: GtagArgs[]
+    gtag: (...args: GtagArgs) => void
   }
 }

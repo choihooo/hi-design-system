@@ -1,13 +1,21 @@
 .hi-modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
   padding: var(--spacing-lg);
   animation: hi-modal-fade-in 0.2s ease-out;
+}
+
+.hi-modal-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 @keyframes hi-modal-fade-in {
@@ -33,6 +41,8 @@
 }
 
 .hi-modal {
+  position: relative;
+  z-index: 1;
   background: var(--bg-primary, #ffffff);
   border-radius: var(--radius-lg, 12px);
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);

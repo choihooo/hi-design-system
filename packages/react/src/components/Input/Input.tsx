@@ -119,7 +119,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <label className="hi-input__label" htmlFor={inputId}>
             {label}
             {required && (
-              <span className="hi-input__required" aria-label="required">
+              <span className="hi-input__required" aria-hidden="true">
                 *
               </span>
             )}

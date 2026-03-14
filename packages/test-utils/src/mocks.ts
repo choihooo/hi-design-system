@@ -9,6 +9,7 @@
 export const mockHandlers = {
   onPress: jest.fn(),
   onClick: jest.fn(),
+  onClose: jest.fn(),
   onFocus: jest.fn(),
   onBlur: jest.fn(),
   onChange: jest.fn(),
@@ -45,14 +46,14 @@ export const mockProps = {
   card: {
     elevation: 'md' as const,
     padding: 'lg' as const,
-    children: <div>Card Content</div>,
+    children: 'Card Content',
     testID: 'test-card',
   },
 
   modal: {
     visible: true,
     title: 'Test Modal',
-    children: <p>Modal content</p>,
+    children: 'Modal content',
     onClose: mockHandlers.onClose,
     testID: 'test-modal',
   },
@@ -64,7 +65,7 @@ export const mockProps = {
     duration: 3000,
     onClose: mockHandlers.onClose,
   },
-};
+}
 
 /**
  * Reset all mocks

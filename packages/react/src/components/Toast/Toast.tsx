@@ -24,7 +24,7 @@ import {
 } from '@hi-design/icons'
 import type { ToastProps } from '@hi-design/types'
 import type React from 'react'
-import { memo, useEffect, useState } from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import { useReducedMotion } from '../../utils/animations'
 import './Toast.css'
 
@@ -41,13 +41,13 @@ export const Toast: React.FC<ToastProps> = ({
   const [isAnimatingOut, setIsAnimatingOut] = useState(false)
   const prefersReduced = useReducedMotion()
 
-  const handleAnimateOut = () => {
+  const handleAnimateOut = useCallback(() => {
     setIsAnimatingOut(true)
     setTimeout(() => {
       setIsVisible(false)
       onClose?.()
     }, 300) // Wait for animation to complete
-  }
+  }, [onClose])
 
   useEffect(() => {
     if (visible) {

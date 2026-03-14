@@ -17,6 +17,8 @@ import type { TypographyProps } from '@hi-design/types'
 import type React from 'react'
 import { StyleSheet, Text, type TextStyle } from 'react-native'
 
+type RNFontWeight = NonNullable<TextStyle['fontWeight']>
+
 export const Typography: React.FC<TypographyProps> = ({
   variant = 'body1',
   weight,
@@ -29,13 +31,14 @@ export const Typography: React.FC<TypographyProps> = ({
 }) => {
   const textStyle = typography.textStyles[variant]
   const fontWeight = weight || textStyle.fontWeight
+  const resolvedColor = color || colors.neutral[900]
 
   const textStyleFlattened = StyleSheet.flatten([
     styles[variant],
     {
-      fontWeight: fontWeight as any,
+      fontWeight: fontWeight as RNFontWeight,
       textAlign: align,
-      color: color ? (colors as any)[color] || color : colors.neutral[900],
+      color: resolvedColor,
     },
   ] as TextStyle)
 
@@ -49,67 +52,67 @@ export const Typography: React.FC<TypographyProps> = ({
 const styles = StyleSheet.create({
   h1: {
     fontSize: 60,
-    fontWeight: '700' as any,
+    fontWeight: '700',
     lineHeight: 75,
     letterSpacing: -3,
   },
   h2: {
     fontSize: 48,
-    fontWeight: '700' as any,
+    fontWeight: '700',
     lineHeight: 60,
     letterSpacing: -2.4,
   },
   h3: {
     fontSize: 36,
-    fontWeight: '600' as any,
+    fontWeight: '600',
     lineHeight: 45,
     letterSpacing: -0.9,
   },
   h4: {
     fontSize: 30,
-    fontWeight: '600' as any,
+    fontWeight: '600',
     lineHeight: 41,
     letterSpacing: 0,
   },
   h5: {
     fontSize: 24,
-    fontWeight: '600' as any,
+    fontWeight: '600',
     lineHeight: 33,
     letterSpacing: 0,
   },
   h6: {
     fontSize: 20,
-    fontWeight: '500' as any,
+    fontWeight: '500',
     lineHeight: 30,
     letterSpacing: 0,
   },
   body1: {
     fontSize: 16,
-    fontWeight: '400' as any,
+    fontWeight: '400',
     lineHeight: 24,
     letterSpacing: 0,
   },
   body2: {
     fontSize: 14,
-    fontWeight: '400' as any,
+    fontWeight: '400',
     lineHeight: 21,
     letterSpacing: 0,
   },
   button: {
     fontSize: 16,
-    fontWeight: '600' as any,
+    fontWeight: '600',
     lineHeight: 24,
     letterSpacing: 0,
   },
   caption: {
     fontSize: 12,
-    fontWeight: '400' as any,
+    fontWeight: '400',
     lineHeight: 18,
     letterSpacing: 0,
   },
   overline: {
     fontSize: 12,
-    fontWeight: '500' as any,
+    fontWeight: '500',
     lineHeight: 18,
     letterSpacing: 1.2,
     textTransform: 'uppercase',

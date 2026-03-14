@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import type { AnalyticsParameters } from '../utils/analytics'
 
 interface AnalyticsProviderProps {
   children: React.ReactNode
@@ -43,7 +44,7 @@ export function AnalyticsProvider({
  */
 export function useAnalytics() {
   return {
-    trackEvent: async (eventName: string, parameters?: Record<string, any>) => {
+    trackEvent: async (eventName: string, parameters?: AnalyticsParameters) => {
       if (typeof window === 'undefined') return
 
       const { trackEvent: track } = await import('../utils/analytics')

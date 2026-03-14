@@ -2,7 +2,7 @@
  * Accessibility and Animation Utilities Tests
  */
 
-import { beforeEach, describe, expect, it, vi, type Mock } from 'vitest'
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
 import { getAnimationDuration, prefersReducedMotion } from '../animations'
 
 // Mock window.matchMedia

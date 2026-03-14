@@ -17,7 +17,7 @@
  */
 import { createContext, useContext as useContextReact, useState } from 'react'
 
-export interface CompoundState<T = any> {
+export interface CompoundState<T = unknown> {
   [key: string]: T
 }
 

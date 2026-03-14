@@ -34,7 +34,7 @@ export type RequiredBy<T, K extends keyof T> = Omit<T, K> & Required<Pick<T, K>>
  * Polymorphic component props
  * Allows components to render as different HTML elements
  */
-export type PolymorphicProps<E extends React.ElementType, P = {}> = P & {
+export type PolymorphicProps<E extends React.ElementType, P = Record<string, never>> = P & {
   /**
    * The underlying element type to render
    */
@@ -65,6 +65,6 @@ export interface BaseComponentProps {
  * Event handler types
  */
 export type EventHandler<T = void> = () => T
-export type EventHandlerWithArg<T, A = any> = (arg: A) => T
+export type EventHandlerWithArg<T, A = unknown> = (arg: A) => T
 export type AsyncEventHandler<T = void> = () => Promise<T>
-export type AsyncEventHandlerWithArg<T, A = any> = (arg: A) => Promise<T>
+export type AsyncEventHandlerWithArg<T, A = unknown> = (arg: A) => Promise<T>

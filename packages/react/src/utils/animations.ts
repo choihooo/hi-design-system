@@ -24,11 +24,13 @@ export function getAnimationDuration(defaultDuration: number): number {
  * Hook to use reduced motion preference
  */
 export function useReducedMotion(): boolean {
-  if (typeof window === 'undefined') return false
-
-  const [prefersReduced, setPrefersReduced] = React.useState(prefersReducedMotion())
+  const [prefersReduced, setPrefersReduced] = React.useState(() => prefersReducedMotion())
 
   React.useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined
+    }
+
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
     const handleChange = () => setPrefersReduced(mediaQuery.matches)
 

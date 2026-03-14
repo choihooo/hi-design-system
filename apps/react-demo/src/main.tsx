@@ -6,7 +6,13 @@ import App from './App'
 // 앱 시작 시 CSS 변수 주입 (가장 먼저 실행됨)
 injectCSSVars('light')
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
+const rootElement = document.getElementById('root')
+
+if (!rootElement) {
+  throw new Error('Root element not found')
+}
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,

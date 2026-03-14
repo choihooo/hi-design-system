@@ -64,7 +64,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...rest}
       >
         {loading && (
-          <span className="hi-button__spinner" role="status" aria-label="Loading">
+          <span className="hi-button__spinner" aria-hidden="true">
             <span className="sr-only">Loading...</span>
           </span>
         )}

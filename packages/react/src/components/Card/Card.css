@@ -8,6 +8,13 @@
   transition: all 200ms ease;
 }
 
+button.hi-card {
+  width: 100%;
+  border: none;
+  text-align: left;
+  font: inherit;
+}
+
 /* Elevation variants */
 .hi-card--elevation-none {
   box-shadow: none;

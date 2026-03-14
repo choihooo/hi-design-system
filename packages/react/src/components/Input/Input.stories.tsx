@@ -22,7 +22,7 @@ type Story = StoryObj<typeof Input>
 // States
 export const Default: Story = {}
 
-export const Error: Story = {
+export const ErrorState: Story = {
   args: {
     state: 'error',
     errorText: 'This field has an error',

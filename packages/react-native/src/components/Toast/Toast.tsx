@@ -25,7 +25,7 @@ import {
 import { borderRadius, colors, semantic, spacingPresets, typography } from '@hi-design/tokens'
 import type { ToastProps } from '@hi-design/types'
 import type React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
   AccessibilityInfo,
   Animated,
@@ -55,7 +55,7 @@ export const Toast: React.FC<ToastProps> = ({
     setIsVisible(visible)
   }, [visible])
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     Animated.parallel([
       Animated.timing(fadeAnim, {
         toValue: 0,
@@ -71,7 +71,7 @@ export const Toast: React.FC<ToastProps> = ({
       setIsVisible(false)
       onClose?.()
     })
-  }
+  }, [fadeAnim, onClose, position, slideAnim])
 
   useEffect(() => {
     if (isVisible) {
