@@ -5,11 +5,27 @@
 [33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
 vite v5.4.21 building for production...
 transforming...
-✓ 53 modules transformed.
-rendering chunks...
-computing gzip size...
-dist/style.css        11.99 kB │ gzip:  2.59 kB
-dist/hi-design.es.js  47.10 kB │ gzip: 11.94 kB
-dist/style.css         11.99 kB │ gzip:  2.59 kB
-dist/hi-design.umd.js  33.10 kB │ gzip: 10.46 kB
-✓ built in 219ms
+✓ 59 modules transformed.
+x Build failed in 237ms
+error during build:
+src/index.ts (20:9): "Modal" is not exported by "src/components/Modal/Modal.tsx", imported by "src/index.ts".
+file: /Users/choiho/coding/hi-design-system/packages/react/src/index.ts:20:9
+
+18: export { Card } from './components/Card/Card'
+19: export { Input } from './components/Input/Input'
+20: export { Modal } from './components/Modal/Modal'
+             ^
+21: export { Toast } from './components/Toast/Toast'
+22: export { Typography } from './components/Typography/Typography'
+
+    at getRollupError (file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/parseAst.js:402:41)
+    at error (file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/parseAst.js:398:42)
+    at Module.error (file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:17040:16)
+    at Module.getVariableForExportName (file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:17199:29)
+    at Module.getExportedVariablesByName (file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:17116:45)
+    at Module.includeAllExports (file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:17266:37)
+    at Graph.includeStatements (file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:22837:36)
+    at Graph.build (file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:22767:14)
+    at async file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:23455:13
+    at async catchUnfinishedHookActions (file:///Users/choiho/coding/hi-design-system/node_modules/.pnpm/rollup@4.59.0/node_modules/rollup/dist/es/shared/node-entry.js:22925:16)
+ ELIFECYCLE  Command failed with exit code 1.

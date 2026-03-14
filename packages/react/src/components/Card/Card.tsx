@@ -11,6 +11,7 @@
  * ```
  */
 
+import React from 'react'
 import type { CardProps } from '@hi-design/types'
 import clsx from 'clsx'
 import { forwardRef, memo } from 'react'
@@ -24,6 +25,9 @@ export const Card = forwardRef<HTMLElement, CardProps>(
       radius = 'md',
       pressable = false,
       onPress,
+      pressableAs = 'button',
+      pressableProps,
+      accessibleProps,
       className,
       children,
       testID,
@@ -32,35 +36,42 @@ export const Card = forwardRef<HTMLElement, CardProps>(
     ref,
   ) => {
     const cardClassName = clsx(
-      'hi-card',
-      `hi-card--elevation-${elevation}`,
-      `hi-card--padding-${padding}`,
-      `hi-card--radius-${radius}`,
-      pressable && 'hi-card--pressable',
+      'card',
+      `card--elevation-${elevation}`,
+      `card--padding-${padding}`,
+      `card--radius-${radius}`,
+      pressable && 'card--pressable',
       className,
     )
 
+    const baseProps = {
+      'data-testid': testID,
+      ...rest,
+    }
+
     if (pressable) {
-      return (
-        <button
-          ref={ref as React.Ref<HTMLButtonElement>}
-          className={cardClassName}
-          onClick={onPress}
-          data-testid={testID}
-          type="button"
-          {...rest}
-        >
-          {children}
-        </button>
+      const pressableElement = React.createElement(
+        pressableAs,
+        {
+          ref: ref as React.Ref<HTMLElement>,
+          className: cardClassName,
+          onClick: onPress,
+          type: pressableAs === 'button' ? 'button' : undefined,
+          ...pressableProps,
+          ...accessibleProps,
+          ...baseProps,
+        },
+        children
       )
+
+      return pressableElement
     }
 
     return (
       <div
         ref={ref as React.Ref<HTMLDivElement>}
         className={cardClassName}
-        data-testid={testID}
-        {...rest}
+        {...baseProps}
       >
         {children}
       </div>

@@ -238,7 +238,7 @@ export interface InputProps {
 /**
  * Card component props
  */
-export interface CardProps {
+export interface CardProps extends BaseComponentProps {
   /**
    * Elevation/shadow depth
    * @default 'md'
@@ -269,19 +269,20 @@ export interface CardProps {
   onPress?: () => void
 
   /**
-   * Custom className for styling overrides (web)
+   * Type of element to render when pressable
+   * @default 'button'
    */
-  className?: string
+  pressableAs?: 'button' | 'a' | 'div'
 
   /**
-   * Card content
+   * Additional props for pressable element (when pressable is true)
    */
-  children?: ReactNode
+  pressableProps?: React.HTMLAttributes<HTMLElement>
 
   /**
-   * Test ID for testing
+   * Accessibility props for pressable element
    */
-  testID?: string
+  accessibleProps?: React.AriaAttributes
 }
 
 /**
@@ -357,7 +358,7 @@ export interface TypographyProps {
 /**
  * Modal component props
  */
-export interface ModalProps {
+export interface ModalProps extends BaseComponentProps {
   /**
    * Modal visibility
    * @default false
@@ -367,7 +368,7 @@ export interface ModalProps {
   /**
    * Modal title
    */
-  title?: string
+  title?: React.ReactNode
 
   /**
    * Modal size
@@ -376,10 +377,28 @@ export interface ModalProps {
   size?: SizeVariant
 
   /**
+   * Modal width in pixels or CSS units
+   * @default depends on size
+   */
+  width?: string | number
+
+  /**
+   * Modal height in pixels or CSS units
+   * @default 'auto'
+   */
+  height?: string | number
+
+  /**
    * Close on backdrop click
    * @default true
    */
   closeOnBackdropPress?: boolean
+
+  /**
+   * Close on escape key press
+   * @default true
+   */
+  closeOnEscape?: boolean
 
   /**
    * Show close button
@@ -388,19 +407,76 @@ export interface ModalProps {
   showCloseButton?: boolean
 
   /**
+   * Close button icon (React element)
+   */
+  closeIcon?: React.ReactNode
+
+  /**
+   * Backdrop opacity
+   * @default 0.5
+   */
+  backdropOpacity?: number
+
+  /**
+   * Whether modal should be centered
+   * @default true
+   */
+  centered?: boolean
+
+  /**
+   * Whether modal should be scrollable
+   * @default false
+   */
+  scrollable?: boolean
+
+  /**
+   * Animation duration in milliseconds
+   * @default 300
+   */
+  animationDuration?: number
+
+  /**
+   * Z-index for modal stack
+   * @default 1000
+   */
+  zIndex?: number
+
+  /**
    * Close handler
    */
-  onClose?: () => void
+  onClose?: (reason?: 'backdrop' | 'escape' | 'close-button') => void
 
   /**
-   * Modal content
+   * Modal content container props
    */
-  children?: ReactNode
+  contentProps?: React.HTMLAttributes<HTMLDivElement>
 
   /**
-   * Test ID for testing
+   * Overlay style props
    */
-  testID?: string
+  overlayStyle?: React.CSSProperties
+
+  /**
+   * Modal container style props
+   */
+  containerStyle?: React.CSSProperties
+
+  /**
+   * Prevent body scroll when modal is open
+   * @default true
+   */
+  preventBodyScroll?: boolean
+
+  /**
+   * Focus trap for accessibility
+   * @default true
+   */
+  trapFocus?: boolean
+
+  /**
+   * Initial focus element selector
+   */
+  initialFocus?: string
 }
 
 /**
