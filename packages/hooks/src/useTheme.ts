@@ -15,7 +15,7 @@ interface ThemeContextValue {
 export function useTheme(): ThemeContextValue {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('hi-theme') as Theme
+      const saved = window.localStorage.getItem('hi-theme') as Theme | null
       if (saved && ['light', 'dark', 'system'].includes(saved)) {
         return saved
       }
@@ -26,6 +26,10 @@ export function useTheme(): ThemeContextValue {
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light')
 
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return undefined
+    }
+
     const root = document.documentElement
 
     const applyTheme = (isDark: boolean) => {
@@ -41,15 +45,18 @@ export function useTheme(): ThemeContextValue {
       const handler = (e: MediaQueryListEvent) => applyTheme(e.matches)
       mediaQuery.addEventListener('change', handler)
       return () => mediaQuery.removeEventListener('change', handler)
-    } else {
-      applyTheme(theme === 'dark')
     }
+
+    applyTheme(theme === 'dark')
+    return undefined
   }, [theme])
 
   useEffect(() => {
-    if (theme !== 'system') {
-      localStorage.setItem('hi-theme', theme)
+    if (typeof window === 'undefined' || theme === 'system') {
+      return
     }
+
+    window.localStorage.setItem('hi-theme', theme)
   }, [theme])
 
   return {

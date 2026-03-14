@@ -86,6 +86,9 @@ importers:
       '@hi-design/react':
         specifier: workspace:*
         version: link:../../packages/react
+      '@hi-design/tokens':
+        specifier: workspace:*
+        version: link:../../packages/tokens
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -294,6 +297,9 @@ importers:
 
   packages/test-utils:
     dependencies:
+      '@hi-design/theme':
+        specifier: workspace:*
+        version: link:../theme
       react:
         specifier: '>=18.0.0'
         version: 18.2.0

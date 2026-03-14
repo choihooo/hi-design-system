@@ -1,15 +1,15 @@
 
-> @hi-design/react@0.0.1 build /home/choiho/hi-design-system/packages/react
+> @hi-design/react@0.1.0 build /Users/choiho/coding/hi-design-system/packages/react
 > vite build
 
 [33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
 vite v5.4.21 building for production...
 transforming...
-✓ 1736 modules transformed.
+✓ 53 modules transformed.
 rendering chunks...
 computing gzip size...
-dist/style.css        11.54 kB │ gzip:  2.49 kB
-dist/hi-design.es.js  38.40 kB │ gzip: 10.68 kB
-dist/style.css         11.54 kB │ gzip: 2.49 kB
-dist/hi-design.umd.js  26.12 kB │ gzip: 9.19 kB
-✓ built in 1.03s
+dist/style.css        11.99 kB │ gzip:  2.59 kB
+dist/hi-design.es.js  47.10 kB │ gzip: 11.94 kB
+dist/style.css         11.99 kB │ gzip:  2.59 kB
+dist/hi-design.umd.js  33.10 kB │ gzip: 10.46 kB
+✓ built in 219ms

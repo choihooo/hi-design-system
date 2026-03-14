@@ -15,6 +15,7 @@
 
 import path from 'node:path'
 import react from '@vitejs/plugin-react'
+import type { PluginOption } from 'vite'
 
 export interface HiDesignPluginOptions {
   // Path to hi-design tokens package
@@ -36,7 +37,7 @@ export interface HiDesignPluginOptions {
  * - CSS module support
  * - TypeScript support
  */
-export function hiDesignPlugin(options: HiDesignPluginOptions = {}) {
+export function hiDesignPlugin(options: HiDesignPluginOptions = {}): PluginOption[] {
   const { tokensPath = '../../../tokens/src', typesPath = '../../../types/src' } = options
 
   return [

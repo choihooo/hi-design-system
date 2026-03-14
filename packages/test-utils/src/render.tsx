@@ -4,6 +4,8 @@
  */
 
 import { ThemeProvider } from '@hi-design/theme'
+import { type RenderResult, render as rtlRender } from '@testing-library/react'
+import type { ComponentType, ReactElement, ReactNode } from 'react'
 
 // Import global styles if available
 try {
@@ -14,7 +16,7 @@ try {
 
 export interface RenderOptions {
   theme?: 'light' | 'dark' | 'system'
-  wrapper?: React.ComponentType<{ children: React.ReactNode }>
+  wrapper?: ComponentType<{ children: ReactNode }>
 }
 
 /**
@@ -28,35 +30,33 @@ export interface RenderOptions {
  * ```
  */
 export function render(
-  ui: React.ReactElement,
+  ui: ReactElement,
   { theme = 'light', wrapper: Wrapper }: RenderOptions = {},
-) {
-  const ThemedWrapper = Wrapper
-    ? ({ children }: { children: React.ReactNode }) => (
+): RenderResult {
+  const ThemedWrapper: ComponentType<{ children: ReactNode }> = Wrapper
+    ? ({ children }: { children: ReactNode }) => (
         <ThemeProvider defaultTheme={theme}>
           <Wrapper>{children}</Wrapper>
         </ThemeProvider>
       )
-    : ({ children }: { children: React.ReactNode }) => (
+    : ({ children }: { children: ReactNode }) => (
         <ThemeProvider defaultTheme={theme}>{children}</ThemeProvider>
       )
 
-  return {
-    ...render(ui, { wrapper: ThemedWrapper }),
-  }
+  return rtlRender(ui, { wrapper: ThemedWrapper })
 }
 
 /**
  * Render with dark theme
  */
-export function renderDark(ui: React.ReactElement) {
+export function renderDark(ui: ReactElement): RenderResult {
   return render(ui, { theme: 'dark' })
 }
 
 /**
  * Render with light theme
  */
-export function renderLight(ui: React.ReactElement) {
+export function renderLight(ui: ReactElement): RenderResult {
   return render(ui, { theme: 'light' })
 }
 

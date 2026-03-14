@@ -2,18 +2,19 @@
  * Mock data and utilities for testing
  * @description Common mock data for component testing
  */
+import { vi } from 'vitest'
 
 /**
  * Mock event handlers
  */
 export const mockHandlers = {
-  onPress: jest.fn(),
-  onClick: jest.fn(),
-  onClose: jest.fn(),
-  onFocus: jest.fn(),
-  onBlur: jest.fn(),
-  onChange: jest.fn(),
-  onSubmit: jest.fn(),
+  onPress: vi.fn(),
+  onClick: vi.fn(),
+  onClose: vi.fn(),
+  onFocus: vi.fn(),
+  onBlur: vi.fn(),
+  onChange: vi.fn(),
+  onSubmit: vi.fn(),
 }
 
 /**
@@ -22,7 +23,7 @@ export const mockHandlers = {
 export const mockThemeContext = {
   theme: 'light' as const,
   resolvedTheme: 'light' as const,
-  setTheme: jest.fn(),
+  setTheme: vi.fn(),
 }
 
 /**

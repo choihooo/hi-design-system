@@ -40,7 +40,7 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem(storageKey) as Theme
+      const stored = window.localStorage.getItem(storageKey) as Theme | null
       return stored || defaultTheme
     }
     return defaultTheme
@@ -50,6 +50,10 @@ export function ThemeProvider({
 
   // Apply theme changes to DOM and tokens
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return undefined
+    }
+
     const root = document.documentElement
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
@@ -65,8 +69,6 @@ export function ThemeProvider({
     }
 
     // Cleanup function
-    let cleanup: () => void
-
     if (theme === 'system') {
       applyThemeToDom(mediaQuery.matches)
 
@@ -75,19 +77,17 @@ export function ThemeProvider({
       }
 
       mediaQuery.addEventListener('change', handler)
-      cleanup = () => mediaQuery.removeEventListener('change', handler)
-    } else {
-      applyThemeToDom(theme === 'dark')
-      cleanup = () => {}
+      return () => mediaQuery.removeEventListener('change', handler)
     }
 
-    return cleanup
+    applyThemeToDom(theme === 'dark')
+    return undefined
   }, [theme])
 
   // Persist theme to localStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      localStorage.setItem(storageKey, theme)
+      window.localStorage.setItem(storageKey, theme)
     }
   }, [theme, storageKey])
 

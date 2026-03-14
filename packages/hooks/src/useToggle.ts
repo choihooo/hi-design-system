@@ -4,10 +4,17 @@
  */
 import { useCallback, useState } from 'react'
 
-export function useToggle(initialValue: boolean = false): [boolean, () => void] {
+type ToggleHandler = (nextValue?: boolean) => void
+
+export function useToggle(initialValue: boolean = false): [boolean, ToggleHandler] {
   const [value, setValue] = useState(initialValue)
 
-  const toggle = useCallback(() => {
+  const toggle = useCallback((nextValue?: boolean) => {
+    if (typeof nextValue === 'boolean') {
+      setValue(nextValue)
+      return
+    }
+
     setValue((prev) => !prev)
   }, [])
 
