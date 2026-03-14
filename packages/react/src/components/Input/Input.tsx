@@ -1,25 +1,139 @@
 /**
  * @component Input
- * @description Text input component - Composed of Box + Text + native input
+ * @description Text input component with label, helper text, and error states
  * @platform React (Web)
- * @AI-friendly: High - Clear composition pattern using primitives
+ * @AI-friendly: High - Form input with clear states and validation
  *
- * This component demonstrates the "complex = primitive composition" pattern:
- * - Input = Box (layout) + Text (labels) + native input (functionality)
- * - AI can easily understand: "Input is a labeled text box"
- * - Consistent with other components
+ * This component provides a complete form input solution:
+ * - Built-in validation states (default, error, success)
+ * - Accessible form controls with proper labels
+ * - Helper text and error messaging
+ * - Keyboard navigation support
+ *
+ * @composition
+ * ```tsx
+ * Input composition pattern:
+ * <div container>
+ *   <label>{label}</label>
+ *   <input />
+ *   <div helper>
+ *     {errorText || helperText}
+ *   </div>
+ * </div>
+ * ```
  *
  * @usage
  * ```tsx
+ * import { Input } from '@hi-design/react'
+ *
+ * // Basic input
  * <Input
  *   label="Email"
  *   placeholder="Enter your email"
  *   value={email}
- *   onChange={setEmail}
+ * onChange={setEmail}
+ * />
+ *
+ * // With validation
+ * <Input
+ *   label="Password"
+ *   type="password"
  *   state="error"
- *   errorText="Invalid email format"
+ *   errorText="Password must be at least 8 characters"
+ *   value={password}
+ *   onChange={setPassword}
+ * />
+ *
+ * // Required field
+ * <Input
+ *   label="Full Name"
+ *   required
+ *   placeholder="Enter your full name"
+ *   value={name}
+ *   onChange={setName}
+ * />
+ *
+ * // With helper text
+ * <Input
+ *   label="Username"
+ * helperText="Choose a unique username"
+ * placeholder="Enter username"
+ *   value={username}
+ *   onChange={setUsername}
+ * />
+ *
+ * // Disabled input
+ * <Input
+ *   label="Read-only field"
+ *   disabled
+ *   value="Cannot change this"
  * />
  * ```
+ *
+ * @variants
+ * - **outline**: Bordered input (default)
+ * - **filled**: Solid background input
+ *
+ * @sizes
+ * - **sm**: Small input (compact forms)
+ * - **md**: Medium input (default)
+ * - **lg**: Large input (prominent fields)
+ *
+ * @states
+ * - **default**: Normal input state
+ * - **error**: Error state with red border and error message
+ * - **success**: Success state with green border (optional)
+ *
+ * @accessibility
+ * - Labels: Proper label association with htmlFor
+ * - Required fields: Visual indicator and aria-required
+ * - Error states: aria-invalid and aria-describedby for screen readers
+ * - Helper text: Linked via aria-describedby
+ * - Keyboard: Full keyboard navigation support
+ * - Focus states: Clear visual focus indicators
+ *
+ * @validation
+ * ```tsx
+ * // Email validation example
+ * const [email, setEmail] = useState('')
+ * const [emailError, setEmailError] = useState('')
+ *
+ * const validateEmail = (email: string) => {
+ *   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+ *   return emailRegex.test(email)
+ * }
+ *
+ * const handleEmailChange = (newEmail: string) => {
+ *   setEmail(newEmail)
+ *   if (!validateEmail(newEmail)) {
+ *     setEmailError('Please enter a valid email address')
+ *   } else {
+ *     setEmailError('')
+ *   }
+ * }
+ *
+ * <Input
+ *   label="Email Address"
+ *   state={emailError ? 'error' : 'default'}
+ *   errorText={emailError}
+ *   value={email}
+ * onChange={handleEmailChange}
+ *   placeholder="you@example.com"
+ *   required
+ * />
+ * ```
+ *
+ * @best-practices
+ * - Always provide meaningful labels for accessibility
+ * - Use helper text to provide additional context
+ * - Show specific error messages for validation
+ * - Group related inputs using fieldsets/legends
+ * - Use appropriate input types (email, password, tel, etc.)
+ * - Provide clear formatting hints when needed
+ *
+ * @see-also
+ * - Box: Layout primitive for form containers
+ * - Text: Typography primitive for labels
  */
 
 import type { InputProps } from '@hi-design/types'

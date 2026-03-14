@@ -1700,9 +1700,7 @@ const Qr = ge(
         ref: _,
         className: M,
         disabled: l || f,
-        onPress: () => {
-          E && E();
-        },
+        onPress: E,
         onClick: m,
         onFocus: d,
         onBlur: h,

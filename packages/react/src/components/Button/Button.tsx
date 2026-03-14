@@ -9,23 +9,81 @@
  * - AI can easily understand: "Button is a clickable text with optional icon"
  * - Consistent with other components: Input, Card, etc.
  *
+ * @composition
+ * ```tsx
+ * Button composition pattern:
+ * <Pressable disabled={isDisabled} onPress={handleClick}>
+ *   {icon && <Icon name={icon} />}
+ *   <Text>{children}</Text>
+ * </Pressable>
+ * ```
+ *
  * @usage
  * ```tsx
  * // Basic button
- * <Button variant="primary" size="md" onPress={handleClick}>
+ * import { Button } from '@hi-design/react'
+ *
+ * <Button variant="primary" size="md" onPress={() => console.log('clicked')}>
  *   Click me
  * </Button>
  *
  * // Button with icon
- * <Button variant="secondary" icon="star" onPress={handleClick}>
+ * <Button variant="secondary" icon="star" onPress={handleRate}>
  *   Rate us
  * </Button>
  *
  * // Loading button
- * <Button variant="primary" isLoading onPress={handleClick}>
+ * <Button variant="primary" loading onPress={handleSubmit}>
  *   Processing...
  * </Button>
+ *
+ * // Full width button
+ * <Button variant="primary" fullWidth onPress={handleAction}>
+ *   Full Width Action
+ * </Button>
+ *
+ * // Disabled button
+ * <Button variant="primary" disabled onPress={handleDisabled}>
+ *   Cannot Click
+ * </Button>
  * ```
+ *
+ * @variants
+ * - **primary**: Main call-to-action button (brand color)
+ * - **secondary**: Secondary action (neutral color)
+ * - **ghost**: Minimal button (no background)
+ * - **outline**: Bordered button (transparent background)
+ *
+ * @sizes
+ * - **sm**: Small button (compact UI)
+ * - **md**: Medium button (default)
+ * - **lg**: Large button (prominent actions)
+ *
+ * @accessibility
+ * - Keyboard navigation: Full keyboard support (Enter, Space)
+ * - Screen readers: Proper ARIA attributes support
+ * - Focus indicators: Visual focus states
+ * - Touch targets: Minimum 44x44px for mobile
+ * - Loading states: aria-busy attribute for screen readers
+ *
+ * @design-pattern
+ * This component follows the primitive composition pattern:
+ * 1. All interactions handled by Pressable primitive
+ * 2. All text rendering handled by Text primitive
+ * 3. Icons handled by Icon primitive
+ * 4. Only composition logic in Button itself
+ *
+ * @best-practices
+ * - Use descriptive button text that indicates action
+ * - Provide loading feedback for async operations
+ * - Use disabled state instead of removing buttons
+ * - Keep button text short and action-oriented
+ * - Use icon + text combination for clarity
+ *
+ * @see-also
+ * - Pressable: Core interaction primitive
+ * - Text: Typography primitive
+ * - Icon: Icon display primitive
  */
 
 import type { ButtonProps } from '@hi-design/types'
@@ -76,11 +134,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         className={buttonClassName}
         disabled={disabled || loading}
-        onPress={() => {
-          if (onPress) {
-            onPress()
-          }
-        }}
+        onPress={onPress}
         onClick={onClick}
         onFocus={onFocus}
         onBlur={onBlur}
