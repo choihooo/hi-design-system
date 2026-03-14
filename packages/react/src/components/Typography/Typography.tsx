@@ -23,10 +23,25 @@
  * ```
  */
 
-import type { TypographyProps } from '@hi-design/types'
 import React, { forwardRef, useMemo } from 'react'
 import { generateUniqueId } from '../../utils/common'
 import './Typography.css'
+
+/**
+ * Typography component props (temporary local definition)
+ */
+interface TypographyProps {
+  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'button' | 'caption' | 'overline'
+  weight?: 'light' | 'regular' | 'medium' | 'semibold' | 'bold'
+  color?: string
+  align?: 'left' | 'center' | 'right' | 'justify'
+  noWrap?: boolean
+  numberOfLines?: number
+  className?: string
+  style?: React.CSSProperties
+  children?: React.ReactNode
+  testID?: string
+}
 
 const elementTagMap = {
   h1: 'h1',

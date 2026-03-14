@@ -50,13 +50,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       onMouseLeave,
     })
 
-    const handleClick = () => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (isDisabled || isLoading) {
         return
       }
 
-      commonHandlers.onClick?.()
-      commonHandlers.onPress?.()
+      commonHandlers.onClick?.(e)
+      if (commonHandlers.onPress) {
+        commonHandlers.onPress()
+      }
     }
 
     const buttonClassName = clsx(
@@ -77,11 +79,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         className={buttonClassName}
         disabled={isDisabled || isLoading}
         onClick={handleClick}
-        onFocus={commonHandlers.onFocus}
-        onBlur={commonHandlers.onBlur}
-        onMouseDown={commonHandlers.onMouseDown}
-        onMouseUp={commonHandlers.onMouseUp}
-        onMouseLeave={commonHandlers.onMouseLeave}
+        onFocus={commonHandlers.handleFocus}
+        onBlur={commonHandlers.handleBlur}
+        onMouseDown={commonHandlers.handleMouseDown}
+        onMouseUp={commonHandlers.handleMouseUp}
+        onMouseLeave={commonHandlers.handleMouseLeave}
         data-testid={testID}
         aria-busy={isLoading}
         {...rest}
@@ -98,3 +100,5 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 )
 
 Button.displayName = 'Button'
+
+export default Button

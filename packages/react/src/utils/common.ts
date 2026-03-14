@@ -14,6 +14,7 @@ export interface BaseComponentProps {
 
 // Common event handler types
 export interface CommonEventHandlers {
+  onPress?: () => void | Promise<void>
   onFocus?: (event: React.FocusEvent) => void
   onBlur?: (event: React.FocusEvent) => void
   onClick?: (event: React.MouseEvent) => void
@@ -56,6 +57,8 @@ export function useCommonHandlers(handlers: CommonEventHandlers) {
   return {
     handleFocus: handlers.onFocus,
     handleBlur: handlers.onBlur,
+    onClick: handlers.onClick,
+    onPress: (handlers as any).onPress,
     handleClick: handlers.onClick,
     handleMouseDown: handlers.onMouseDown,
     handleMouseUp: handlers.onMouseUp,

@@ -64,10 +64,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(
           <button
             ref={ref as React.Ref<HTMLButtonElement>}
             className={cardClassName}
-            onClick={(e) => {
-              commonHandlers.onClick?.()
-              commonHandlers.onPress?.()
-            }}
+            onClick={commonHandlers.onClick}
             onFocus={commonHandlers.handleFocus}
             onBlur={commonHandlers.handleBlur}
             onMouseDown={commonHandlers.handleMouseDown}
@@ -85,10 +82,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(
           <a
             ref={ref as React.Ref<HTMLAnchorElement>}
             className={cardClassName}
-            onClick={(e) => {
-              commonHandlers.onClick?.()
-              commonHandlers.onPress?.()
-            }}
+            onClick={commonHandlers.onClick}
             onFocus={commonHandlers.handleFocus}
             onBlur={commonHandlers.handleBlur}
             onMouseDown={commonHandlers.handleMouseDown}
@@ -105,10 +99,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(
           <div
             ref={ref as React.Ref<HTMLDivElement>}
             className={cardClassName}
-            onClick={(e) => {
-              commonHandlers.onClick?.()
-              commonHandlers.onPress?.()
-            }}
+            onClick={commonHandlers.onClick}
             onFocus={commonHandlers.handleFocus}
             onBlur={commonHandlers.handleBlur}
             onMouseDown={commonHandlers.handleMouseDown}

@@ -93,7 +93,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter' && onSubmit) {
-        onSubmit()
+        onSubmit(e)
       }
     }
 
@@ -168,3 +168,5 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 )
 
 Input.displayName = 'Input'
+
+export default Input

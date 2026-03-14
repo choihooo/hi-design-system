@@ -29,7 +29,7 @@ export function CardsSection() {
           </Typography>
         </Card>
 
-        <Card elevation="md" padding="md" pressable>
+        <Card elevation="md" padding="md" isPressable>
           <Typography variant="h5">Pressable Card</Typography>
           <Typography variant="body2">This card can be clicked and has hover effects.</Typography>
         </Card>

@@ -8,6 +8,16 @@
 import type { CSSProperties, ReactNode } from 'react'
 
 /**
+ * Base component props for all components
+ */
+export interface BaseComponentProps {
+  className?: string
+  children?: ReactNode
+  testID?: string
+  style?: CSSProperties
+}
+
+/**
  * Base size variants for components
  */
 export type SizeVariant = 'sm' | 'md' | 'lg'
@@ -306,7 +316,7 @@ export interface CardProps extends BaseComponentProps, InteractiveHandlers {
 /**
  * Typography component props
  */
-export interface TypographyProps {
+export interface TextProps {
   /**
    * Text style variant
    * @default 'body1'
