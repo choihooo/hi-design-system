@@ -8,7 +8,7 @@
  *   label="Email"
  *   placeholder="Enter your email"
  *   value={email}
- *   onChange={setEmail}
+ *   onChangeText={setEmail}
  *   state="error"
  *   errorText="Invalid email format"
  * />
@@ -32,8 +32,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       state = 'default',
       isDisabled = false,
       isFullWidth = false,
-      isReadOnly = false,
-      isRequired = false,
+      readOnly = false,
+      required = false,
       label,
       helperText,
       errorText,
@@ -54,7 +54,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     // Generate unique ID for this input instance
     const inputId = useMemo(
-      () => testID || `input-${Math.random().toString(36).substr(2, 9)}`,
+      () => testID || `hi-input-${Math.random().toString(36).substr(2, 9)}`,
       [testID],
     )
 
@@ -77,17 +77,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       if (value === undefined) {
         setInternalValue(newValue)
       }
-      onChange?.(e)
+      onChange?.(newValue)
     }
 
-    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = (_e: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(true)
-      onFocus?.(e)
+      onFocus?.()
     }
 
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = (_e: React.FocusEvent<HTMLInputElement>) => {
       setIsFocused(false)
-      onBlur?.(e)
+      onBlur?.()
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -109,7 +109,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       `input--${state}`,
       isFocused && 'input--focused',
       isDisabled && 'input--disabled',
-      isReadOnly && 'input--read-only',
+      readOnly && 'input--read-only',
       className, // Allow custom className override (shadcn/ui style)
     )
 
@@ -132,7 +132,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           className={inputClassName}
           value={currentValue}
           placeholder={placeholder}
-          disabled={disabled}
+          disabled={isDisabled}
           readOnly={readOnly}
           required={required}
           onChange={handleChange}

@@ -4,7 +4,7 @@
  * @platform React (Web)
  * @usage
  * ```tsx
- * <Card elevation="md" padding="lg" isPressable onClick={handleClick}>
+ * <Card elevation="md" padding="lg" pressable onPress={handleClick}>
  *   <h3>Card Title</h3>
  *   <p>Card content goes here</p>
  * </Card>
@@ -23,7 +23,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(
       padding = 'md',
       radius = 'md',
       isPressable = false,
-      onClick,
+      onPress,
       className,
       children,
       testID,
@@ -45,7 +45,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(
         <button
           ref={ref as React.Ref<HTMLButtonElement>}
           className={cardClassName}
-          onClick={onClick}
+          onClick={onPress}
           data-testid={testID}
           type="button"
           {...rest}

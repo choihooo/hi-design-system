@@ -4,7 +4,7 @@
  * @platform React (Web)
  * @usage
  * ```tsx
- * <Button variant="primary" size="md" onClick={handleClick}>
+ * <Button variant="primary" size="md" onPress={handleClick}>
  *   Click me
  * </Button>
  * ```
@@ -24,6 +24,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       isDisabled = false,
       isLoading = false,
       isFullWidth = false,
+      onPress,
       onClick,
       className,
       children,
@@ -32,12 +33,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = () => {
       if (isDisabled || isLoading) {
         return
       }
 
-      onClick?.(event)
+      onPress?.()
+      onClick?.()
     }
 
     const buttonClassName = clsx(
@@ -55,18 +57,18 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={buttonClassName}
-        disabled={disabled || loading}
+        disabled={isDisabled || isLoading}
         onClick={handleClick}
         data-testid={testID}
-        aria-busy={loading}
+        aria-busy={isLoading}
         {...rest}
       >
-        {loading && (
-          <span className="hi-button__spinner" aria-hidden="true">
+        {isLoading && (
+          <span className="button__spinner" aria-hidden="true">
             <span className="sr-only">Loading...</span>
           </span>
         )}
-        <span className="hi-button__content">{children}</span>
+        <span className="button__content">{children}</span>
       </button>
     )
   },
