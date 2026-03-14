@@ -46,6 +46,7 @@
 import type { InputProps } from '@hi-design/types'
 import clsx from 'clsx'
 import { forwardRef, useState } from 'react'
+import { useFocusState } from '../../utils/common'
 import './Input.css'
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({
@@ -77,7 +78,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   ...rest
 }, ref) => {
   const [internalValue, setInternalValue] = useState(defaultValue || '')
-  const [isFocused, setIsFocused] = useState(false)
+  const { isFocused } = useFocusState()
 
   const currentValue = value !== undefined ? value : internalValue
   const showError = state === 'error' && !!errorText
@@ -90,12 +91,12 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
   }
 
   const handleFocus = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setIsFocused(true)
+    handleFocus(event)
     onFocus?.(event)
   }
 
   const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setIsFocused(false)
+    handleBlur(event)
     onBlur?.(event)
   }
 

@@ -8,9 +8,29 @@
 import type { CSSProperties, ReactNode } from 'react'
 
 /**
- * Base size variants for components
+ * Base component props interface
  */
-export type SizeVariant = 'sm' | 'md' | 'lg'
+export interface BaseComponentProps {
+  /**
+   * Test ID for testing
+   */
+  testID?: string
+
+  /**
+   * CSS class name (web only)
+   */
+  className?: string
+
+  /**
+   * Inline styles (web only)
+   */
+  style?: CSSProperties
+
+  /**
+   * Content to render
+   */
+  children?: ReactNode
+}
 
 /**
  * Base color variants for interactive components
@@ -20,7 +40,7 @@ export type ColorVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'er
 /**
  * Button component props
  */
-export interface ButtonProps {
+export interface ButtonProps extends BaseComponentProps {
   /**
    * Visual style variant of the button
    * @default 'primary'
@@ -66,27 +86,12 @@ export interface ButtonProps {
    * Web click handler
    */
   onClick?: () => void
-
-  /**
-   * Custom className for styling overrides (shadcn/ui style)
-   */
-  className?: string
-
-  /**
-   * Button content
-   */
-  children?: ReactNode
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
 }
 
 /**
  * Input component props
  */
-export interface InputProps {
+export interface InputProps extends BaseComponentProps {
   /**
    * Input value
    */
@@ -165,11 +170,6 @@ export interface InputProps {
   errorText?: string
 
   /**
-   * Custom className for styling overrides (shadcn/ui style)
-   */
-  className?: string
-
-  /**
    * Value change handler
    */
   onChangeText?: (text: string) => void
@@ -188,11 +188,6 @@ export interface InputProps {
    * Submit handler (called on Enter key press)
    */
   onSubmit?: (event: React.FormEvent) => void
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
 
   /**
    * Input name attribute for forms
@@ -238,7 +233,7 @@ export interface InputProps {
 /**
  * Card component props
  */
-export interface CardProps {
+export interface CardProps extends BaseComponentProps {
   /**
    * Elevation/shadow depth
    * @default 'md'
@@ -267,27 +262,12 @@ export interface CardProps {
    * Click/tap handler (when pressable is true)
    */
   onPress?: () => void
-
-  /**
-   * Custom className for styling overrides (web)
-   */
-  className?: string
-
-  /**
-   * Card content
-   */
-  children?: ReactNode
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
 }
 
 /**
  * Typography component props
  */
-export interface TypographyProps {
+export interface TypographyProps extends BaseComponentProps {
   /**
    * Text style variant
    * @default 'body1'
@@ -323,16 +303,6 @@ export interface TypographyProps {
   align?: 'left' | 'center' | 'right' | 'justify'
 
   /**
-   * Custom className for styling overrides (shadcn/ui style)
-   */
-  className?: string
-
-  /**
-   * Inline styles for web rendering
-   */
-  style?: CSSProperties
-
-  /**
    * Disable text wrapping
    * @default false
    */
@@ -342,22 +312,12 @@ export interface TypographyProps {
    * Number of lines to show (React Native only, web uses line-clamp)
    */
   numberOfLines?: number
-
-  /**
-   * Text content
-   */
-  children?: ReactNode
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
 }
 
 /**
  * Modal component props
  */
-export interface ModalProps {
+export interface ModalProps extends BaseComponentProps {
   /**
    * Modal visibility
    * @default false
@@ -391,22 +351,12 @@ export interface ModalProps {
    * Close handler
    */
   onClose?: () => void
-
-  /**
-   * Modal content
-   */
-  children?: ReactNode
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
 }
 
 /**
  * Toast component props
  */
-export interface ToastProps {
+export interface ToastProps extends BaseComponentProps {
   /**
    * Toast visibility
    * @default false
@@ -440,9 +390,4 @@ export interface ToastProps {
    * Close handler
    */
   onClose?: () => void
-
-  /**
-   * Test ID for testing
-   */
-  testID?: string
 }

@@ -24,6 +24,7 @@
 import type { ButtonProps } from '@hi-design/types'
 import clsx from 'clsx'
 import { forwardRef, useState } from 'react'
+import { useFocusState } from '../../utils/common'
 import './Button.css'
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
@@ -39,8 +40,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   testID,
   ...rest
 }, ref) => {
+  const { isFocused, handleFocus, handleBlur } = useFocusState()
   const [isPressed, setIsPressed] = useState<boolean>(false)
-  const [hasFocus, setHasFocus] = useState<boolean>(false)
 
   const handleClick = (): void => {
     if (disabled || loading) return
@@ -56,7 +57,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
     disabled && 'button--disabled',
     loading && 'button--loading',
     isPressed && 'button--pressed',
-    hasFocus && 'button--focused',
+    isFocused && 'button--focused',
     className,
   )
 
@@ -64,9 +65,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   const handleMouseUp = (): void => setIsPressed(false)
   const handleMouseLeave = (): void => setIsPressed(false)
 
-  const handleFocus = (): void => setHasFocus(true)
-  const handleBlur = (): void => setHasFocus(false)
-
+  
   const disabledProps = disabled || loading ? { disabled: true } : {}
   const loadingProps = loading ? { 'data-loading': 'true' } : {}
 

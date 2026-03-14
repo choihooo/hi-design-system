@@ -5,11 +5,38 @@
 [33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
 vite v5.4.21 building for production...
 transforming...
-✓ 60 modules transformed.
-rendering chunks...
-computing gzip size...
-dist/style.css        11.47 kB │ gzip:  2.58 kB
-dist/hi-design.es.js  47.11 kB │ gzip: 12.03 kB
-dist/style.css         11.47 kB │ gzip:  2.58 kB
-dist/hi-design.umd.js  33.73 kB │ gzip: 10.62 kB
-✓ built in 225ms
+x Build failed in 52ms
+✓ 1 modules transformed.
+error during build:
+[vite:esbuild] Transform failed with 2 errors:
+/Users/choiho/coding/hi-design-system/packages/react/src/components/Input/Input.tsx:93:8: ERROR: The symbol "handleFocus" has already been declared
+/Users/choiho/coding/hi-design-system/packages/react/src/components/Input/Input.tsx:98:8: ERROR: The symbol "handleBlur" has already been declared
+file: /Users/choiho/coding/hi-design-system/packages/react/src/components/Input/Input.tsx:93:8
+
+The symbol "handleFocus" has already been declared
+91 |    }
+92 |  
+93 |    const handleFocus = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+   |          ^
+94 |      setIsFocused(true)
+95 |      onFocus?.(event)
+
+The symbol "handleBlur" has already been declared
+96 |    }
+97 |  
+98 |    const handleBlur = (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+   |          ^
+99 |      setIsFocused(false)
+100|      onBlur?.(event)
+
+    at failureErrorWithLog (/Users/choiho/coding/hi-design-system/node_modules/.pnpm/esbuild@0.21.5/node_modules/esbuild/lib/main.js:1472:15)
+    at /Users/choiho/coding/hi-design-system/node_modules/.pnpm/esbuild@0.21.5/node_modules/esbuild/lib/main.js:755:50
+    at responseCallbacks.<computed> (/Users/choiho/coding/hi-design-system/node_modules/.pnpm/esbuild@0.21.5/node_modules/esbuild/lib/main.js:622:9)
+    at handleIncomingPacket (/Users/choiho/coding/hi-design-system/node_modules/.pnpm/esbuild@0.21.5/node_modules/esbuild/lib/main.js:677:12)
+    at Socket.readFromStdout (/Users/choiho/coding/hi-design-system/node_modules/.pnpm/esbuild@0.21.5/node_modules/esbuild/lib/main.js:600:7)
+    at Socket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+ ELIFECYCLE  Command failed with exit code 1.
