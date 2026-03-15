@@ -1,24 +1,10 @@
 /**
- * @component Typography
- * @description Text component wrapper - Uses Text primitive for backward compatibility
- * @platform React (Web)
- * @AI-friendly: High - Simple wrapper around Text primitive
- *
- * This component provides backward compatibility while using the Text primitive:
- * - Typography = Text (primitive) + alias for consistency
- * - AI can understand: "Typography is just an alias for Text"
- * - Migration path for existing code
+ * Typography - Text component wrapper using Text primitive
  *
  * @usage
- * ```tsx
- * // Use Text primitive directly (recommended)
- * import { Text } from '@hi-design/primitives'
- * <Text variant="h1">Heading</Text>
- *
- * // Or use Typography for backward compatibility
- * import { Typography } from '@hi-design/react'
- * <Typography variant="h1">Heading</Typography>
- * ```
+ * <Typography variant="h1" weight="bold">
+ *   Heading text
+ * </Typography>
  */
 
 import { Text as TextPrimitive } from '@hi-design/primitives'

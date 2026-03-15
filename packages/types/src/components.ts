@@ -675,3 +675,23 @@ export interface IconProps extends BaseComponentProps {
    */
   role?: string
 }
+
+/**
+ * Alert component props
+ */
+export interface AlertProps extends BaseComponentProps {
+  /**
+   * Alert variant
+   */
+  variant?: 'info' | 'success' | 'warning' | 'error'
+  
+  /**
+   * Optional title
+   */
+  title?: string
+  
+  /**
+   * Optional close handler
+   */
+  onClose?: () => void
+}
