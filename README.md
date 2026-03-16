@@ -12,6 +12,18 @@
 
 HI Design System provides a consistent set of UI components and design tokens that work seamlessly across web, mobile (iOS/Android), and desktop platforms. It's specifically designed to be AI-friendly and follows the proven 3-layer token architecture from [Seed Design](https://www.npmjs.com/package/@seed-design/design-token).
 
+## 🤖 AI-Friendly Development
+
+This design system is built to be AI-friendly with comprehensive automation:
+
+- **Automated CI/CD**: Full quality gates and testing
+- **Conventional Commits**: Enforced commit message standards
+- **Code Quality**: Automated complexity and duplication analysis
+- **Security Scanning**: CodeQL and npm audit integration
+- **Automated Releases**: Semantic versioning and CHANGELOG generation
+
+See [`.github/MERGE_RULES.md`](https://github.com/choihooo/hi-design-system/blob/main/.github/MERGE_RULES.md) for merge requirements and quality standards.
+
 ## Features
 
 - 🎨 **3-Layer Token Architecture**: Raw Values → Scale Tokens → Semantic Tokens
