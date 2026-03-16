@@ -1,0 +1,213 @@
+name: Code Quality Analysis
+
+on:
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main, develop]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  code-quality:
+    name: Code Quality Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for proper analysis
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint with complexity checks
+        run: |
+          echo "Running ESLint with complexity and duplication analysis..."
+          pnpm exec eslint . --ext .js,.jsx,.ts,.tsx --format json --output-file eslint-report.json || true
+
+      - name: Parse ESLint results
+        id: eslint
+        run: |
+          if [ -f eslint-report.json ]; then
+            ERROR_COUNT=$(node -e "
+              const fs = require('fs');
+              const data = JSON.parse(fs.readFileSync('eslint-report.json', 'utf8'));
+              let errors = 0;
+              let warnings = 0;
+              let complexity = 0;
+              let duplications = 0;
+              data.forEach(file => {
+                file.messages.forEach(msg => {
+                  if (msg.severity === 2) errors++;
+                  if (msg.severity === 1) warnings++;
+                  if (msg.ruleId && msg.ruleId.includes('complexity')) complexity++;
+                  if (msg.ruleId && msg.ruleId.includes('sonarjs')) duplications++;
+                });
+              });
+              console.log(errors + ',' + warnings + ',' + complexity + ',' + duplications);
+            ")
+            echo "errors=$(echo $ERROR_COUNT | cut -d',' -f1)" >> $GITHUB_OUTPUT
+            echo "warnings=$(echo $ERROR_COUNT | cut -d',' -f2)" >> $GITHUB_OUTPUT
+            echo "complexity=$(echo $ERROR_COUNT | cut -d',' -f3)" >> $GITHUB_OUTPUT
+            echo "duplications=$(echo $ERROR_COUNT | cut -d',' -f4)" >> $GITHUB_OUTPUT
+          else
+            echo "No ESLint report generated"
+            echo "errors=0" >> $GITHUB_OUTPUT
+            echo "warnings=0" >> $GITHUB_OUTPUT
+            echo "complexity=0" >> $GITHUB_OUTPUT
+            echo "duplications=0" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment PR with quality metrics
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const errors = '${{ steps.eslint.outputs.errors }}';
+            const warnings = '${{ steps.eslint.outputs.warnings }}';
+            const complexity = '${{ steps.eslint.outputs.complexity }}';
+            const duplications = '${{ steps.eslint.outputs.duplications }}';
+
+            const body = `## 🔍 Code Quality Analysis
+
+            ### ESLint Results
+            - ❌ Errors: ${errors}
+            - ⚠️ Warnings: ${warnings}
+            - 🔄 Complexity Issues: ${complexity}
+            - 📋 Code Duplication: ${duplications}
+
+            ### Quality Gates
+            ${errors > 0 ? '❌ **Failed**: ESLint errors found' : '✅ **Passed**: No ESLint errors'}
+            ${complexity > 10 ? '⚠️ **Warning**: High complexity detected' : '✅ **Passed**: Complexity within limits'}
+            ${duplications > 5 ? '⚠️ **Warning**: Code duplication detected' : '✅ **Passed**: Minimal duplication'}
+
+            ### Recommendations
+            ${errors > 0 ? '- Fix ESLint errors before merging' : ''}
+            ${complexity > 10 ? '- Consider refactoring complex functions' : ''}
+            ${duplications > 5 ? '- Extract duplicated code into reusable functions' : ''}
+            `;
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Code Quality Analysis')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
+
+      - name: Fail on critical issues
+        run: |
+          if [ "${{ steps.eslint.outputs.errors }}" -gt 0 ]; then
+            echo "❌ ESLint errors detected. Please fix before merging."
+            exit 1
+          fi
+          echo "✅ No critical issues detected"
+
+      - name: Archive ESLint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eslint-report
+          path: eslint-report.json
+          retention-days: 30
+
+  complexity-trend:
+    name: Complexity Trend Analysis
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Analyze complexity changes
+        run: |
+          echo "Analyzing complexity changes in this PR..."
+          # Run complexity analysis on current branch
+          pnpm exec eslint . --ext .js,.jsx,.ts,.tsx --format json --output-file eslint-current.json || true
+
+          # Check out base branch for comparison
+          git fetch origin ${{ github.base_ref }}
+          git checkout origin/${{ github.base_ref }}
+          pnpm install --frozen-lockfile
+          pnpm exec eslint . --ext .js,.jsx,.ts,.tsx --format json --output-file eslint-base.json || true
+
+          echo "Complexity analysis complete"
+
+      - name: Comment complexity trend
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `## 📈 Complexity Trend Analysis
+
+            This PR has been analyzed for code complexity changes.
+
+            ### Analysis
+            - Comparison with base branch: ${{ github.base_ref }}
+            - Files changed: ${{ github.event.pull_request.changed_files }}
+
+            ### Recommendations
+            - Review any new complex functions (cyclomatic complexity > 15)
+            - Consider extracting complex logic into separate functions
+            - Keep cognitive complexity below 15 for maintainability
+
+            ℹ️ *Detailed complexity reports are available in the workflow artifacts*
+            `;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body,
+            });

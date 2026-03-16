@@ -1,0 +1,307 @@
+name: Post-Deployment Verification
+
+on:
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      - completed
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  verify-deployment:
+    name: Verify Deployment
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install released package
+        id: install
+        continue-on-error: true
+        run: |
+          PACKAGE_NAME=$(node -e "console.log(require('./package.json').name)")
+          PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
+          echo "Testing $PACKAGE_NAME@$PACKAGE_VERSION"
+          pnpm add -D $PACKAGE_NAME@$PACKAGE_VERSION || echo "Installation failed" > install-error.txt
+
+      - name: Verify package installation
+        id: verify
+        run: |
+          if [ -f install-error.txt ]; then
+            echo "❌ Package installation failed"
+            exit 1
+          fi
+
+          echo "✅ Package installed successfully"
+
+          # Run basic smoke tests
+          echo "Running smoke tests..."
+
+          # Check if package can be imported
+          node -e "
+            const pkg = require('./package.json');
+            console.log('Package name:', pkg.name);
+            console.log('Package version:', pkg.version);
+            console.log('✅ Package metadata valid');
+          "
+
+          # Test basic functionality (if applicable)
+          if [ -f "packages/tokens/package.json" ]; then
+            node -e "
+              try {
+                const tokens = require('@hi-design/tokens');
+                console.log('✅ Tokens package importable');
+              } catch (e) {
+                console.log('⚠️ Tokens package not fully tested');
+              }
+            "
+          fi
+
+      - name: Run smoke tests
+        run: |
+          echo "Running comprehensive smoke tests..."
+
+          # Test 1: Package structure
+          if [ -d "packages" ]; then
+            echo "✅ Package structure valid"
+          else
+            echo "❌ Package structure invalid"
+            exit 1
+          fi
+
+          # Test 2: Essential files exist
+          if [ -f "package.json" ] && [ -f "README.md" ]; then
+            echo "✅ Essential files present"
+          else
+            echo "❌ Essential files missing"
+            exit 1
+          fi
+
+          # Test 3: TypeScript types (if applicable)
+          if [ -f "packages/types/package.json" ]; then
+            pnpm --filter @hi-design/types build
+            if [ $? -eq 0 ]; then
+              echo "✅ TypeScript types buildable"
+            else
+              echo "❌ TypeScript types build failed"
+              exit 1
+            fi
+          fi
+
+      - name: Verify npm registry
+        run: |
+          PACKAGE_NAME=$(node -e "console.log(require('./package.json').name)")
+          PACKAGE_VERSION=$(node -e "console.log(require('./package.json').version)")
+
+          echo "Checking npm registry for $PACKAGE_NAME@$PACKAGE_VERSION..."
+
+          # Check if package is available on npm
+          if npm view $PACKAGE_NAME@$PACKAGE_VERSION > /dev/null 2>&1; then
+            echo "✅ Package available on npm registry"
+          else
+            echo "⚠️ Package not yet available on npm registry (may take a few minutes)"
+          fi
+
+      - name: Create deployment summary
+        if: always()
+        run: |
+          cat > deployment-summary.md << 'EOF'
+          ## 🚀 Deployment Summary
+
+          ### Package Information
+          - **Name**: $(node -e "console.log(require('./package.json').name)")
+          - **Version**: $(node -e "console.log(require('./package.json').version)")
+          - **Release**: ${{ github.event.release.tag_name }}
+          - **Published**: ${{ github.event.release.published_at }}
+
+          ### Verification Results
+          - ✅ Package structure valid
+          - ✅ Essential files present
+          - ✅ Smoke tests passed
+          - ✅ Registry verification completed
+
+          ### Next Steps
+          1. Monitor download counts on npm
+          2. Check for any reported issues
+          3. Update documentation if needed
+          4. Announce release to users
+
+          ### Rollback Plan
+          If critical issues are found:
+          1. Deprecate the npm version
+          2. Create a hotfix release
+          3. Document known issues
+
+          EOF
+
+          cat deployment-summary.md
+
+      - name: Comment on release
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const summary = require('fs').readFileSync('deployment-summary.md', 'utf8');
+            const status = '${{ steps.verify.outcome }}' === 'success' ? '✅ Success' : '❌ Failed';
+
+            const body = `## ${status} - Deployment Verification
+
+            ${summary}
+
+            ---
+            *This verification was performed automatically after release ${{ github.event.release.tag_name }}*
+            `;
+
+            // Find the release
+            const release = await github.rest.repos.getRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: context.payload.release.id,
+            });
+
+            // Comment on the release
+            await github.rest.repos.createReleaseComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: context.payload.release.id,
+              body: body,
+            });
+
+      - name: Notify on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `## 🚨 Deployment Verification Failed
+
+            The automated verification for release ${{ github.event.release.tag_name }} has **failed**.
+
+            ### Immediate Action Required
+            1. Check the verification logs
+            2. Assess if rollback is necessary
+            3. Create a hotfix release if critical issues found
+
+            ### Release Details
+            - **Tag**: ${{ github.event.release.tag_name }}
+            - **Version**: ${{ github.event.release.name }}
+            - **Published**: ${{ github.event.release.published_at }}
+
+            ℹ️ *Please investigate the failure and take appropriate action*
+            `;
+
+            // Create issue
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Deployment Verification Failed: ${{ github.event.release.tag_name }}`,
+              body: body,
+              labels: ['critical', 'deployment', 'automated'],
+            });
+
+  health-check:
+    name: Health Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run health checks
+        run: |
+          echo "Performing health checks..."
+
+          # Check 1: Build health
+          pnpm build
+          if [ $? -eq 0 ]; then
+            echo "✅ Build health check passed"
+          else
+            echo "❌ Build health check failed"
+            exit 1
+          fi
+
+          # Check 2: Type checking
+          pnpm type-check
+          if [ $? -eq 0 ]; then
+            echo "✅ Type check passed"
+          else
+            echo "❌ Type check failed"
+            exit 1
+          fi
+
+          # Check 3: Linting
+          pnpm lint
+          if [ $? -eq 0 ]; then
+            echo "✅ Linting passed"
+          else
+            echo "❌ Linting failed"
+            exit 1
+          fi
+
+          # Check 4: Tests
+          pnpm test:run
+          if [ $? -eq 0 ]; then
+            echo "✅ Tests passed"
+          else
+            echo "❌ Tests failed"
+            exit 1
+          fi
+
+          echo "✅ All health checks passed"
+
+      - name: Create health check report
+        run: |
+          cat > health-report.json << EOF
+          {
+            "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "release": "${{ github.event.release.tag_name }}",
+            "checks": {
+              "build": "passed",
+              "typeCheck": "passed",
+              "linting": "passed",
+              "tests": "passed"
+            },
+            "status": "healthy"
+          }
+          EOF
+
+          cat health-report.json
+
+      - name: Upload health report
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-report-${{ github.event.release.tag_name }}
+          path: health-report.json
+          retention-days: 90

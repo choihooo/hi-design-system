@@ -1,0 +1,106 @@
+name: Commit Lint
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  commitlint:
+    name: Commit Message Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Validate current commit
+        if: github.event_name == 'push'
+        run: |
+          echo "Validating commit message for ${{ github.sha }}"
+          pnpm exec commitlint --from HEAD~1 --to HEAD
+
+      - name: Validate PR commits
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Validating all commits in PR #${{ github.event.number }}"
+          pnpm exec commitlint --from ${{ github.event.pull_request.head.sha }}~${{ github.event.pull_request.commits }} --to ${{ github.event.pull_request.head.sha }}
+
+      - name: Comment on failure
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `## ⚠️ Commit Message Format Issue
+
+            One or more commits in this PR do not follow the **Conventional Commits** format.
+
+            ### Required Format
+            \`\`\`
+            <type>(<scope>): <description>
+
+            [optional body]
+
+            [optional footer]
+            \`\`\`
+
+            ### Allowed Types
+            - \`feat\`: New feature
+            - \`fix\`: Bug fix
+            - \`docs\`: Documentation changes
+            - \`style\`: Code style changes (formatting, etc.)
+            - \`refactor\`: Code refactoring
+            - \`test\`: Adding or updating tests
+            - \`chore\`: Maintenance tasks
+            - \`perf\`: Performance improvements
+            - \`ci\`: CI/CD changes
+            - \`build\`: Build system changes
+            - \`revert\`: Revert a previous commit
+
+            ### Examples
+            ✅ Good:
+            - \`feat(button): add disabled state\`
+            - \`fix(input): resolve validation issue\`
+            - \`docs(readme): update installation instructions\`
+            - \`test(utils): add tests for uuid function\`
+
+            ❌ Bad:
+            - \`update button component\`
+            - \`fixed bug\`
+            - \`wip\`
+            - \`stuff\`
+
+            ### How to Fix
+            1. Amend your commits with proper messages:
+               \`git commit --amend -m "feat(scope): description"\`
+            2. Or force push with corrected commits:
+               \`git push --force\`
+
+            ℹ️ *For more information: https://www.conventionalcommits.org*
+            `;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body,
+            });

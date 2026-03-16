@@ -1,0 +1,41 @@
+{
+  "branches": ["main"],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md",
+        "changelogTitle": "# Changelog\n\nAll notable changes to this project will be documented in this file."
+      }
+    ],
+    [
+      "@semantic-release/npm",
+      {
+        "npmPublish": true,
+        "tarballDir": "dist",
+        "pkgRoot": "."
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": ["package.json", "CHANGELOG.md"],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "successComment": ":tada: This ${issue.pull_request ? 'PR is included' : 'issue has been resolved'} in version ${nextRelease.version} :tada:\n\nThe release is available on:\n- [GitHub Release](${nextRelease.releaseUrl})\n- [npm package (@${nextRelease.name}})](https://www.npmjs.com/package/${nextRelease.name})",
+        "failComment": ":x: The automated release failed for commit ${context.sha}. Please check the logs and try again.",
+        "labels": true,
+        "releasedLabels": ["released:<%= nextRelease.version %>"],
+        "addReleases": false
+      }
+    ]
+  ],
+  "tagFormat": "v${version}",
+  "ci": true
+}

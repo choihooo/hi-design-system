@@ -1,0 +1,145 @@
+name: Security Audit
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run every day at 3 AM UTC
+    - cron: '0 3 * * *'
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  audit:
+    name: Dependency Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Run pnpm audit
+        run: |
+          echo "Running security audit on dependencies..."
+          pnpm audit --audit-level moderate || true
+
+      - name: Check for vulnerabilities
+        id: audit
+        run: |
+          # Run audit and capture output
+          AUDIT_OUTPUT=$(pnpm audit --json --audit-level moderate 2>&1 || echo "{}")
+          echo "$AUDIT_OUTPUT" > audit-output.json
+
+          # Parse vulnerability counts
+          VULNERABILITIES=$(node -e "
+            try {
+              const fs = require('fs');
+              const data = JSON.parse(fs.readFileSync('audit-output.json', 'utf8'));
+              const metadata = data.metadata || {};
+              const vulnerabilities = metadata.vulnerabilities || {};
+              const total = (vulnerabilities.low || 0) + (vulnerabilities.moderate || 0) +
+                           (vulnerabilities.high || 0) + (vulnerabilities.critical || 0);
+              const critical = vulnerabilities.critical || 0;
+              const high = vulnerabilities.high || 0;
+              const moderate = vulnerabilities.moderate || 0;
+              console.log(total + ',' + critical + ',' + high + ',' + moderate);
+            } catch (e) {
+              console.log('0,0,0,0');
+            }
+          ")
+
+          echo "total=$(echo $VULNERABILITIES | cut -d',' -f1)" >> $GITHUB_OUTPUT
+          echo "critical=$(echo $VULNERABILITIES | cut -d',' -f2)" >> $GITHUB_OUTPUT
+          echo "high=$(echo $VULNERABILITIES | cut -d',' -f3)" >> $GITHUB_OUTPUT
+          echo "moderate=$(echo $VULNERABILITIES | cut -d',' -f4)" >> $GITHUB_OUTPUT
+
+      - name: Comment PR with audit results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const total = '${{ steps.audit.outputs.total }}';
+            const critical = '${{ steps.audit.outputs.critical }}';
+            const high = '${{ steps.audit.outputs.high }}';
+            const moderate = '${{ steps.audit.outputs.moderate }}';
+
+            const body = `## 🔒 Dependency Security Audit
+
+            ### Vulnerability Summary
+            - 🚨 Critical: ${critical}
+            - ⚠️ High: ${high}
+            - ⚡ Moderate: ${moderate}
+            - 📊 Total: ${total}
+
+            ### Security Status
+            ${critical > 0 ? '❌ **Failed**: Critical vulnerabilities detected' :
+              high > 0 ? '⚠️ **Warning**: High severity vulnerabilities found' :
+              moderate > 0 ? '⚠️ **Warning**: Moderate vulnerabilities found' :
+              '✅ **Passed**: No vulnerabilities detected'}
+
+            ### Actions Required
+            ${critical > 0 ? '- **URGENT**: Update dependencies with critical vulnerabilities' : ''}
+            ${high > 0 ? '- **Recommended**: Update dependencies with high vulnerabilities' : ''}
+            ${moderate > 0 ? '- **Optional**: Consider updating dependencies with moderate vulnerabilities' : ''}
+            ${total == 0 ? '- No action required' : '- Run \`pnpm audit fix\` to automatically fix vulnerabilities'}
+
+            ℹ️ *Dependabot will automatically create PRs for vulnerable dependencies*
+            `;
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('Dependency Security Audit')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body,
+              });
+            }
+
+      - name: Fail on critical vulnerabilities
+        run: |
+          if [ "${{ steps.audit.outputs.critical }}" -gt 0 ]; then
+            echo "❌ Critical vulnerabilities detected. Please update dependencies."
+            exit 1
+          fi
+          echo "✅ No critical vulnerabilities"
+
+      - name: Upload audit report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-report
+          path: audit-output.json
+          retention-days: 30
