@@ -29,8 +29,8 @@ module.exports = {
     // Scope case: enforce lowercase
     'scope-case': [2, 'always', 'lower-case'],
 
-    // Subject case: enforce lowercase start
-    'subject-case': [2, 'always', 'sentence-case'],
+    // Subject case: allow any case
+    'subject-case': [0],
 
     // Subject empty: subject is required
     'subject-empty': [2, 'never'],
