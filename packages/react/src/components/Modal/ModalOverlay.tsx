@@ -17,7 +17,7 @@
  * ```
  */
 
-import type { BaseComponentProps } from '../../utils/common'
+import type { BaseComponentProps } from '@hi-design/types'
 import { clsx } from 'clsx'
 import './Modal.css'
 
@@ -25,6 +25,7 @@ export interface ModalOverlayProps extends BaseComponentProps {
   closeOnBackdropPress?: boolean
   onClose?: () => void
   prefersReduced?: boolean
+  children?: React.ReactNode
 }
 
 export const ModalOverlay: React.FC<ModalOverlayProps> = ({
@@ -33,6 +34,7 @@ export const ModalOverlay: React.FC<ModalOverlayProps> = ({
   prefersReduced = false,
   className,
   testID,
+  children,
 }) => {
   const overlayClassName = clsx(
     'modal-overlay',
@@ -57,6 +59,7 @@ export const ModalOverlay: React.FC<ModalOverlayProps> = ({
       ) : (
         <div className="modal-overlay__backdrop" aria-hidden="true" />
       )}
+      {children}
     </div>
   )
 }

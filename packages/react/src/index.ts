@@ -9,6 +9,9 @@
  * - Backward compatibility maintained
  */
 
+// Import CSS for all React components
+import './index.css'
+
 // Re-export design tokens for convenience
 export * from '@hi-design/tokens'
 

@@ -174,7 +174,7 @@ export const Text = forwardRef<HTMLParagraphElement, TextProps>(
     )
 
     return (
-      <p
+      <Element
         ref={ref}
         className={textClassName}
         style={inlineStyles}
@@ -182,7 +182,7 @@ export const Text = forwardRef<HTMLParagraphElement, TextProps>(
         {...rest}
       >
         {children}
-      </p>
+      </Element>
     )
   },
 )

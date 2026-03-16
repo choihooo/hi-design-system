@@ -681,17 +681,103 @@ export interface IconProps extends BaseComponentProps {
  */
 export interface AlertProps extends BaseComponentProps {
   /**
-   * Alert variant
+   * Alert variant for different types of alerts
+   * @default 'info'
    */
   variant?: 'info' | 'success' | 'warning' | 'error'
-  
+
   /**
-   * Optional title
+   * Optional title displayed prominently
    */
   title?: string
-  
+
   /**
-   * Optional close handler
+   * Alert message or content
+   */
+  children?: ReactNode
+
+  /**
+   * Show close button to dismiss alert
+   * @default false
+   */
+  showCloseButton?: boolean
+
+  /**
+   * Close button handler
    */
   onClose?: () => void
+
+  /**
+   * Show icon based on variant
+   * @default true
+   */
+  showIcon?: boolean
+
+  /**
+   * Custom icon to override default variant icon
+   */
+  icon?: ReactNode
+
+  /**
+   * Alert size
+   * @default 'md'
+   */
+  size?: 'sm' | 'md' | 'lg'
+}
+
+/**
+ * Badge component props - Small status indicator
+ */
+export interface BadgeProps extends BaseComponentProps {
+  /**
+   * Badge variant
+   * @default 'default'
+   */
+  variant?: 'default' | 'primary' | 'success' | 'warning' | 'error'
+
+  /**
+   * Badge size
+   * @default 'md'
+   */
+  size?: 'sm' | 'md' | 'lg'
+
+  /**
+   * Badge shape
+   * @default 'rounded'
+   */
+  shape?: 'rounded' | 'square' | 'pill'
+
+  /**
+   * Show dot indicator instead of text
+   * @default false
+   */
+  dot?: boolean
+
+  /**
+   * Badge content (text or number)
+   */
+  children?: ReactNode
+
+  /**
+   * Show count with maximum (e.g., "99+")
+   */
+  count?: number
+
+  /**
+   * Maximum count to show before using "count+"
+   * @default 99
+   */
+  max?: number
+
+  /**
+   * Badge position (when used as overlay)
+   * @default 'top-right'
+   */
+  position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+
+  /**
+   * Show zero count
+   * @default false
+   */
+  showZero?: boolean
 }
