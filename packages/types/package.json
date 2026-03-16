@@ -2,15 +2,27 @@
   "name": "@hi-design/types",
   "version": "0.1.0",
   "description": "Common TypeScript type definitions for HI Design System",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
-    ".": "./src/index.ts",
-    "./components": "./src/components.ts"
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    },
+    "./components": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    }
   },
   "files": [
+    "dist",
     "src"
   ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit"
+  },
   "keywords": [
     "types",
     "typescript",
@@ -19,6 +31,10 @@
   ],
   "peerDependencies": {
     "react": ">=18.0.0"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.3"
   },
   "author": "HI Design System",
   "license": "MIT"
