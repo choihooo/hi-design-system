@@ -12,9 +12,11 @@ export type {
   IconProps,
   InputProps,
   ModalProps,
+  SelectOption,
+  SelectProps,
   SizeVariant,
-  ToastProps,
   TextProps,
+  ToastProps,
 } from './components'
 
 /**

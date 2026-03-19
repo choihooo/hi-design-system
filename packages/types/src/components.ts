@@ -278,6 +278,37 @@ export interface InputProps extends BaseComponentProps {
   rows?: number
 }
 
+export interface SelectOption {
+  value: string
+  label: string
+  disabled?: boolean
+  keywords?: string[]
+}
+
+export interface SelectProps extends BaseComponentProps {
+  options: SelectOption[]
+  value?: string
+  defaultValue?: string
+  placeholder?: string
+  variant?: 'default' | 'search'
+  size?: SizeVariant
+  state?: 'default' | 'error' | 'success'
+  disabled?: boolean
+  fullWidth?: boolean
+  required?: boolean
+  label?: string
+  helperText?: string
+  errorText?: string
+  searchable?: boolean
+  searchPlaceholder?: string
+  emptyText?: string
+  name?: string
+  onValueChange?: (value: string, option: SelectOption) => void
+  onOpenChange?: (open: boolean) => void
+  onFocus?: (event: React.FocusEvent<HTMLButtonElement | HTMLInputElement>) => void
+  onBlur?: (event: React.FocusEvent<HTMLButtonElement | HTMLInputElement>) => void
+}
+
 /**
  * Card component props
  */
@@ -305,6 +336,12 @@ export interface CardProps extends BaseComponentProps, InteractiveHandlers {
    * @default false
    */
   isPressable?: boolean
+
+  /**
+   * Legacy alias for isPressable
+   * @default false
+   */
+  pressable?: boolean
 
   /**
    * Type of element to render when pressable
@@ -499,7 +536,13 @@ export interface BoxProps extends BaseComponentProps {
    * Flexbox properties (when display="flex")
    */
   flexDirection?: 'row' | 'column' | 'row-reverse' | 'column-reverse'
-  justifyContent?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
+  justifyContent?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly'
   alignItems?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline'
   flexWrap?: 'nowrap' | 'wrap' | 'wrap-reverse'
   gap?: string | number
@@ -574,7 +617,18 @@ export interface TextProps extends BaseComponentProps {
   /**
    * Text variant for predefined styles
    */
-  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'button' | 'caption' | 'overline'
+  variant?:
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'body1'
+    | 'body2'
+    | 'button'
+    | 'caption'
+    | 'overline'
 
   /**
    * Font weight
@@ -684,12 +738,12 @@ export interface AlertProps extends BaseComponentProps {
    * Alert variant
    */
   variant?: 'info' | 'success' | 'warning' | 'error'
-  
+
   /**
    * Optional title
    */
   title?: string
-  
+
   /**
    * Optional close handler
    */
