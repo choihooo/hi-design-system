@@ -36,6 +36,12 @@ export const Outline: Story = {
   },
 }
 
+export const Ghost: Story = {
+  args: {
+    variant: 'ghost',
+  },
+}
+
 // States
 export const Disabled: Story = {
   args: {
@@ -56,6 +62,27 @@ export const Sizes: Story = {
       <Button size="sm">Small</Button>
       <Button size="md">Medium</Button>
       <Button size="lg">Large</Button>
+    </div>
+  ),
+}
+
+export const Variants: Story = {
+  render: () => (
+    <div
+      style={{
+        display: 'flex',
+        gap: '12px',
+        alignItems: 'center',
+        flexWrap: 'wrap',
+        padding: '16px',
+        background: '#f7f7f8',
+        borderRadius: '16px',
+      }}
+    >
+      <Button variant="primary">Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
     </div>
   ),
 }

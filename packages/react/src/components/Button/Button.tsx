@@ -7,10 +7,8 @@
  * </Button>
  */
 
+import { Icon, Pressable, Text } from '@hi-design/primitives'
 import type { ButtonProps } from '@hi-design/types'
-import { Icon } from '@hi-design/primitives'
-import { Pressable } from '@hi-design/primitives'
-import { Text } from '@hi-design/primitives'
 import clsx from 'clsx'
 import { forwardRef } from 'react'
 import './Button.css'
@@ -23,16 +21,28 @@ const getButtonClass = (props: {
   disabled: boolean
   loading: boolean
   className?: string
-}) => clsx(
-  'button',
-  `button--${props.variant}`,
-  `button--${props.size}`,
-  `button--${props.color}`,
-  props.fullWidth && 'button--full-width',
-  props.disabled && 'button--disabled',
-  props.loading && 'button--loading',
-  props.className,
-)
+}) =>
+  clsx(
+    'button',
+    `button--${props.variant}`,
+    `button--${props.size}`,
+    `button--${props.color}`,
+    props.fullWidth && 'button--full-width',
+    props.disabled && 'button--disabled',
+    props.loading && 'button--loading',
+    props.className,
+  )
+
+const getButtonState = (
+  props: Pick<
+    ButtonProps,
+    'disabled' | 'loading' | 'fullWidth' | 'isDisabled' | 'isLoading' | 'isFullWidth'
+  >,
+) => ({
+  disabled: props.disabled || props.isDisabled || false,
+  loading: props.loading || props.isLoading || false,
+  fullWidth: props.fullWidth || props.isFullWidth || false,
+})
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
@@ -40,9 +50,12 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       variant = 'primary',
       size = 'md',
       color = 'primary',
-      disabled = false,
-      loading = false,
-      fullWidth = false,
+      disabled,
+      loading,
+      fullWidth,
+      isDisabled,
+      isLoading,
+      isFullWidth,
       onPress,
       className,
       children,
@@ -52,23 +65,40 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
+    const state = getButtonState({
+      disabled,
+      loading,
+      fullWidth,
+      isDisabled,
+      isLoading,
+      isFullWidth,
+    })
+
     return (
       <Pressable
         ref={ref}
-        className={getButtonClass({ variant, size, color, fullWidth, disabled, loading, className })}
-        disabled={disabled || loading}
+        className={getButtonClass({
+          variant,
+          size,
+          color,
+          fullWidth: state.fullWidth,
+          disabled: state.disabled,
+          loading: state.loading,
+          className,
+        })}
+        disabled={state.disabled || state.loading}
         onPress={onPress}
         testID={testID}
-        aria-busy={loading}
+        aria-busy={state.loading}
         {...rest}
       >
-        {loading && (
-          <span className="button__spinner" aria-hidden="true">
-            <span className="sr-only">Loading...</span>
-          </span>
+        {state.loading && (
+          <output className="button__spinner" aria-label="Loading">
+            <span className="button__sr-only">Loading...</span>
+          </output>
         )}
 
-        {icon && !loading && (
+        {icon && !state.loading && (
           <Icon name={icon} size={size} className="button__icon" aria-hidden="true" />
         )}
 
