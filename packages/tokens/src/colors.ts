@@ -12,78 +12,84 @@
 // ============================================
 /**
  * Raw color values
- * These are the base hex values that will be used in scale tokens
+ * These values mirror the pen source of truth: Iris, Ink, and Canvas.
  */
 export const rawColors = {
-  // Primary - Blue scale
-  blue: {
-    50: '#f0f9ff',
-    100: '#e0f2fe',
-    200: '#bae6fd',
-    300: '#7dd3fc',
-    400: '#38bdf8',
-    500: '#0ea5e9',
-    600: '#0284c7',
-    700: '#0369a1',
-    800: '#075985',
-    900: '#0c4a6e',
-    950: '#082f49',
+  primary: {
+    0: '#F7F8FF',
+    50: '#EEF0FF',
+    100: '#E6E9FF',
+    200: '#D3D8FA',
+    300: '#B8BFF2',
+    400: '#919AE4',
+    500: '#5E6AD2',
+    600: '#4D59C4',
+    700: '#3F4AA7',
+    800: '#313985',
+    900: '#23295F',
+    950: '#181C42',
   },
 
-  // Secondary - Purple scale
-  purple: {
-    50: '#faf5ff',
-    100: '#f3e8ff',
-    200: '#e9d5ff',
-    300: '#d8b4fe',
-    400: '#c084fc',
-    500: '#a855f7',
-    600: '#9333ea',
-    700: '#7e22ce',
-    800: '#6b21a8',
-    900: '#581c87',
-    950: '#3b0764',
+  secondary: {
+    0: '#F7F8FB',
+    50: '#F1F3F7',
+    100: '#E7EAF0',
+    200: '#D4D9E4',
+    300: '#BAC1D0',
+    400: '#99A2B4',
+    500: '#788196',
+    600: '#5F677B',
+    700: '#444A55',
+    800: '#2A2F38',
+    900: '#1B1F27',
+    950: '#101319',
   },
 
-  // Neutral - Gray scale
-  gray: {
-    0: '#ffffff',
-    50: '#fafafa',
-    100: '#f5f5f5',
-    200: '#e5e5e5',
-    300: '#d4d4d4',
-    400: '#a3a3a3',
-    500: '#737373',
-    600: '#525252',
-    700: '#404040',
-    800: '#262626',
-    900: '#171717',
-    950: '#0a0a0a',
+  neutral: {
+    0: '#FCFCFD',
+    50: '#F7F7F8',
+    100: '#F1F2F4',
+    200: '#E4E6EA',
+    300: '#CED2D9',
+    400: '#A8AFB9',
+    500: '#7D8592',
+    600: '#5D6470',
+    700: '#414751',
+    800: '#292D35',
+    900: '#111318',
+    950: '#090A0D',
   },
 
-  // Semantic colors
-  green: {
-    50: '#dcfce7',
-    100: '#bbf7d0',
-    500: '#22c55e',
-    600: '#16a34a',
-    700: '#15803d',
+  success: {
+    50: '#EEF8F3',
+    100: '#D7EFE2',
+    500: '#2E8F61',
+    600: '#22724D',
+    700: '#1B5A3D',
   },
 
-  yellow: {
-    50: '#fef3c7',
-    100: '#fde68a',
-    500: '#f59e0b',
-    600: '#d97706',
-    700: '#b45309',
+  warning: {
+    50: '#FFF8EE',
+    100: '#FDEDD3',
+    500: '#D4841B',
+    600: '#B06C12',
+    700: '#8F570F',
   },
 
-  red: {
-    50: '#fee2e2',
-    100: '#fecaca',
-    500: '#ef4444',
-    600: '#dc2626',
-    700: '#b91c1c',
+  error: {
+    50: '#FFF2F2',
+    100: '#FDDDDD',
+    500: '#C94242',
+    600: '#A93232',
+    700: '#872929',
+  },
+
+  info: {
+    50: '#EEF0FF',
+    100: '#E6E9FF',
+    500: '#5E6AD2',
+    600: '#4D59C4',
+    700: '#3F4AA7',
   },
 } as const
 
@@ -91,79 +97,77 @@ export const rawColors = {
 // LAYER 2: SCALE TOKENS
 // ============================================
 /**
- * Scale tokens provide named access to raw values
- * Platform-agnostic color system
+ * Scale tokens provide named access to raw values.
+ * The public API keeps primary / secondary / neutral for component compatibility.
  */
 export const scaleColors = {
-  // Primary color scale
   primary: {
-    50: rawColors.blue[50],
-    100: rawColors.blue[100],
-    200: rawColors.blue[200],
-    300: rawColors.blue[300],
-    400: rawColors.blue[400],
-    500: rawColors.blue[500],
-    600: rawColors.blue[600],
-    700: rawColors.blue[700],
-    800: rawColors.blue[800],
-    900: rawColors.blue[900],
-    950: rawColors.blue[950],
+    0: rawColors.primary[0],
+    50: rawColors.primary[50],
+    100: rawColors.primary[100],
+    200: rawColors.primary[200],
+    300: rawColors.primary[300],
+    400: rawColors.primary[400],
+    500: rawColors.primary[500],
+    600: rawColors.primary[600],
+    700: rawColors.primary[700],
+    800: rawColors.primary[800],
+    900: rawColors.primary[900],
+    950: rawColors.primary[950],
   },
 
-  // Secondary color scale
   secondary: {
-    50: rawColors.purple[50],
-    100: rawColors.purple[100],
-    200: rawColors.purple[200],
-    300: rawColors.purple[300],
-    400: rawColors.purple[400],
-    500: rawColors.purple[500],
-    600: rawColors.purple[600],
-    700: rawColors.purple[700],
-    800: rawColors.purple[800],
-    900: rawColors.purple[900],
-    950: rawColors.purple[950],
+    0: rawColors.secondary[0],
+    50: rawColors.secondary[50],
+    100: rawColors.secondary[100],
+    200: rawColors.secondary[200],
+    300: rawColors.secondary[300],
+    400: rawColors.secondary[400],
+    500: rawColors.secondary[500],
+    600: rawColors.secondary[600],
+    700: rawColors.secondary[700],
+    800: rawColors.secondary[800],
+    900: rawColors.secondary[900],
+    950: rawColors.secondary[950],
   },
 
-  // Neutral color scale
   neutral: {
-    0: rawColors.gray[0],
-    50: rawColors.gray[50],
-    100: rawColors.gray[100],
-    200: rawColors.gray[200],
-    300: rawColors.gray[300],
-    400: rawColors.gray[400],
-    500: rawColors.gray[500],
-    600: rawColors.gray[600],
-    700: rawColors.gray[700],
-    800: rawColors.gray[800],
-    900: rawColors.gray[900],
-    950: rawColors.gray[950],
+    0: rawColors.neutral[0],
+    50: rawColors.neutral[50],
+    100: rawColors.neutral[100],
+    200: rawColors.neutral[200],
+    300: rawColors.neutral[300],
+    400: rawColors.neutral[400],
+    500: rawColors.neutral[500],
+    600: rawColors.neutral[600],
+    700: rawColors.neutral[700],
+    800: rawColors.neutral[800],
+    900: rawColors.neutral[900],
+    950: rawColors.neutral[950],
   },
 
-  // Semantic color scales
   success: {
-    light: rawColors.green[50],
-    main: rawColors.green[500],
-    dark: rawColors.green[600],
+    light: rawColors.success[50],
+    main: rawColors.success[500],
+    dark: rawColors.success[600],
   },
 
   warning: {
-    light: rawColors.yellow[50],
-    main: rawColors.yellow[500],
-    dark: rawColors.yellow[600],
+    light: rawColors.warning[50],
+    main: rawColors.warning[500],
+    dark: rawColors.warning[600],
   },
 
   error: {
-    light: rawColors.red[50],
-    main: rawColors.red[500],
-    dark: rawColors.red[600],
+    light: rawColors.error[50],
+    main: rawColors.error[500],
+    dark: rawColors.error[600],
   },
 
   info: {
-    light: rawColors.blue[50],
-    main: rawColors.blue[500],
-    dark: rawColors.blue[600],
+    light: rawColors.info[50],
+    main: rawColors.info[500],
+    dark: rawColors.info[600],
   },
 } as const
 
@@ -171,24 +175,22 @@ export const scaleColors = {
 // LAYER 3: SEMANTIC TOKENS (Light Theme)
 // ============================================
 /**
- * Semantic tokens express design intent
- * These are the tokens used in components
+ * Semantic tokens express design intent.
+ * Most UI should resolve through neutral tokens, with Iris reserved for emphasis.
  */
 export const semanticColors = {
-  // Brand colors
   brand: {
     primary: scaleColors.primary[500],
     primaryHover: scaleColors.primary[600],
     primaryActive: scaleColors.primary[700],
     primaryLight: scaleColors.primary[50],
 
-    secondary: scaleColors.secondary[500],
-    secondaryHover: scaleColors.secondary[600],
-    secondaryActive: scaleColors.secondary[700],
+    secondary: scaleColors.secondary[700],
+    secondaryHover: scaleColors.secondary[800],
+    secondaryActive: scaleColors.secondary[900],
     secondaryLight: scaleColors.secondary[50],
   },
 
-  // Semantic colors
   success: scaleColors.success.main,
   successLight: scaleColors.success.light,
   successDark: scaleColors.success.dark,
@@ -205,43 +207,39 @@ export const semanticColors = {
   infoLight: scaleColors.info.light,
   infoDark: scaleColors.info.dark,
 
-  // Text colors
   text: {
     primary: scaleColors.neutral[900],
     secondary: scaleColors.neutral[600],
     tertiary: scaleColors.neutral[500],
     disabled: scaleColors.neutral[400],
     inverse: scaleColors.neutral[0],
-    link: scaleColors.primary[500],
-    linkHover: scaleColors.primary[600],
+    link: scaleColors.primary[600],
+    linkHover: scaleColors.primary[700],
   },
 
-  // Background colors
   background: {
     primary: scaleColors.neutral[0],
     secondary: scaleColors.neutral[50],
     tertiary: scaleColors.neutral[100],
-    disabled: scaleColors.neutral[200],
-    overlay: 'rgba(0, 0, 0, 0.5)',
+    disabled: scaleColors.neutral[100],
+    overlay: 'rgba(17, 19, 24, 0.56)',
     inverse: scaleColors.neutral[900],
   },
 
-  // Border colors
   border: {
     default: scaleColors.neutral[200],
     light: scaleColors.neutral[100],
     dark: scaleColors.neutral[300],
-    focus: scaleColors.primary[500],
+    focus: scaleColors.primary[400],
     error: scaleColors.error.main,
     success: scaleColors.success.main,
     warning: scaleColors.warning.main,
   },
 
-  // Shadow colors
   shadow: {
-    light: 'rgba(0, 0, 0, 0.05)',
-    default: 'rgba(0, 0, 0, 0.1)',
-    dark: 'rgba(0, 0, 0, 0.2)',
+    light: 'rgba(17, 19, 24, 0.04)',
+    default: 'rgba(17, 19, 24, 0.08)',
+    dark: 'rgba(17, 19, 24, 0.14)',
   },
 } as const
 
@@ -249,8 +247,8 @@ export const semanticColors = {
 // DARK THEME SEMANTIC TOKENS
 // ============================================
 /**
- * Dark theme semantic tokens
- * Override light theme values for dark mode
+ * Dark theme semantic tokens.
+ * Keep the ink foundation and make the accent slightly brighter for contrast.
  */
 export const darkSemanticColors = {
   ...semanticColors,
@@ -259,7 +257,13 @@ export const darkSemanticColors = {
     ...semanticColors.brand,
     primary: scaleColors.primary[400],
     primaryHover: scaleColors.primary[300],
-    primaryActive: scaleColors.primary[200],
+    primaryActive: scaleColors.primary[500],
+    primaryLight: 'rgba(94, 106, 210, 0.16)',
+
+    secondary: scaleColors.secondary[500],
+    secondaryHover: scaleColors.secondary[400],
+    secondaryActive: scaleColors.secondary[600],
+    secondaryLight: scaleColors.secondary[900],
   },
 
   text: {
@@ -267,25 +271,25 @@ export const darkSemanticColors = {
     secondary: scaleColors.neutral[400],
     tertiary: scaleColors.neutral[500],
     disabled: scaleColors.neutral[600],
-    inverse: scaleColors.neutral[950],
-    link: scaleColors.primary[400],
-    linkHover: scaleColors.primary[300],
+    inverse: scaleColors.neutral[900],
+    link: scaleColors.primary[300],
+    linkHover: scaleColors.primary[200],
   },
 
   background: {
     primary: scaleColors.neutral[900],
     secondary: scaleColors.neutral[800],
-    tertiary: scaleColors.neutral[700],
-    disabled: scaleColors.neutral[600],
-    overlay: 'rgba(0, 0, 0, 0.7)',
+    tertiary: scaleColors.secondary[900],
+    disabled: scaleColors.secondary[900],
+    overlay: 'rgba(9, 10, 13, 0.72)',
     inverse: scaleColors.neutral[0],
   },
 
   border: {
-    default: scaleColors.neutral[700],
-    light: scaleColors.neutral[800],
-    dark: scaleColors.neutral[600],
-    focus: scaleColors.primary[400],
+    default: scaleColors.secondary[800],
+    light: scaleColors.secondary[900],
+    dark: scaleColors.secondary[700],
+    focus: scaleColors.primary[300],
     error: scaleColors.error.main,
     success: scaleColors.success.main,
     warning: scaleColors.warning.main,
@@ -296,11 +300,10 @@ export const darkSemanticColors = {
 // CSS VARIABLES
 // ============================================
 /**
- * CSS custom properties for web platform
- * Can be overridden at runtime for theming
+ * CSS custom properties for web platform.
+ * Scale variables stay minimal and semantic variables drive the product UI.
  */
 export const cssVars = {
-  // Scale tokens
   scale: {
     '--color-primary-50': scaleColors.primary[50],
     '--color-primary-500': scaleColors.primary[500],
@@ -320,7 +323,6 @@ export const cssVars = {
     '--color-info': scaleColors.info.main,
   },
 
-  // Semantic tokens (light theme)
   semantic: {
     '--brand-primary': semanticColors.brand.primary,
     '--brand-primary-hover': semanticColors.brand.primaryHover,
@@ -339,7 +341,7 @@ export const cssVars = {
 // BACKWARD COMPATIBILITY
 // ============================================
 /**
- * Legacy exports for backward compatibility
+ * Legacy exports for backward compatibility.
  * @deprecated Use semanticColors instead
  */
 export const colors = {
@@ -364,13 +366,11 @@ export const opacity = {
   pressed: 0.7,
 } as const
 
-// Additional backward compatibility exports
 export const primary = scaleColors.primary
 export const secondary = scaleColors.secondary
 export const neutral = scaleColors.neutral
 export const semantic = semanticColors
 
-// Type exports
 export type Colors = typeof colors
 export type PrimaryColor = keyof typeof scaleColors.primary
 export type SecondaryColor = keyof typeof scaleColors.secondary
