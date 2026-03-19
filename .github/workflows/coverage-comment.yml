@@ -1,0 +1,88 @@
+name: Coverage Comment
+
+on:
+  pull_request:
+    branches: [main, develop]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  coverage-comment:
+    name: Coverage Comment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate coverage
+        run: pnpm test:coverage
+
+      - name: Coverage comment
+        uses: romeovs/lcov-reporter-action@v0.3.1
+        with:
+          lcov-file: ./coverage/lcov.info
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          update-comment: true
+
+      - name: Check coverage thresholds
+        run: |
+          echo "Checking if coverage meets minimum thresholds..."
+          echo "Required: 80% coverage"
+
+          if [ -f coverage/coverage-summary.json ]; then
+            # Parse coverage from JSON
+            COVERAGE=$(node -e "
+              const fs = require('fs');
+              const data = JSON.parse(fs.readFileSync('coverage/coverage-summary.json', 'utf8'));
+              const total = data.total;
+              const pct = {
+                statements: Math.round(total.lines.pct),
+                branches: Math.round(total.branches.pct),
+                functions: Math.round(total.functions.pct),
+                lines: Math.round(total.lines.pct)
+              };
+              console.log(JSON.stringify(pct));
+            ")
+
+            echo "Current coverage: $COVERAGE"
+
+            # Check if all metrics meet 80% threshold
+            if ! echo "$COVERAGE" | grep -q '"statements":[89][0-9]\|"statements":100'; then
+              echo "❌ Statement coverage below 80%"
+              exit 1
+            fi
+
+            if ! echo "$COVERAGE" | grep -q '"branches":[89][0-9]\|"branches":100'; then
+              echo "❌ Branch coverage below 80%"
+              exit 1
+            fi
+
+            if ! echo "$COVERAGE" | grep -q '"functions":[89][0-9]\|"functions":100'; then
+              echo "❌ Function coverage below 80%"
+              exit 1
+            fi
+
+            if ! echo "$COVERAGE" | grep -q '"lines":[89][0-9]\|"lines":100'; then
+              echo "❌ Line coverage below 80%"
+              exit 1
+            fi
+
+            echo "✅ All coverage metrics meet minimum 80% threshold"
+          fi

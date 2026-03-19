@@ -306,6 +306,31 @@ HiButton(
 
 ## Pull Request Process
 
+### ⚠️ Important: Merge Requirements
+
+**All PRs MUST meet these requirements before merging:**
+
+#### Quality Gates (Automatically Enforced)
+- ✅ **CI / Lint** - Code linting must pass
+- ✅ **CI / Type Check** - TypeScript type checking must pass
+- ✅ **CI / Test** - Unit tests must pass with **80%+ coverage**
+- ✅ **CI / Build** - Build must succeed
+- ✅ **E2E Tests** - End-to-end tests must pass
+- ✅ **Code Quality Analysis** - No critical complexity issues
+- ✅ **Commit Lint** - All commits follow Conventional Commits
+- ✅ **Security Scans** - No critical vulnerabilities
+
+#### Review Requirements
+- 👥 **1+ maintainer approval** required
+- 💬 **All conversations resolved**
+- 🔄 **Branch up-to-date** with target
+
+#### Merge Method
+- **Squash and merge** preferred (clean history)
+- ❌ Merge commits not allowed
+
+See [`.github/MERGE_RULES.md`](./.github/MERGE_RULES.md) for detailed merge rules.
+
 ### 1. Before Creating PR
 
 - [ ] Code follows style guidelines

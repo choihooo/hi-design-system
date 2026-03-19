@@ -16,6 +16,34 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     include: ['**/*.{test,spec}.{ts,tsx}'],
     css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'lcov'],
+      exclude: [
+        'node_modules/',
+        '*.config.{js,ts,mjs}',
+        '.storybook/',
+        'dist/',
+        'build/',
+        'coverage/',
+        '**/*.d.ts',
+        '**/*.stories.{ts,tsx}',
+        '**/types/',
+        'apps/',
+        'flutter/',
+      ],
+      thresholds: {
+        statements: 80,
+        branches: 80,
+        functions: 80,
+        lines: 80,
+      },
+      // Fail the build if coverage drops below thresholds
+      perFile: false,
+      // Check coverage for all files together
+      all: true,
+      // Include all files, not just those with tests
+    },
   },
   resolve: {
     alias: {

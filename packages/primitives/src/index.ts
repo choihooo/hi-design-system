@@ -25,6 +25,9 @@
  * 4. Add Icon for visual elements
  */
 
+// Import CSS for all primitives
+import './index.css'
+
 // Core primitives
 export { default as Box } from './Box/Box'
 

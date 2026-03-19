@@ -2,24 +2,46 @@
   "name": "@hi-design/tokens",
   "version": "0.1.0",
   "description": "Design tokens for HI Design System - shared across React, React Native, and Flutter",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
-    ".": "./src/index.ts",
-    "./colors": "./src/colors.ts",
-    "./typography": "./src/typography.ts",
-    "./spacing": "./src/spacing.ts",
+    ".": {
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.mts"
+    },
+    "./colors": {
+      "import": "./dist/colors.mjs",
+      "types": "./dist/colors.d.mts"
+    },
+    "./typography": {
+      "import": "./dist/typography.mjs",
+      "types": "./dist/typography.d.mts"
+    },
+    "./spacing": {
+      "import": "./dist/spacing.mjs",
+      "types": "./dist/spacing.d.mts"
+    },
     "./global.css": "./src/global.css"
   },
   "files": [
+    "dist",
     "src"
   ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit"
+  },
   "keywords": [
     "design-tokens",
     "design-system",
     "tokens",
     "hi-design"
   ],
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.3"
+  },
   "author": "HI Design System",
   "license": "MIT"
 }
