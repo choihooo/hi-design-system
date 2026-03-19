@@ -14,29 +14,35 @@
  */
 
 import { CloseIcon } from '@hi-design/icons'
-import type { BaseComponentProps } from '../../utils/common'
 import { clsx } from 'clsx'
+import type { BaseComponentProps } from '../../utils/common'
 import './Modal.css'
 
 export interface ModalHeaderProps extends BaseComponentProps {
   title?: string
   showCloseButton?: boolean
   onClose?: () => void
+  titleId?: string
 }
 
 export const ModalHeader: React.FC<ModalHeaderProps> = ({
   title,
   showCloseButton = true,
   onClose,
+  titleId,
   className,
   testID,
 }) => {
-  const headerClassName = clsx('modal__header', className)
+  if (!title && !showCloseButton) {
+    return null
+  }
+
+  const headerClassName = clsx('modal__header', !title && 'modal__header--actions-only', className)
 
   return (
-    <div className={headerClassName} data-testid={testID}>
+    <div className={headerClassName} data-testid={testID ? `${testID}-header` : 'modal-header'}>
       {title && (
-        <h2 className="modal__title" id={`${testID || 'modal'}-title`}>
+        <h2 className="modal__title" id={titleId}>
           {title}
         </h2>
       )}

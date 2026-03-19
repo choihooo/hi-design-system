@@ -15,8 +15,8 @@
  * ```
  */
 
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { ModalContext, ModalContextType } from './ModalContext'
+import { useCallback, useEffect, useRef } from 'react'
+import { ModalContext, type ModalContextType } from './ModalContext'
 
 export interface ModalProviderProps {
   visible: boolean
@@ -31,8 +31,8 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
   modalRef,
   children,
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(visible)
   const previousActiveElement = useRef<HTMLElement | null>(null)
+  const modalElement = modalRef.current
 
   // Handle escape key press
   useEffect(() => {
@@ -55,22 +55,32 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
 
   // Focus trap
   useEffect(() => {
-    if (!visible || !modalRef.current) {
+    if (!visible || !modalElement) {
       return undefined
     }
 
     const focusableElements = Array.from(
-      modalRef.current.querySelectorAll<HTMLElement>(
+      modalElement.querySelectorAll<HTMLElement>(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       ),
     )
     const firstElement = focusableElements[0]
     const lastElement = focusableElements[focusableElements.length - 1]
 
-    firstElement?.focus()
+    if (firstElement) {
+      firstElement.focus()
+    } else {
+      modalElement.focus()
+    }
 
     const handleTab = (e: KeyboardEvent) => {
       if (e.key !== 'Tab') return
+
+      if (!firstElement || !lastElement) {
+        e.preventDefault()
+        modalElement.focus()
+        return
+      }
 
       if (e.shiftKey) {
         if (document.activeElement === firstElement) {
@@ -90,7 +100,7 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
       // Restore focus when modal closes
       previousActiveElement.current?.focus()
     }
-  }, [visible])
+  }, [visible, modalElement])
 
   // Prevent body scroll when modal is open
   useEffect(() => {
@@ -106,9 +116,8 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
   }, [visible])
 
   const contextValue: ModalContextType = {
-    isOpen: isModalOpen,
+    isOpen: visible,
     onClose: useCallback(() => {
-      setIsModalOpen(false)
       onClose()
     }, [onClose]),
     modalRef,
@@ -117,9 +126,5 @@ export const ModalProvider: React.FC<ModalProviderProps> = ({
 
   if (!visible) return null
 
-  return (
-    <ModalContext.Provider value={contextValue}>
-      {children}
-    </ModalContext.Provider>
-  )
+  return <ModalContext.Provider value={contextValue}>{children}</ModalContext.Provider>
 }

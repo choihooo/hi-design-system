@@ -15,42 +15,50 @@
  * ```
  */
 
-import type { BaseComponentProps } from '../../utils/common'
 import { clsx } from 'clsx'
+import type { BaseComponentProps } from '../../utils/common'
 import './Modal.css'
 
 export interface ModalContentProps extends BaseComponentProps {
   size?: 'sm' | 'md' | 'lg' | 'xl'
-  prefersReduced?: boolean
+  prefersReducedMotion?: boolean
   children: React.ReactNode
   modalId?: string
   titleId?: string
+  descriptionId?: string
+  modalRef?: React.RefObject<HTMLDivElement>
 }
 
 export const ModalContent: React.FC<ModalContentProps> = ({
   size = 'md',
-  prefersReduced = false,
+  prefersReducedMotion = false,
   children,
   className,
   testID,
   modalId,
   titleId,
+  descriptionId,
+  modalRef,
 }) => {
   const contentClassName = clsx(
     'modal',
     `modal--${size}`,
-    prefersReduced && 'modal--no-animation',
+    prefersReducedMotion && 'modal--no-animation',
     className,
   )
 
   return (
     <div
+      ref={modalRef}
       className={contentClassName}
       role="dialog"
       aria-modal="true"
       aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+      aria-label={titleId ? undefined : 'Modal dialog'}
       id={modalId}
-      data-testid={testID || 'modal-content'}
+      data-testid={testID ? `${testID}-content` : 'modal-content'}
+      tabIndex={-1}
     >
       {children}
     </div>

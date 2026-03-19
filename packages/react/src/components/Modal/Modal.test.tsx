@@ -7,6 +7,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import Modal from './Modal'
 import '@testing-library/jest-dom'
 
+vi.mock('@hi-design/icons', () => ({
+  CloseIcon: () => <svg data-testid="mock-close-icon" />,
+}))
+
 // Mock window.matchMedia for reduced motion
 beforeEach(() => {
   Object.defineProperty(window, 'matchMedia', {
@@ -79,7 +83,7 @@ describe('Modal', () => {
         </Modal>,
       )
 
-      const closeButton = screen.getByRole('button', { name: /close/i })
+      const closeButton = screen.getByTestId('modal-close')
       fireEvent.click(closeButton)
       expect(handleClose).toHaveBeenCalledTimes(1)
     })
@@ -92,7 +96,7 @@ describe('Modal', () => {
         </Modal>,
       )
 
-      const backdrop = screen.getByTestId('modal-overlay')
+      const backdrop = screen.getByTestId('modal-backdrop')
       fireEvent.click(backdrop)
       expect(handleClose).toHaveBeenCalledTimes(1)
     })
@@ -150,8 +154,8 @@ describe('Modal', () => {
       )
 
       const dialog = screen.getByRole('dialog')
-      expect(dialog).toHaveAttribute('aria-labelledby', 'test-modal-title')
-      expect(screen.getByText('Test Modal')).toHaveAttribute('id', 'test-modal-title')
+      expect(dialog).toHaveAttribute('aria-labelledby')
+      expect(screen.getByText('Test Modal').id).toBe(dialog.getAttribute('aria-labelledby'))
     })
   })
 
@@ -193,7 +197,7 @@ describe('Modal', () => {
         </Modal>,
       )
 
-      expect(screen.queryByRole('button', { name: /close/i })).not.toBeInTheDocument()
+      expect(screen.queryByTestId('modal-close')).not.toBeInTheDocument()
     })
 
     it('does not call onClose when backdrop is clicked and closeOnBackdropPress is false', () => {

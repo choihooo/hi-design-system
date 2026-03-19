@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import Button from '../Button/Button'
 import Modal from './Modal'
 
 /**
@@ -12,8 +13,18 @@ const meta = {
   },
   args: {
     visible: true,
-    title: 'Modal Title',
-    children: <div>Modal content goes here.</div>,
+    title: 'Publish changes?',
+    showCloseButton: false,
+    size: 'sm',
+    children: (
+      <>
+        <p>Your latest draft will become visible to collaborators immediately.</p>
+        <Modal.Footer>
+          <Button variant="outline">Cancel</Button>
+          <Button>Publish</Button>
+        </Modal.Footer>
+      </>
+    ),
     onClose: () => {},
   },
 } satisfies Meta<typeof Modal>

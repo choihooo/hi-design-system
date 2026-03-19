@@ -14,20 +14,27 @@
  * ```
  */
 
+import { clsx } from 'clsx'
 import type { BaseComponentProps } from '../../utils/common'
 import './Modal.css'
 
 export interface ModalBodyProps extends BaseComponentProps {
   children: React.ReactNode
+  descriptionId?: string
 }
 
 export const ModalBody: React.FC<ModalBodyProps> = ({
   children,
   className,
   testID,
+  descriptionId,
 }) => {
   return (
-    <div className={`modal__body ${className || ''}`} data-testid={testID}>
+    <div
+      className={clsx('modal__body', className)}
+      data-testid={testID ? `${testID}-body` : 'modal-body'}
+      id={descriptionId}
+    >
       {children}
     </div>
   )

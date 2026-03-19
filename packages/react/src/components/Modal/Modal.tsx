@@ -24,16 +24,17 @@
  * ```
  */
 
-import { useRef } from 'react'
-import { ModalHeader } from './ModalHeader'
-import { ModalContent } from './ModalContent'
-import { ModalOverlay } from './ModalOverlay'
-import { ModalProvider } from './ModalProvider'
-import { ModalBody } from './ModalBody'
-import { useReducedMotion } from '../../utils/animations'
-import { createPortal } from 'react-dom'
 import type { ModalProps } from '@hi-design/types'
 import type React from 'react'
+import { useId, useRef } from 'react'
+import { createPortal } from 'react-dom'
+import { useReducedMotion } from '../../utils/animations'
+import { ModalBody } from './ModalBody'
+import { ModalContent } from './ModalContent'
+import { ModalFooter } from './ModalFooter'
+import { ModalHeader } from './ModalHeader'
+import { ModalOverlay } from './ModalOverlay'
+import { ModalProvider } from './ModalProvider'
 
 const Modal: React.FC<ModalProps> & {
   Header: typeof ModalHeader
@@ -41,6 +42,7 @@ const Modal: React.FC<ModalProps> & {
   Overlay: typeof ModalOverlay
   Provider: typeof ModalProvider
   Body: typeof ModalBody
+  Footer: typeof ModalFooter
 } = ({
   visible = false,
   title,
@@ -52,48 +54,60 @@ const Modal: React.FC<ModalProps> & {
   testID = 'modal',
 }) => {
   const modalRef = useRef<HTMLDivElement>(null)
-  const prefersReduced = useReducedMotion()
+  const prefersReducedMotion = useReducedMotion()
+  const reactId = useId()
+  const modalId = `${testID || 'modal'}-${reactId}`
+  const titleId = title ? `${modalId}-title` : undefined
+  const descriptionId = children ? `${modalId}-description` : undefined
+
+  if (!visible || typeof document === 'undefined') {
+    return null
+  }
 
   const modalContent = (
     <ModalProvider visible={visible} onClose={onClose} modalRef={modalRef}>
       <ModalOverlay
         closeOnBackdropPress={closeOnBackdropPress}
         onClose={onClose}
-        prefersReduced={prefersReduced}
+        prefersReducedMotion={prefersReducedMotion}
         testID={testID}
       >
-        <ModalContent size={size} prefersReduced={prefersReduced} testID={testID}>
+        <ModalContent
+          size={size}
+          prefersReducedMotion={prefersReducedMotion}
+          testID={testID}
+          modalId={modalId}
+          titleId={titleId}
+          descriptionId={descriptionId}
+          modalRef={modalRef}
+        >
           {(title || showCloseButton) && (
             <ModalHeader
               title={title}
+              titleId={titleId}
               showCloseButton={showCloseButton}
               onClose={onClose}
               testID={testID}
             />
           )}
-          <ModalBody>{children}</ModalBody>
+          <ModalBody descriptionId={descriptionId} testID={testID}>
+            {children}
+          </ModalBody>
         </ModalContent>
       </ModalOverlay>
     </ModalProvider>
   )
 
-  return visible ? createPortal(modalContent, document.body) : null
+  return createPortal(modalContent, document.body)
 }
-
-// Add sub-components as static properties
-Modal.Header = ModalHeader
-Modal.Content = ModalContent
-Modal.Overlay = ModalOverlay
-Modal.Provider = ModalProvider
-Modal.Body = ModalBody
 
 Modal.displayName = 'Modal'
 
-// Export sub-components
 Modal.Header = ModalHeader
 Modal.Content = ModalContent
 Modal.Overlay = ModalOverlay
 Modal.Provider = ModalProvider
 Modal.Body = ModalBody
+Modal.Footer = ModalFooter
 
 export default Modal

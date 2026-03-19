@@ -10,8 +10,8 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: var(--spacing-lg);
-  animation: modal-fade-in 0.2s ease-out;
+  padding: 24px;
+  animation: modal-fade-in 0.18s ease-out;
 }
 
 .modal-overlay__backdrop {
@@ -20,7 +20,7 @@
   border: none;
   padding: 0;
   margin: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(17, 19, 24, 0.08);
 }
 
 @keyframes modal-fade-in {
@@ -48,19 +48,24 @@
 .modal {
   position: relative;
   z-index: 1;
-  background: var(--bg-primary, #ffffff);
-  border-radius: var(--radius-lg, 12px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  max-height: calc(100vh - var(--spacing-2xl, 32px));
+  width: min(100%, 560px);
+  background: var(--bg-primary, #fcfcfd);
+  border: 1px solid var(--border-default, #e4e6ea);
+  border-radius: 20px;
+  box-shadow:
+    0 32px 80px -40px rgba(17, 19, 24, 0.32),
+    0 16px 32px -24px rgba(17, 19, 24, 0.22);
+  max-height: min(calc(100vh - 48px), 720px);
   display: flex;
   flex-direction: column;
-  animation: modal-slide-in 0.3s ease-out;
+  overflow: hidden;
+  animation: modal-slide-in 0.24s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 @keyframes modal-slide-in {
   from {
     opacity: 0;
-    transform: translateY(-20px) scale(0.95);
+    transform: translateY(10px) scale(0.98);
   }
   to {
     opacity: 1;
@@ -69,33 +74,38 @@
 }
 
 .modal--sm {
-  width: 100%;
-  max-width: 360px;
+  max-width: 420px;
 }
 
 .modal--md {
-  width: 100%;
-  max-width: 500px;
+  max-width: 560px;
 }
 
 .modal--lg {
-  width: 100%;
-  max-width: 700px;
+  max-width: 720px;
+}
+
+.modal--xl {
+  max-width: 880px;
 }
 
 .modal__header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid var(--border-default, #e5e5e5);
+  gap: 16px;
+  padding: 24px 24px 0;
+}
+
+.modal__header--actions-only {
+  justify-content: flex-end;
 }
 
 .modal__title {
   margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: var(--text-primary, #262626);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary, #111318);
   line-height: 1.25;
 }
 
@@ -103,56 +113,94 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   padding: 0;
-  border: none;
-  background: transparent;
-  color: var(--text-secondary, #737373);
+  border: 1px solid var(--border-default, #e4e6ea);
+  background: var(--bg-primary, #fcfcfd);
+  color: var(--text-secondary, #5d6470);
   cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.15s ease;
+  border-radius: 999px;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
   flex-shrink: 0;
 }
 
 .modal__close:hover {
-  background-color: var(--bg-secondary, #fafafa);
-  color: var(--text-primary, #262626);
+  background-color: var(--bg-secondary, #f7f7f8);
+  border-color: var(--border-hover, #d8dce2);
+  color: var(--text-primary, #111318);
 }
 
 .modal__close:active {
-  background-color: var(--bg-filled, #f0f0f0);
+  background-color: var(--bg-filled, #eef0f3);
+  transform: translateY(1px);
 }
 
-/* Focus visible for close button */
 .modal__close:focus-visible {
   outline: 2px solid var(--brand-primary, #0ea5e9);
   outline-offset: 2px;
 }
 
 .modal__body {
-  padding: 24px;
+  padding: 16px 24px 24px;
   overflow-y: auto;
-  flex: 1;
+  flex: 1 1 auto;
+  color: var(--text-secondary, #5d6470);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
-/* Responsive adjustments */
+.modal__body > :first-child {
+  margin-top: 0;
+}
+
+.modal__body > :last-child {
+  margin-bottom: 0;
+}
+
+.modal__footer {
+  display: flex;
+  gap: 10px;
+  padding: 0 24px 24px;
+}
+
+.modal__footer > * {
+  flex: 1 1 0;
+}
+
+.modal__footer .button {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 18px;
+}
+
 @media (max-width: 640px) {
   .modal-overlay {
-    padding: var(--spacing-md);
+    padding: 16px;
   }
 
+  .modal,
   .modal--sm,
   .modal--md,
-  .modal--lg {
+  .modal--lg,
+  .modal--xl {
     max-width: 100%;
   }
 
   .modal__header {
-    padding: var(--spacing-md);
+    padding: 20px 20px 0;
   }
 
   .modal__body {
-    padding: var(--spacing-md);
+    padding: 14px 20px 20px;
+  }
+
+  .modal__footer {
+    flex-direction: column;
+    padding: 0 20px 20px;
   }
 }

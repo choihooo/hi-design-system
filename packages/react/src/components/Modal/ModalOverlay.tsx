@@ -17,33 +17,35 @@
  * ```
  */
 
-import type { BaseComponentProps } from '../../utils/common'
 import { clsx } from 'clsx'
+import type { BaseComponentProps } from '../../utils/common'
 import './Modal.css'
 
 export interface ModalOverlayProps extends BaseComponentProps {
   closeOnBackdropPress?: boolean
   onClose?: () => void
-  prefersReduced?: boolean
+  prefersReducedMotion?: boolean
+  children?: React.ReactNode
 }
 
 export const ModalOverlay: React.FC<ModalOverlayProps> = ({
   closeOnBackdropPress = true,
   onClose,
-  prefersReduced = false,
+  prefersReducedMotion = false,
   className,
   testID,
+  children,
 }) => {
   const overlayClassName = clsx(
     'modal-overlay',
-    prefersReduced && 'modal-overlay--no-animation',
+    prefersReducedMotion && 'modal-overlay--no-animation',
     className,
   )
 
   return (
     <div
       className={overlayClassName}
-      data-testid={testID || 'modal-overlay'}
+      data-testid={testID ? `${testID}-overlay` : 'modal-overlay'}
       role="presentation"
     >
       {closeOnBackdropPress ? (
@@ -57,6 +59,7 @@ export const ModalOverlay: React.FC<ModalOverlayProps> = ({
       ) : (
         <div className="modal-overlay__backdrop" aria-hidden="true" />
       )}
+      {children}
     </div>
   )
 }

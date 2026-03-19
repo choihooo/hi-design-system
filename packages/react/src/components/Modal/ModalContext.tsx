@@ -10,7 +10,7 @@ export interface ModalContextType {
   isOpen: boolean
   onClose: () => void
   modalRef: React.RefObject<HTMLDivElement>
-  previousActiveElement: React.RefObject<HTMLElement>
+  previousActiveElement: React.MutableRefObject<HTMLElement | null>
 }
 
 export const ModalContext = createContext<ModalContextType | undefined>(undefined)
