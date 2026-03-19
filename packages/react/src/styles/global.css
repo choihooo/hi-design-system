@@ -21,24 +21,24 @@ body {
 
 /* Theme Variables */
 :root {
-  --color-primary: #0ea5e9;
-  --color-primary-hover: #0284c7;
-  --color-secondary: #a855f7;
-  --color-success: #22c55e;
-  --color-warning: #f59e0b;
-  --color-error: #ef4444;
-  --color-info: #0ea5e9;
+  --color-primary: #5e6ad2;
+  --color-primary-hover: #4d59c4;
+  --color-secondary: #444a55;
+  --color-success: #2e8f61;
+  --color-warning: #d4841b;
+  --color-error: #c94242;
+  --color-info: #5e6ad2;
 
-  --color-text-primary: #111827;
-  --color-text-secondary: #525252;
-  --color-text-disabled: #a3a3a3;
+  --color-text-primary: #111318;
+  --color-text-secondary: #5d6470;
+  --color-text-disabled: #a8afb9;
 
-  --color-background-primary: #ffffff;
-  --color-background-secondary: #f5f5f5;
-  --color-background-tertiary: #e5e5e5;
+  --color-background-primary: #fcfcfd;
+  --color-background-secondary: #f1f2f4;
+  --color-background-tertiary: #e4e6ea;
 
-  --color-border-default: #d4d4d4;
-  --color-border-hover: #a3a3a3;
+  --color-border-default: #ced2d9;
+  --color-border-hover: #a8afb9;
 
   --spacing-xs: 4px;
   --spacing-sm: 8px;
@@ -62,16 +62,20 @@ body {
 
 /* Dark Theme */
 [data-theme='dark'] {
-  --color-text-primary: #fafafa;
-  --color-text-secondary: #d4d4d4;
-  --color-text-disabled: #737373;
+  --color-primary: #919ae4;
+  --color-primary-hover: #b8bff2;
+  --color-secondary: #788196;
 
-  --color-background-primary: #171717;
-  --color-background-secondary: #262626;
-  --color-background-tertiary: #404040;
+  --color-text-primary: #fcfcfd;
+  --color-text-secondary: #a8afb9;
+  --color-text-disabled: #5d6470;
 
-  --color-border-default: #404040;
-  --color-border-hover: #525252;
+  --color-background-primary: #111318;
+  --color-background-secondary: #292d35;
+  --color-background-tertiary: #444a55;
+
+  --color-border-default: #2a2f38;
+  --color-border-hover: #444a55;
 }
 
 /* Focus Visible Styles */

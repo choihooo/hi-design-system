@@ -9,11 +9,10 @@
  * - Backward compatibility maintained
  */
 
+// Export primitive components for direct use
+export { Box, Icon, Pressable, Text as PrimitiveText } from '@hi-design/primitives'
 // Re-export design tokens for convenience
 export * from '@hi-design/tokens'
-
-// Export primitive components for direct use
-export { Box, Text as PrimitiveText, Pressable, Icon } from '@hi-design/primitives'
 
 // Re-export types
 export type {
@@ -21,8 +20,10 @@ export type {
   CardProps,
   InputProps,
   ModalProps,
-  ToastProps,
+  SelectOption,
+  SelectProps,
   TextProps,
+  ToastProps,
 } from '@hi-design/types'
 
 // Export complex components (composed of primitives)
@@ -30,8 +31,8 @@ export { default as Button } from './components/Button/Button'
 export { default as Card } from './components/Card/Card'
 export { default as Input } from './components/Input/Input'
 export { default as Modal } from './components/Modal/Modal'
+export { default as Select } from './components/Select/Select'
 export { default as Toast } from './components/Toast/Toast'
 
 // Typography alias for backward compatibility
-export { default as Typography } from './components/Typography/Typography'
-export { default as Text } from './components/Typography/Typography' // Alias for Typography
+export { default as Typography, default as Text } from './components/Typography/Typography' // Alias for Typography
