@@ -2,6 +2,12 @@ import path from 'node:path'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
+const reactPath = path.resolve(__dirname, './node_modules/.pnpm/react@18.3.1/node_modules/react')
+const reactDomPath = path.resolve(
+  __dirname,
+  './node_modules/.pnpm/react-dom@18.3.1_react@18.3.1/node_modules/react-dom',
+)
+
 export default defineConfig({
   plugins: [react()],
   test: {
@@ -16,6 +22,13 @@ export default defineConfig({
       '@hi-design/tokens': path.resolve(__dirname, './packages/tokens/src'),
       '@hi-design/types': path.resolve(__dirname, './packages/types/src'),
       '@hi-design/react': path.resolve(__dirname, './packages/react/src'),
+      '@hi-design/primitives': path.resolve(__dirname, './packages/primitives/src'),
+      react: reactPath,
+      'react/jsx-runtime': path.join(reactPath, 'jsx-runtime.js'),
+      'react/jsx-dev-runtime': path.join(reactPath, 'jsx-dev-runtime.js'),
+      'react-dom': reactDomPath,
+      'react-dom/client': path.join(reactDomPath, 'client.js'),
+      'react-dom/test-utils': path.join(reactDomPath, 'test-utils.js'),
     },
   },
 })
