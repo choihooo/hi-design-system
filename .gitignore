@@ -70,6 +70,7 @@ playwright-*
 
 # Turbo
 .turbo/
+**/*.turbo-build.log
 
 # Storybook
 storybook-static/
