@@ -29,6 +29,14 @@ export const ErrorState: Story = {
   },
 }
 
+export const SuccessState: Story = {
+  args: {
+    state: 'success',
+    helperText: 'Everything looks correct',
+    value: 'hello@hi.design',
+  },
+}
+
 export const Disabled: Story = {
   args: {
     disabled: true,
@@ -40,6 +48,21 @@ export const Disabled: Story = {
 export const WithHelper: Story = {
   args: {
     helperText: 'This is helper text for the input',
+  },
+}
+
+export const Filled: Story = {
+  args: {
+    variant: 'filled',
+    helperText: 'Filled inputs feel softer and more application-like',
+  },
+}
+
+export const ReadOnly: Story = {
+  args: {
+    readOnly: true,
+    value: 'Read-only value',
+    helperText: 'Read-only fields remain legible but low-tension',
   },
 }
 
