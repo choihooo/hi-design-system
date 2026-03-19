@@ -59,3 +59,31 @@ export const Pressable: Story = {
     ),
   },
 }
+
+export const SurfaceStack: Story = {
+  render: () => (
+    <div
+      style={{
+        display: 'grid',
+        gap: '16px',
+        maxWidth: '520px',
+        padding: '16px',
+        background: '#f7f7f8',
+        borderRadius: '24px',
+      }}
+    >
+      <Card elevation="none" padding="md" radius="md">
+        <h3>Neutral Surface</h3>
+        <p>Base card for low-emphasis layout grouping.</p>
+      </Card>
+      <Card elevation="md" padding="lg" radius="lg">
+        <h3>Elevated Surface</h3>
+        <p>Default card for product surfaces and content modules.</p>
+      </Card>
+      <Card elevation="lg" padding="lg" radius="lg" pressable onPress={() => {}}>
+        <h3>Interactive Surface</h3>
+        <p>Pressable card for selection, navigation, and overview lists.</p>
+      </Card>
+    </div>
+  ),
+}
