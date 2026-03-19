@@ -1,4 +1,4 @@
-import { Typography } from '@hi-design/react'
+import { Button, Typography } from '@hi-design/react'
 import { lazy, Suspense, useState } from 'react'
 import { AnalyticsProvider } from './components/AnalyticsProvider'
 import './App.css'
@@ -13,6 +13,9 @@ const ButtonsSection = lazy(() =>
 )
 const InputsSection = lazy(() =>
   import('./components/InputsSection').then((m) => ({ default: m.InputsSection })),
+)
+const SelectsSection = lazy(() =>
+  import('./components/SelectsSection').then((m) => ({ default: m.SelectsSection })),
 )
 const CardsSection = lazy(() =>
   import('./components/CardsSection').then((m) => ({ default: m.CardsSection })),
@@ -62,6 +65,12 @@ function App() {
         </Suspense>
 
         <Suspense
+          fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading Selects...</div>}
+        >
+          <SelectsSection />
+        </Suspense>
+
+        <Suspense
           fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading Cards...</div>}
         >
           <CardsSection />
@@ -105,17 +114,20 @@ function App() {
       <Suspense fallback={null}>
         <Modal
           visible={modalOpen}
-          title="Demo Modal"
+          title="Publish changes?"
           size={modalSize}
+          showCloseButton={false}
           onClose={() => setModalOpen(false)}
         >
-          <Typography variant="body1" style={{ marginBottom: '16px' }}>
-            This is a {modalSize} modal dialog. You can put any content here including forms,
-            images, or other components.
+          <Typography variant="body1" style={{ marginBottom: '16px', lineHeight: 1.5 }}>
+            Your latest draft will become visible to collaborators immediately.
           </Typography>
-          <Typography variant="body2">
-            Click the X button, click outside this modal, or press Escape to close it.
-          </Typography>
+          <div className="modal__footer">
+            <Button variant="outline" onPress={() => setModalOpen(false)}>
+              Cancel
+            </Button>
+            <Button onPress={() => setModalOpen(false)}>Publish</Button>
+          </div>
         </Modal>
       </Suspense>
 
