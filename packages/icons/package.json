@@ -1,11 +1,14 @@
 {
   "name": "@hi-design/icons",
-  "version": "0.1.0",
-  "description": "Shared icon entrypoints for HI Design System",
+  "version": "1.0.0",
+  "description": "Icon library for HI Design System",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
-    ".": "./src/index.ts"
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
   },
   "files": [
     "src"
@@ -13,21 +16,12 @@
   "scripts": {
     "type-check": "tsc --noEmit"
   },
-  "peerDependencies": {
-    "react": ">=18.0.0"
-  },
   "dependencies": {
-    "@phosphor-icons/react": "^2.1.10"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.55",
-    "typescript": "^5.3.3"
+    "@phosphor-icons/core": "^1.0.0"
   },
   "keywords": [
     "icons",
-    "react",
-    "design-system",
-    "hi-design"
+    "phosphor"
   ],
   "author": "HI Design System",
   "license": "MIT"

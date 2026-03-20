@@ -1,40 +1,47 @@
 /**
- * @hi-design/react
+ * HI Design System - React Package
+ * Main entry point for all React components
  *
- * React web components for HI Design System
+ * This package provides React components that use:
+ * - Semantic tokens from @hi-design/tokens
+ * - TypeScript types from @hi-design/types
+ * - Primitives from @hi-design/primitives
  *
- * Now uses @hi-design/primitives as foundation:
- * - All complex components are composed of primitives
- * - Primitives are also exported for direct use
- * - Backward compatibility maintained
+ * All components follow the design-tokens.pen specifications.
+ *
+ * Usage:
+ * ```tsx
+ * import { Button, Input, Card, Typography } from '@hi-design/react';
+ * import { semantic } from '@hi-design/tokens';
+ *
+ * function MyComponent() {
+ *   return (
+ *     <Card elevation="md" padding="lg">
+ *       <Typography variant="h1">Hello World</Typography>
+ *       <Button variant="primary" onPress={handleClick}>
+ *         Click me
+ *       </Button>
+ *     </Card>
+ *   );
+ * }
+ * ```
  */
 
-// Import CSS for all React components
-import './index.css'
+// Core components
+export { Button } from './components/Button';
+export { Input } from './components/Input';
+export { Card } from './components/Card';
+export { Typography } from './components/Typography';
+export { Checkbox } from './components/Checkbox';
+export { Radio, RadioGroup } from './components/Radio';
 
-// Re-export design tokens for convenience
-export * from '@hi-design/tokens'
-
-// Export primitive components for direct use
-export { Box, Text as PrimitiveText, Pressable, Icon } from '@hi-design/primitives'
-
-// Re-export types
+// Re-export types from @hi-design/types
 export type {
   ButtonProps,
-  CardProps,
   InputProps,
-  ModalProps,
-  ToastProps,
-  TextProps,
-} from '@hi-design/types'
-
-// Export complex components (composed of primitives)
-export { default as Button } from './components/Button/Button'
-export { default as Card } from './components/Card/Card'
-export { default as Input } from './components/Input/Input'
-export { default as Modal } from './components/Modal/Modal'
-export { default as Toast } from './components/Toast/Toast'
-
-// Typography alias for backward compatibility
-export { default as Typography } from './components/Typography/Typography'
-export { default as Text } from './components/Typography/Typography' // Alias for Typography
+  CardProps,
+  TypographyProps,
+  CheckboxProps,
+  RadioProps,
+  RadioGroupProps,
+} from '@hi-design/types';

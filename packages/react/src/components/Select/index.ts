@@ -1,1 +1,2 @@
-export { default, Select } from './Select'
+export { Select } from './Select'
+export type { SelectOption } from './Select'

@@ -1,192 +1,198 @@
 /**
- * @component Text
- * @description Core text primitive - Handles all text rendering with consistent styling
- * @platform React, React Native
- * @AI-friendly: Maximum - Single responsibility (text only), semantic variants
+ * Text Component - Typography Primitive
  *
- * AI can easily understand:
- * - "Text = styled text content"
- * - "Variants = predefined text styles"
- * - "Typography hierarchy = h1 > h2 > h3 > body1 > body2 > caption"
+ * The Text component provides consistent typography across the design system.
+ * It uses semantic tokens from design-tokens.pen screen 4.
  *
- * @usage
- * ```tsx
- * // Predefined variants
- * <Text variant="h1">Heading 1</Text>
- * <Text variant="h2">Heading 2</Text>
- * <Text variant="body1">Body text</Text>
- * <Text variant="caption">Caption text</Text>
+ * Features:
+ * - Pre-defined typography variants (display, headings, body, caption, etc.)
+ * - Size variants (xs, sm, md, lg, xl)
+ * - Weight variants (light, regular, medium, semibold, bold)
+ * - Color support (semantic colors or custom)
+ * - Text alignment
+ * - Line height and letter spacing control
+ * - Text decoration and transformation
+ * - Truncation support
  *
- * // Custom styling
- * <Text color="primary" weight="bold" fontSize="lg">
- *   Custom styled text
- * </Text>
- *
- * // Text truncation
- * <Text numberOfLines={2}>
- *   Long text that will be truncated after two lines with ellipsis
- * </Text>
- *
- * // No wrap
- * <Text isNoWrap>
- *   Text that won't wrap to multiple lines
- * </Text>
- * ```
- *
- * @accessibility
- * - Semantic HTML: Renders appropriate heading tags (h1-h6) or paragraph (p)
- * - Screen readers: Proper text hierarchy support
- * - Language support: Inherits lang attribute from parent
- *
- * @design-philosophy
- * - Single Responsibility: Only handles text display
- * - Semantic Variants: Meaningful names (h1, body1, caption)
- * - Composability: Can be nested inside Box and other components
- * - Performance: Minimal DOM, text rendering only
+ * @design-tokens.pen reference: Screen 4 - Typography System
  */
 
-import clsx from 'clsx'
-import { forwardRef, useMemo } from 'react'
-import './Text.css'
+import { semantic } from '@hi-design/tokens';
+import type { TextProps } from '@hi-design/types';
+import { forwardRef } from 'react';
 
-interface BaseComponentProps {
-  className?: string
-  children?: React.ReactNode
-  testID?: string
-  style?: React.CSSProperties
-}
+/**
+ * Text - Typography component
+ *
+ * @example
+ * ```tsx
+ * // Using variants
+ * <Text variant="h1">Heading 1</Text>
+ * <Text variant="body">Body text</Text>
+ * <Text variant="caption">Caption text</Text>
+ *
+ * // With semantic tokens
+ * <Text
+ *   variant="h2"
+ *   color={semantic.color.brand.primary}
+ * >
+ *   Blue heading
+ * </Text>
+ *
+ * // Truncation
+ * <Text truncate lines={2}>
+ *   Long text that will be truncated after 2 lines...
+ * </Text>
+ * ```
+ */
+export const Text = forwardRef<HTMLSpanElement, TextProps>(({
+  children,
+  variant = 'body',
+  size,
+  weight,
+  color,
+  align = 'left',
+  lineHeight,
+  letterSpacing,
+  textDecoration = 'none',
+  textTransform = 'none',
+  truncate = false,
+  className,
+  testID,
+  style,
+}: TextProps, ref) => {
+  // Get typography styles based on variant
+  const getVariantStyles = () => {
+    switch (variant) {
+      case 'display':
+        return semantic.typography.display;
+      case 'h1':
+        return semantic.typography.heading.h1;
+      case 'h2':
+        return semantic.typography.heading.h2;
+      case 'h3':
+        return semantic.typography.heading.h3;
+      case 'h4':
+        return semantic.typography.heading.h4;
+      case 'h5':
+        return semantic.typography.heading.h5;
+      case 'h6':
+        return semantic.typography.heading.h6;
+      case 'body-large':
+        return semantic.typography.body.large;
+      case 'body':
+      case 'button':
+      case 'input':
+        return semantic.typography.body.default;
+      case 'body-small':
+      case 'helper':
+        return semantic.typography.body.small;
+      case 'caption':
+      case 'xs':
+        return semantic.typography.body.xs;
+      case 'overline':
+        return semantic.typography.component.overline;
+      case 'label':
+        return semantic.typography.component.label;
+      default:
+        return semantic.typography.body.default;
+    }
+  };
 
-interface TextProps extends BaseComponentProps {
-  children?: React.ReactNode
-  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'button' | 'caption' | 'overline'
-  weight?: 'light' | 'regular' | 'medium' | 'semibold' | 'bold'
-  color?: string
-  align?: 'left' | 'center' | 'right' | 'justify'
-  textDecoration?: 'none' | 'underline' | 'line-through'
-  textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize'
-  lineHeight?: string | number
-  letterSpacing?: string | number
-  isNoWrap?: boolean
-  numberOfLines?: number
-  fontSize?: string | number
-}
+  const variantStyles = getVariantStyles();
 
-// Element tag mapping for semantic HTML
-const elementTagMap = {
-  h1: 'h1',
-  h2: 'h2',
-  h3: 'h3',
-  h4: 'h4',
-  h5: 'h5',
-  h6: 'h6',
-  body1: 'p',
-  body2: 'p',
-  button: 'span',
-  caption: 'span',
-  overline: 'span',
-} as const
+  // Get font size based on size prop
+  const getSizeValue = () => {
+    if (!size) return variantStyles.fontSize;
 
-export const Text = forwardRef<HTMLParagraphElement, TextProps>(
-  (
-    {
-      variant = 'body1',
-      weight,
-      color,
-      align = 'left',
-      textDecoration = 'none',
-      textTransform = 'none',
-      lineHeight,
-      letterSpacing,
-      isNoWrap = false,
-      numberOfLines,
-      fontSize,
-      className,
-      style,
-      children,
-      testID,
-      ...rest
-    },
-    ref,
-  ) => {
-    // Determine the HTML element based on variant
-    const elementTag = elementTagMap[variant]
-    const Element = elementTag as keyof JSX.IntrinsicElements
+    const sizeMap: Record<string, number> = {
+      'xs': 12,
+      'sm': 14,
+      'md': 16,
+      'lg': 18,
+      'xl': 20,
+    };
 
-    // Build inline styles
-    const inlineStyles = useMemo(() => {
-      const styles: Record<string, any> = {
-        textAlign: align,
-        textDecoration,
-        textTransform,
-        lineHeight,
-        letterSpacing,
-        fontSize,
-        color,
-        fontWeight: weight,
-        ...style,
-      }
+    return sizeMap[size] || variantStyles.fontSize;
+  };
 
-      // Handle line truncation
-      if (numberOfLines) {
-        styles.display = '-webkit-box'
-        styles.WebkitLineClamp = numberOfLines
-        styles.WebkitBoxOrient = 'vertical'
-        styles.overflow = 'hidden'
-      }
+  // Get font weight
+  const getWeightValue = () => {
+    if (!weight) return variantStyles.fontWeight;
 
-      // Handle no wrap
-      if (isNoWrap) {
-        styles.whiteSpace = 'nowrap'
-        styles.overflow = 'hidden'
-        styles.textOverflow = 'ellipsis'
-      }
+    const weightMap: Record<string, number> = {
+      'light': 300,
+      'regular': 400,
+      'medium': 500,
+      'semibold': 600,
+      'bold': 700,
+    };
 
-      // Remove undefined values
-      Object.keys(styles).forEach((key) => {
-        if (styles[key] === undefined) {
-          delete styles[key]
-        }
-      })
+    return weightMap[weight] || variantStyles.fontWeight;
+  };
 
-      return styles
-    }, [
-      align,
-      textDecoration,
-      textTransform,
-      lineHeight,
-      letterSpacing,
-      fontSize,
-      color,
-      weight,
-      numberOfLines,
-      isNoWrap,
-      style,
-    ])
+  // Get color value
+  const getColorValue = (): string => {
+    if (!color) return semantic.color.text.primary;
 
-    const textClassName = clsx(
-      'text',
-      `text--variant-${variant}`,
-      weight && `text--weight-${weight}`,
-      align && `text--align-${align}`,
-      isNoWrap && 'text--no-wrap',
-      numberOfLines && 'text--truncate',
-      className,
-    )
+    // If it's already a valid color (hex, rgb, etc.), use it
+    if (typeof color === 'string' && (color.startsWith('#') || color.startsWith('rgb'))) {
+      return color;
+    }
 
-    return (
-      <Element
-        ref={ref}
-        className={textClassName}
-        style={inlineStyles}
-        data-testid={testID}
-        {...rest}
-      >
-        {children}
-      </Element>
-    )
-  },
-)
+    // Otherwise, assume it's a semantic color path
+    return color;
+  };
 
-Text.displayName = 'Text'
+  // Build styles object
+  const textStyle: React.CSSProperties = {
+    // Font properties
+    fontFamily: 'Inter, -apple-system, sans-serif',
+    fontSize: getSizeValue(),
+    fontWeight: getWeightValue(),
+    lineHeight: lineHeight || variantStyles.lineHeight,
+    letterSpacing: letterSpacing,
 
-export default Text
+    // Color
+    color: getColorValue(),
+
+    // Alignment
+    textAlign: align,
+
+    // Decoration
+    textDecoration,
+    textTransform,
+
+    // Truncation
+    ...(truncate && {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    }),
+
+    // Custom styles
+    ...style,
+  };
+
+  // Handle multi-line truncation
+  if (truncate && style?.WebkitLineClamp) {
+    textStyle.WebkitLineClamp = style.WebkitLineClamp;
+    textStyle.WebkitBoxOrient = 'vertical';
+    textStyle.display = '-webkit-box';
+  }
+
+  return (
+    <span
+      ref={ref}
+      className={className}
+      data-testid={testID}
+      style={textStyle}
+    >
+      {children}
+    </span>
+  );
+});
+
+Text.displayName = 'Text';
+
+export default Text;

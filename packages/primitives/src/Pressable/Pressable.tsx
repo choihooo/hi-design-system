@@ -1,270 +1,235 @@
 /**
- * @component Pressable
- * @description Core interaction primitive - Handles all user interactions (press, hover, focus)
- * @platform React, React Native
- * @AI-friendly: Maximum - Single responsibility (interaction only), predictable states
+ * Pressable Component - Interactive Primitive
  *
- * AI can easily understand:
- * - "Pressable = interactive container"
- * - "States = press, hover, focus, disabled"
- * - "All interactive components = Pressable + content"
+ * The Pressable component provides interactive state management for touch and mouse interactions.
+ * It's the foundation for all interactive components (Button, Card, etc.)
  *
- * @usage
+ * Features:
+ * - Press state tracking (pressed/released)
+ * - Hover state tracking
+ * - Focus state tracking
+ * - Disabled state
+ * - Render prop support (children as function)
+ * - Style function support (style based on state)
+ * - Keyboard accessibility
+ * - ARIA attributes
+ * - Ref forwarding
+ *
+ * @design-tokens.pen reference: Screen 7 - Component States
+ */
+
+import { useState, useCallback, useRef, forwardRef } from 'react';
+import { semantic } from '@hi-design/tokens';
+import type { PressableProps, PressableState } from '@hi-design/types';
+
+/**
+ * Pressable - Interactive state component
+ *
+ * @example
  * ```tsx
- * // Basic pressable
- * <Pressable onPress={() => console.log('pressed')}>
+ * // Basic usage
+ * <Pressable onPress={() => console.log('pressed!')}>
  *   <Text>Click me</Text>
  * </Pressable>
  *
- * // With state styling
+ * // With render prop (access to state)
+ * <Pressable onPress={handlePress}>
+ *   {(state) => (
+ *     <Text style={{ opacity: state.pressed ? 0.5 : 1 }}>
+ *       {state.pressed ? 'Pressed!' : 'Press me'}
+ *     </Text>
+ *   )}
+ * </Pressable>
+ *
+ * // With style function
  * <Pressable
- *   pressStyle={{ opacity: 0.7 }}
- *   hoverStyle={{ backgroundColor: 'lightgray' }}
+ *   onPress={handlePress}
+ *   style={(state) => ({
+ *     backgroundColor: state.pressed ? semantic.color.brand.primaryActive : semantic.color.brand.primary,
+ *     opacity: state.disabled ? 0.5 : 1,
+ *   })}
  * >
- *   <Text>Interactive text</Text>
+ *   <Text>Styled button</Text>
  * </Pressable>
  *
- * // Disabled state
- * <Pressable disabled onPress={() => {}}>
- *   <Text color="gray">Disabled</Text>
- * </Pressable>
- *
- * // As link
- * <Pressable as="a" href="https://example.com">
- *   <Text>Link text</Text>
- * </Pressable>
- *
- * // Accessible button
- * <Pressable
- *   ariaLabel="Close dialog"
- *   role="button"
- *   onPress={handleClose}
- * >
- *   <Icon name="close" />
+ * // Disabled
+ * <Pressable onPress={handlePress} disabled>
+ *   <Text>Disabled button</Text>
  * </Pressable>
  * ```
- *
- * @accessibility
- * - Keyboard navigation: Full keyboard support (Enter, Space)
- * - Screen readers: Proper ARIA attributes support
- * - Focus management: Visual focus indicators
- * - Touch targets: Minimum touch target size (44x44)
- *
- * @design-philosophy
- * - Single Responsibility: Only handles interaction states
- * - Composability: Can contain any content (Text, Icon, Box, etc.)
- * - Predictability: Consistent interaction patterns
- * - Performance: Minimal state management overhead
  */
+export const Pressable = forwardRef<any, PressableProps>(({
+  children,
+  onPress,
+  disabled = false,
+  style,
+  className,
+  testID,
+  as: Component = 'button',
+  ...rest
+}, forwardedRef) => {
+  // State tracking
+  const [pressed, setPressed] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
 
-import clsx from 'clsx'
-import { forwardRef, useState, useCallback } from 'react'
-import './Pressable.css'
+  // Internal ref for the element
+  const elementRef = useRef<HTMLButtonElement>(null);
 
-interface BaseComponentProps {
-  className?: string
-  children?: React.ReactNode
-  testID?: string
-  style?: React.CSSProperties
-}
+  // Merge refs
+  const setRef = useCallback((node: HTMLButtonElement | null) => {
+    // Store in internal ref (using a mutable approach)
+    (elementRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
 
-interface PressableProps extends BaseComponentProps {
-  children?: React.ReactNode
-  onPress?: () => void
-  onClick?: (e: React.MouseEvent) => void
-  onFocus?: (e: React.FocusEvent) => void
-  onBlur?: (e: React.FocusEvent) => void
-  onMouseDown?: (e: React.MouseEvent) => void
-  onMouseUp?: (e: React.MouseEvent) => void
-  onMouseLeave?: (e: React.MouseEvent) => void
-  disabled?: boolean
-  pressStyle?: React.CSSProperties
-  hoverStyle?: React.CSSProperties
-  focusStyle?: React.CSSProperties
-  as?: 'button' | 'a' | 'div'
-  href?: string
-  tabIndex?: number
-  role?: string
-  ariaLabel?: string
-  ariaProps?: Record<string, string | boolean>
-}
+    // Update forwarded ref
+    if (typeof forwardedRef === 'function') {
+      forwardedRef(node);
+    } else if (forwardedRef) {
+      (forwardedRef as React.MutableRefObject<HTMLButtonElement | null>).current = node;
+    }
+  }, [forwardedRef]);
 
-export const Pressable = forwardRef<any, PressableProps>(
-  (
-    {
-      // Interaction handlers
-      onPress,
-      onClick,
-      onFocus,
-      onBlur,
-      onMouseDown,
-      onMouseUp,
-      onMouseLeave,
+  // Handle press start
+  const handlePressStart = useCallback(() => {
+    if (!disabled) {
+      setPressed(true);
+    }
+  }, [disabled]);
 
-      // State
-      disabled = false,
+  // Handle press end
+  const handlePressEnd = useCallback(() => {
+    if (!disabled) {
+      setPressed(false);
+    }
+  }, [disabled]);
 
-      // State styling
-      pressStyle,
-      hoverStyle,
-      focusStyle,
+  // Handle press action
+  const handlePress = useCallback(() => {
+    if (!disabled && onPress) {
+      onPress();
+    }
+  }, [disabled, onPress]);
 
-      // Rendering
-      as = 'button',
-      href,
-      tabIndex = 0,
+  // Handle hover start
+  const handleHoverStart = useCallback(() => {
+    if (!disabled) {
+      setHovered(true);
+    }
+  }, [disabled]);
 
-      // Accessibility
-      role,
-      ariaLabel,
-      ariaProps = {},
+  // Handle hover end
+  const handleHoverEnd = useCallback(() => {
+    setHovered(false);
+    setPressed(false);
+  }, []);
 
-      // Base props
-      className,
-      style,
-      children,
-      testID,
+  // Handle focus
+  const handleFocus = useCallback(() => {
+    if (!disabled) {
+      setFocused(true);
+    }
+  }, [disabled]);
 
-      // Rest for any additional HTML attributes
-      ...rest
-    },
-    ref,
-  ) => {
-    const [isPressed, setIsPressed] = useState(false)
-    const [isHovered, setIsHovered] = useState(false)
-    const [isFocused, setIsFocused] = useState(false)
+  // Handle blur
+  const handleBlur = useCallback(() => {
+    setFocused(false);
+    setPressed(false);
+  }, []);
 
-    // Handle press start
-    const handlePressStart = useCallback(
-      (e: React.MouseEvent | React.TouchEvent) => {
-        if (!disabled) {
-          setIsPressed(true)
-          onMouseDown?.(e as React.MouseEvent)
-        }
-      },
-      [disabled, onMouseDown],
-    )
+  // Handle keyboard interactions
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if (disabled) return;
 
-    // Handle press end
-    const handlePressEnd = useCallback(
-      (e: React.MouseEvent | React.TouchEvent) => {
-        if (!disabled) {
-          setIsPressed(false)
-          onMouseUp?.(e as React.MouseEvent)
+    // Activate on Enter or Space
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handlePressStart();
+    }
+  }, [disabled, handlePressStart]);
 
-          // Trigger press/click handlers
-          if (isPressed) {
-            onPress?.()
-            onClick?.(e as React.MouseEvent)
-          }
-        }
-      },
-      [disabled, isPressed, onPress, onClick, onMouseUp],
-    )
+  const handleKeyUp = useCallback((e: React.KeyboardEvent) => {
+    if (disabled) return;
 
-    // Handle mouse enter (hover)
-    const handleMouseEnter = useCallback(() => {
-      if (!disabled) {
-        setIsHovered(true)
-      }
-    }, [disabled])
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handlePressEnd();
+      handlePress();
+    }
+  }, [disabled, handlePressEnd, handlePress]);
 
-    // Handle mouse leave
-    const handleMouseLeave = useCallback(
-      (e: React.MouseEvent) => {
-        if (!disabled) {
-          setIsPressed(false)
-          setIsHovered(false)
-          onMouseLeave?.(e)
-        }
-      },
-      [disabled, onMouseLeave],
-    )
+  // Build current state
+  const currentState: PressableState = {
+    pressed,
+    hovered,
+    focused,
+    disabled,
+  };
 
-    // Handle focus
-    const handleFocus = useCallback(
-      (e: React.FocusEvent) => {
-        if (!disabled) {
-          setIsFocused(true)
-          onFocus?.(e)
-        }
-      },
-      [disabled, onFocus],
-    )
+  // Calculate styles
+  const getStyles = (): React.CSSProperties => {
+    // Base styles
+    const baseStyles: React.CSSProperties = {
+      cursor: disabled ? 'not-allowed' : 'pointer',
+      opacity: disabled ? 0.5 : 1,
+      outline: 'none',
+      WebkitTapHighlightColor: 'transparent',
+      transition: `opacity ${semantic.animation.duration.fast}ms ${semantic.animation.easing.ease}`,
+    };
 
-    // Handle blur
-    const handleBlur = useCallback(
-      (e: React.FocusEvent) => {
-        setIsFocused(false)
-        onBlur?.(e)
-      },
-      [onBlur],
-    )
+    // Add focus ring when focused
+    if (focused && !disabled) {
+      baseStyles.boxShadow = `0 0 0 3px ${semantic.color.brand.primary}40`;
+    }
 
-    // Build combined styles
-    const combinedStyle = {
+    // If style is a function, call it with current state
+    if (typeof style === 'function') {
+      return {
+        ...baseStyles,
+        ...style(currentState),
+      };
+    }
+
+    // Otherwise, merge base styles with provided styles
+    return {
+      ...baseStyles,
       ...style,
-      ...(isPressed && pressStyle),
-      ...(isHovered && hoverStyle),
-      ...(isFocused && focusStyle),
+    };
+  };
+
+  // Render children
+  const renderContent = () => {
+    // If children is a function, call it with current state
+    if (typeof children === 'function') {
+      return children(currentState);
     }
 
-    const pressableClassName = clsx(
-      'pressable',
-      disabled && 'pressable--disabled',
-      isPressed && 'pressable--pressed',
-      isHovered && 'pressable--hovered',
-      isFocused && 'pressable--focused',
-      className,
-    )
+    return children;
+  };
 
-    // Common props for all element types
-    const commonProps = {
-      ref,
-      className: pressableClassName,
-      style: combinedStyle,
-      'data-testid': testID,
-      'aria-disabled': disabled,
-      'aria-label': ariaLabel,
-      tabIndex: disabled ? -1 : tabIndex,
-      role,
-      onMouseEnter: handleMouseEnter,
-      onMouseLeave: handleMouseLeave,
-      onMouseDown: handlePressStart,
-      onMouseUp: handlePressEnd,
-      onFocus: handleFocus,
-      onBlur: handleBlur,
-      ...ariaProps,
-      ...rest,
-    }
+  return (
+    <Component
+      ref={setRef as any}
+      className={className}
+      data-testid={testID}
+      disabled={disabled}
+      style={getStyles()}
+      onMouseDown={handlePressStart}
+      onMouseUp={handlePressEnd}
+      onMouseLeave={handleHoverEnd}
+      onMouseEnter={handleHoverStart}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
+      onClick={undefined} // We handle clicks via onPress/onClick prop
+      aria-disabled={disabled}
+      {...rest}
+    >
+      {renderContent()}
+    </Component>
+  );
+});
 
-    // Render as different element types
-    if (as === 'a') {
-      return (
-        <a {...commonProps} href={disabled ? undefined : href}>
-          {children}
-        </a>
-      )
-    }
+Pressable.displayName = 'Pressable';
 
-    if (as === 'div') {
-      return <div {...commonProps}>{children}</div>
-    }
-
-    // Default to button
-    return (
-      <button
-        {...commonProps}
-        type="button"
-        disabled={disabled}
-        onClick={undefined}
-      >
-        {children}
-      </button>
-    )
-  },
-)
-
-Pressable.displayName = 'Pressable'
-
-export default Pressable
+export default Pressable;

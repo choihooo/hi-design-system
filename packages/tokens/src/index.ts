@@ -1,275 +1,309 @@
 /**
- * @hi-design/tokens
+ * HI Design Tokens - Main Entry Point
  *
- * Design tokens for HI Design System
- * Following Seed Design's 3-layer architecture:
- * 1. Raw Values: Base values
- * 2. Scale Tokens: Named scales
- * 3. Semantic Tokens: Design intent tokens
+ * 3-Layer Token Architecture:
+ * 1. Raw Values → Base values (px, hex, etc.)
+ * 2. Scale Tokens → Named scales (50-950, xs-xl, etc.)
+ * 3. Semantic Tokens → Design intent (PRIMARY TOKENS FOR COMPONENTS)
  *
- * Shared across React, React Native, and Flutter platforms
- */
-
-// ============================================
-// RAW VALUES (Layer 1)
-// ============================================
-import { rawColors } from './colors'
-import { rawSpacing } from './spacing'
-import { rawTypography } from './typography'
-
-export { rawColors, rawSpacing, rawTypography }
-
-// ============================================
-// SCALE TOKENS (Layer 2)
-// ============================================
-import { scaleColors } from './colors'
-import { scaleRadius, scaleSpacing } from './spacing'
-import { scaleTypography } from './typography'
-
-export { scaleColors, scaleSpacing, scaleRadius, scaleTypography }
-
-// ============================================
-// SEMANTIC TOKENS (Layer 3)
-// ============================================
-import { darkSemanticColors, semanticColors } from './colors'
-import { semanticSpacing } from './spacing'
-import { semanticTypography } from './typography'
-
-export { semanticColors, darkSemanticColors, semanticSpacing, semanticTypography }
-
-// ============================================
-// CSS VARIABLES
-// ============================================
-import { cssVars as colorCssVarsImport } from './colors'
-import { cssVars as spacingCssVarsImport } from './spacing'
-import { cssVars as typographyCssVarsImport } from './typography'
-
-export const colorCssVars = colorCssVarsImport
-export const spacingCssVars = spacingCssVarsImport
-export const typographyCssVars = typographyCssVarsImport
-
-// ============================================
-// TOKEN TYPES
-// ============================================
-export type { Colors, NeutralColor, PrimaryColor, SecondaryColor } from './colors'
-// ============================================
-// BACKWARD COMPATIBILITY
-// ============================================
-export { colors, neutral, opacity, primary, secondary, semantic } from './colors'
-export type { BorderRadius, Spacing, SpacingValue } from './spacing'
-export {
-  borderRadius,
-  componentSpacing,
-  spacing,
-  spacingPresets,
-  spacingTokens,
-} from './spacing'
-export type {
-  FontSize,
-  FontWeight,
-  LineHeight,
-  TextStyle,
-  Typography,
-} from './typography'
-export {
-  fontFamilies,
-  fontSizes,
-  fontWeights,
-  letterSpacing,
-  lineHeights,
-  textStyles,
-  typography,
-} from './typography'
-
-// ============================================
-// UNIFIED TOKEN OBJECT
-// ============================================
-/**
- * Complete token system for easy access
- * @example
- * import { tokens } from '@hi-design/tokens';
+ * Usage:
+ * ```ts
+ * import { tokens, applyTheme } from '@hi-design/tokens';
  *
  * // Use semantic tokens (recommended)
- * tokens.semantic.color.primary
- * tokens.semantic.spacing.normal
- * tokens.semantic.typography.body.default
+ * const style = {
+ *   color: tokens.semantic.color.brand.primary,
+ *   padding: tokens.semantic.spacing.normal,
+ *   fontSize: tokens.semantic.typography.body.default.fontSize,
+ * };
  *
- * // Use scale tokens for specific values
- * tokens.scale.color.primary[500]
- * tokens.scale.spacing.lg
- * tokens.scale.typography.fontSize.base
- *
- * // Override at runtime
- * tokens.semantic.color.primary = '#custom-color';
- */
-export const tokens = {
-  // Raw values
-  raw: {
-    colors: {
-      primary: rawColors.primary,
-      secondary: rawColors.secondary,
-      neutral: rawColors.neutral,
-      success: rawColors.success,
-      warning: rawColors.warning,
-      error: rawColors.error,
-      info: rawColors.info,
-      // Legacy aliases
-      blue: rawColors.primary,
-      purple: rawColors.secondary,
-      gray: rawColors.neutral,
-      green: rawColors.success,
-      yellow: rawColors.warning,
-      red: rawColors.error,
-    },
-    spacing: rawSpacing,
-    typography: rawTypography,
-  },
-
-  // Scale tokens
-  scale: {
-    color: scaleColors,
-    spacing: scaleSpacing,
-    radius: scaleRadius,
-    typography: scaleTypography,
-  },
-
-  // Semantic tokens (light theme - default)
-  semantic: {
-    color: semanticColors,
-    spacing: semanticSpacing,
-    typography: semanticTypography,
-  },
-
-  // Dark theme
-  dark: {
-    color: darkSemanticColors,
-  },
-} as const
-
-// ============================================
-// THEME UTILITIES
-// ============================================
-/**
- * Apply theme to tokens
- * @param theme - 'light' or 'dark'
- * @example
- * import { applyTheme } from '@hi-design/tokens';
- *
- * // Apply dark theme
+ * // Theme switching
  * applyTheme('dark');
- *
- * // Apply light theme
  * applyTheme('light');
+ * const theme = getCurrentTheme();
+ * toggleTheme();
+ * ```
  */
-export const applyTheme = (theme: 'light' | 'dark') => {
-  if (theme === 'dark') {
-    Object.assign(tokens.semantic.color, darkSemanticColors)
-  } else {
-    Object.assign(tokens.semantic.color, semanticColors)
+
+// Export all layers
+export { raw } from './raw';
+export { scale } from './scale';
+export { semantic } from './semantic';
+export { darkTheme } from './theme';
+export { lightTheme as lightThemeExport } from './theme';
+export type { RawTokens } from './raw';
+export type { ScaleTokens } from './scale';
+export type { SemanticTokens } from './semantic';
+export type { Theme } from './theme';
+
+// Import semantic tokens for runtime use
+import { semantic as lightTheme } from './semantic';
+import { darkTheme } from './theme';
+import type { SemanticTokens, Theme } from './theme';
+
+// ============================================
+// RUNTIME TOKEN SYSTEM
+// ============================================
+
+/**
+ * Current active tokens (defaults to light theme)
+ * This is the main export that components use
+ */
+let currentTokens: SemanticTokens = lightTheme;
+
+/**
+ * Tokens proxy - provides reactive access to current theme
+ * Use this in components for automatic theme updates
+ */
+export const tokens = new Proxy({} as SemanticTokens, {
+  get(_target, prop: string | symbol) {
+    return currentTokens[prop as keyof SemanticTokens];
+  },
+
+  set(_target, prop: string | symbol, value: unknown) {
+    (currentTokens as Record<string | symbol, unknown>)[prop] = value;
+    return true;
+  },
+}) as SemanticTokens & { [key: string]: any };
+
+// ============================================
+// THEME MANAGEMENT
+// ============================================
+
+/**
+ * Apply a theme (light or dark)
+ * Updates currentTokens and optionally CSS variables
+ *
+ * @param theme - Theme to apply ('light' | 'dark')
+ * @param updateCSS - Whether to update CSS variables (default: true)
+ */
+export function applyTheme(theme: Theme, updateCSS = true): void {
+  currentTokens = (theme === 'dark' ? darkTheme : lightTheme) as SemanticTokens;
+
+  // Update CSS variables for web (if in browser and updateCSS is true)
+  if (updateCSS && typeof document !== 'undefined') {
+    updateCSSVariables(currentTokens);
+  }
+
+  // Dispatch custom event for components that need to react to theme changes
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('theme-change', { detail: { theme } }));
   }
 }
 
 /**
- * Get current theme
- * @returns 'light' or 'dark'
+ * Get the current active theme
+ * @returns 'light' | 'dark'
  */
-export const getCurrentTheme = (): 'light' | 'dark' => {
-  return tokens.semantic.color.background.primary === semanticColors.background.primary
-    ? 'light'
-    : 'dark'
+export function getCurrentTheme(): Theme {
+  return currentTokens === darkTheme ? 'dark' : 'light';
 }
 
 /**
- * Toggle theme
+ * Toggle between light and dark themes
+ * @returns The new theme ('light' | 'dark')
  */
-export const toggleTheme = () => {
-  const current = getCurrentTheme()
-  applyTheme(current === 'light' ? 'dark' : 'light')
+export function toggleTheme(): Theme {
+  const current = getCurrentTheme();
+  const newTheme = current === 'light' ? 'dark' : 'light';
+  applyTheme(newTheme);
+  return newTheme;
+}
+
+/**
+ * Subscribe to theme changes
+ * @param callback - Function to call when theme changes
+ * @returns Unsubscribe function
+ */
+export function onThemeChange(callback: (theme: Theme) => void): () => void {
+  const handler = (event: Event) => {
+    const customEvent = event as CustomEvent<Theme>;
+    callback(customEvent.detail);
+  };
+
+  window.addEventListener('theme-change', handler);
+
+  return () => {
+    window.removeEventListener('theme-change', handler);
+  };
 }
 
 // ============================================
-// CSS VARIABLES INJECTOR
+// CSS VARIABLES (Web only)
 // ============================================
-/**
- * Inject CSS variables into root element
- * Call this once at app initialization
- * @example
- * import { injectCSSVars } from '@hi-design/tokens';
- *
- * // Inject at app start
- * injectCSSVars();
- */
-/**
- * Update CSS variables for theme switching
- * Use this when you want to switch themes dynamically
- * @param theme - 'light' or 'dark'
- * @example
- * import { updateCSSVars } from '@hi-design/tokens';
- *
- * // Switch to dark mode
- * updateCSSVars('dark');
- */
-export const updateCSSVars = (theme: 'light' | 'dark') => {
-  if (typeof document === 'undefined') return
 
-  const root = document.documentElement
+/**
+ * Update CSS variables with current theme tokens
+ * Called automatically by applyTheme()
+ *
+ * @param tokens - Semantic tokens to convert to CSS variables
+ */
+function updateCSSVariables(tokensToUse: SemanticTokens): void {
+  const root = document.documentElement;
 
-  if (theme === 'dark') {
-    root.classList.add('dark')
-  } else {
-    root.classList.remove('dark')
+  // Convert all semantic tokens to CSS variables
+  setCSSVars(root, '', tokensToUse);
+}
+
+/**
+ * Recursively set CSS variables from token object
+ *
+ * @param element - DOM element to set variables on
+ * @param prefix - Current CSS variable prefix (e.g., 'color-brand-')
+ * @param value - Token value to set
+ */
+function setCSSVars(
+  element: HTMLElement,
+  prefix: string,
+  value: unknown
+): void {
+  if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+    // Recursively handle nested objects
+    Object.entries(value).forEach(([key, val]) => {
+      const newPrefix = prefix ? `${prefix}-${kebabize(key)}` : kebabize(key);
+      setCSSVars(element, newPrefix, val);
+    });
+  } else if (value !== undefined) {
+    // Set CSS variable for leaf values
+    const varName = `--${prefix}`;
+    element.style.setProperty(varName, String(value));
   }
 }
 
-export const injectCSSVars = (theme: 'light' | 'dark' = 'light') => {
-  if (typeof document === 'undefined') return
-
-  const root = document.documentElement
-  const colorVars = theme === 'light' ? semanticColors : darkSemanticColors
-
-  // Generate CSS variables from semantic colors
-  const colorCssVarsFromSemantic = {
-    '--brand-primary': colorVars.brand.primary,
-    '--brand-primary-hover': colorVars.brand.primaryHover,
-    '--brand-primary-active': colorVars.brand.primaryActive,
-    '--brand-secondary': colorVars.brand.secondary,
-    '--brand-secondary-hover': colorVars.brand.secondaryHover,
-    '--brand-secondary-active': colorVars.brand.secondaryActive,
-    '--text-primary': colorVars.text.primary,
-    '--text-secondary': colorVars.text.secondary,
-    '--text-inverse': colorVars.text.inverse,
-    '--text-disabled': colorVars.text.disabled,
-    '--bg-primary': colorVars.background.primary,
-    '--bg-secondary': colorVars.background.secondary,
-    '--bg-ghost-hover': colorVars.background.tertiary,
-    '--bg-ghost-active': colorVars.background.tertiary,
-    '--bg-filled': colorVars.background.secondary,
-    '--bg-filled-hover': colorVars.background.tertiary,
-    '--bg-disabled': colorVars.background.disabled,
-    '--border-default': colorVars.border.default,
-    '--border-hover': colorVars.border.dark,
-    '--border-focus': colorVars.border.focus,
-    '--color-success': colorVars.success,
-    '--color-success-hover': theme === 'light' ? semanticColors.successDark : darkSemanticColors.successDark,
-    '--color-error': colorVars.error,
-    '--color-error-hover': theme === 'light' ? semanticColors.errorDark : darkSemanticColors.errorDark,
-    '--color-warning': colorVars.warning,
-    '--color-warning-hover': theme === 'light' ? semanticColors.warningDark : darkSemanticColors.warningDark,
-    '--color-info': colorVars.info,
-    '--focus-ring': theme === 'light' ? 'rgba(94, 106, 210, 0.16)' : 'rgba(184, 191, 242, 0.24)',
-    '--success-focus-ring': theme === 'light' ? 'rgba(46, 143, 97, 0.16)' : 'rgba(46, 143, 97, 0.24)',
-    '--error-focus-ring': theme === 'light' ? 'rgba(201, 66, 66, 0.16)' : 'rgba(201, 66, 66, 0.24)',
-  }
-
-  // Combine all variables into single object for batch processing
-  const allVars = {
-    ...colorCssVarsFromSemantic,
-    ...spacingCssVars.semantic,
-    ...typographyCssVars.semantic,
-  }
-
-  // Single iteration for better performance
-  Object.entries(allVars).forEach(([key, value]) => {
-    root.style.setProperty(key, value as string)
-  })
+/**
+ * Convert camelCase to kebab-case
+ * @example 'brandPrimary' -> 'brand-primary'
+ */
+function kebabize(str: string): string {
+  return str.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
 }
+
+/**
+ * Inject CSS variables as a style tag
+ * Useful for SSR or initial theme setup
+ *
+ * @param theme - Theme to inject ('light' | 'dark')
+ * @returns CSS string with variable definitions
+ */
+export function generateCSSVariables(theme: Theme): string {
+  const tokensToUse = (theme === 'dark' ? darkTheme : lightTheme) as SemanticTokens;
+  return generateCSSVarsString(tokensToUse);
+}
+
+/**
+ * Generate CSS variables string from tokens
+ * @param tokens - Semantic tokens
+ * @returns CSS string
+ */
+function generateCSSVarsString(tokensToUse: SemanticTokens, prefix = '--'): string {
+  const lines: string[] = [];
+
+  function traverse(obj: unknown, currentPrefix = prefix): void {
+    if (typeof obj === 'object' && obj !== null && !Array.isArray(obj)) {
+      Object.entries(obj).forEach(([key, value]) => {
+        const newPrefix = `${currentPrefix}${kebabize(key)}-`;
+        traverse(value, newPrefix);
+      });
+    } else if (obj !== undefined) {
+      lines.push(`${currentPrefix.slice(0, -1)}: ${obj};`);
+    }
+  }
+
+  traverse(tokensToUse);
+
+  return `:root {\n  ${lines.join('\n  ')}\n}`;
+}
+
+// ============================================
+// TOKEN VALIDATION
+// ============================================
+
+/**
+ * Validate that all required token paths exist
+ * Useful for testing and debugging
+ *
+ * @param tokens - Tokens to validate
+ * @returns Array of missing paths (empty if valid)
+ */
+export function validateTokens(tokens: SemanticTokens): string[] {
+  const requiredPaths = [
+    'color.brand.primary',
+    'color.text.primary',
+    'color.background.primary',
+    'spacing.normal',
+    'typography.body.default.fontSize',
+    'borderRadius.md',
+    'animation.duration.normal',
+  ];
+
+  const missing: string[] = [];
+
+  for (const path of requiredPaths) {
+    if (!getTokenByPath(tokens, path)) {
+      missing.push(path);
+    }
+  }
+
+  return missing;
+}
+
+/**
+ * Get token value by dot-notation path
+ * @example getTokenByPath(tokens, 'color.brand.primary')
+ */
+export function getTokenByPath(tokens: SemanticTokens, path: string): unknown {
+  return path.split('.').reduce((obj, key) => {
+    return obj && typeof obj === 'object' ? (obj as Record<string, unknown>)[key] : undefined;
+  }, tokens as unknown);
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+/**
+ * Initialize theme system
+ * - Detects system preference
+ * - Applies initial theme
+ * - Sets up CSS variables
+ *
+ * Call this once at app startup
+ */
+export function initializeTheme(): Theme {
+  if (typeof window === 'undefined') {
+    return 'light'; // Default to light on server
+  }
+
+  // Detect system preference
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  // Check for saved preference
+  const savedTheme = localStorage.getItem('hi-theme') as Theme | null;
+
+  // Use saved theme or system preference
+  const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+  applyTheme(initialTheme);
+
+  // Listen for system theme changes
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('hi-theme')) {
+      applyTheme(e.matches ? 'dark' : 'light');
+    }
+  });
+
+  return initialTheme;
+}
+
+/**
+ * Save theme preference to localStorage
+ * @param theme - Theme to save
+ */
+export function saveThemePreference(theme: Theme): void {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('hi-theme', theme);
+  }
+}
+
+// Re-export current tokens for direct access
+export { currentTokens };

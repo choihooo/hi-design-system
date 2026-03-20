@@ -78,3 +78,4 @@ storybook-static/
 # Logs
 logs/
 *.log
+.pnpm-cache

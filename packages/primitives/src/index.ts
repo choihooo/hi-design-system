@@ -1,38 +1,39 @@
 /**
- * @hi-design/primitives
+ * HI Design System - Primitives Package
+ * Main entry point for all primitive components
  *
- * Core primitive components for HI Design System
- * Platform-agnostic building blocks for all UI components
+ * Primitives are the foundational components that make up the design system:
+ * - Box: Layout container with flexbox/grid support
+ * - Text: Typography component with semantic tokens
+ * - Pressable: Interactive component with state management
  *
- * @AI-friendly: Maximum - Clear structure, single responsibility, predictable patterns
+ * Usage:
+ * ```tsx
+ * import { Box, Text, Pressable } from '@hi-design/primitives';
+ * import { tokens } from '@hi-design/tokens';
  *
- * Primitives are the foundation of all components:
- * - Box: Layout and structure
- * - Text: Typography and content
- * - Pressable: Interaction and states
- * - Icon: Visual symbols and graphics
- *
- * All complex components are combinations of these primitives:
- * - Button = Pressable + Text + (optional Icon)
- * - Input = Box + Text + Pressable
- * - Card = Box + (optional Pressable)
- * - Modal = Box + Pressable + Text
- *
- * Usage pattern:
- * 1. Start with Box for layout
- * 2. Add Text for content
- * 3. Wrap in Pressable for interaction
- * 4. Add Icon for visual elements
+ * function MyComponent() {
+ *   return (
+ *     <Box display="flex" gap="normal" padding="md">
+ *       <Text variant="h1">Hello</Text>
+ *       <Pressable onPress={() => console.log('pressed')}>
+ *         <Text>Click me</Text>
+ *       </Pressable>
+ *     </Box>
+ *   );
+ * }
+ * ```
  */
 
-// Import CSS for all primitives
-import './index.css'
+// Export primitive components
+export { Box } from './Box';
+export { Text } from './Text';
+export { Pressable } from './Pressable';
 
-// Core primitives
-export { default as Box } from './Box/Box'
-
-export { default as Text } from './Text/Text'
-
-export { default as Pressable } from './Pressable/Pressable'
-
-export { default as Icon } from './Icon/Icon'
+// Re-export types from @hi-design/types
+export type {
+  BoxProps,
+  TextProps,
+  PressableProps,
+  PressableState,
+} from '@hi-design/types';

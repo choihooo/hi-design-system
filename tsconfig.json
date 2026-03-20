@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "lib": ["ES2020"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -19,7 +19,15 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@hi-design/tokens": ["./packages/tokens/src"],
+      "@hi-design/types": ["./packages/types/src"],
+      "@hi-design/primitives": ["./packages/primitives/src"],
+      "@hi-design/react": ["./packages/react/src"],
+      "@hi-design/icons": ["./packages/icons/src"]
+    }
   },
-  "exclude": ["node_modules", "dist", "build", ".next", "flutter"]
+  "exclude": ["node_modules", "dist", "build", ".next", "flutter", "packages.backup.*", "apps.backup.*"]
 }
